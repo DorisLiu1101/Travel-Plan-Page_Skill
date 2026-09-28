@@ -7,16 +7,16 @@
     "countryCode": "JP",
     "boundary": "assets/boundaries/countries/JP.geojson",
     "heading": "JAPAN / 日本",
-    "description": "日本五日公开示例路线"
+    "description": "日本五日公開示例路線"
   },
   "places": [
-    { "id": "haneda", "name": "Tokyo Haneda Airport", "nameZh": "羽田机场", "geo": { "lat": 35.5494, "lng": 139.7798 }, "days": [1] },
-    { "id": "tokyo", "name": "Tokyo", "nameZh": "东京", "geo": { "lat": 35.6762, "lng": 139.6503 }, "days": [1, 2, 3], "labelOffset": { "x": 28, "y": -28 } },
+    { "id": "haneda", "name": "Tokyo Haneda Airport", "nameZh": "羽田機場", "geo": { "lat": 35.5494, "lng": 139.7798 }, "days": [1] },
+    { "id": "tokyo", "name": "Tokyo", "nameZh": "東京", "geo": { "lat": 35.6762, "lng": 139.6503 }, "days": [1, 2, 3], "labelOffset": { "x": 28, "y": -28 } },
     { "id": "hakone", "name": "Hakone", "nameZh": "箱根", "geo": { "lat": 35.2324, "lng": 139.107 }, "days": [2] },
     { "id": "kyoto", "name": "Kyoto", "nameZh": "京都", "geo": { "lat": 35.0116, "lng": 135.7681 }, "days": [3, 4] },
     { "id": "nara", "name": "Nara", "nameZh": "奈良", "geo": { "lat": 34.6851, "lng": 135.8048 }, "days": [4], "labelOffset": { "x": 30, "y": 36 } },
     { "id": "osaka", "name": "Osaka", "nameZh": "大阪", "geo": { "lat": 34.6937, "lng": 135.5023 }, "days": [4, 5], "labelOffset": { "x": -28, "y": -32 }, "anchor": "end" },
-    { "id": "kansai-airport", "name": "Kansai International Airport", "nameZh": "关西机场", "geo": { "lat": 34.4347, "lng": 135.2441 }, "days": [5], "labelOffset": { "x": -28, "y": 38 }, "anchor": "end" }
+    { "id": "kansai-airport", "name": "Kansai International Airport", "nameZh": "關西機場", "geo": { "lat": 34.4347, "lng": 135.2441 }, "days": [5], "labelOffset": { "x": -28, "y": 38 }, "anchor": "end" }
   ],
   "routes": [
     { "day": 1, "placeIds": ["haneda", "tokyo"] },

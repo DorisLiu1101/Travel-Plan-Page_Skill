@@ -1,58 +1,58 @@
 # Data Migration Map — Historical to Standard Generator
 
-状态：框架维护参考，不是单次Trip生成清单。  
-普通现行流程：根目录 `SKILL.md`；本文仅用于 advanced/canonical 兼容。
+狀態：框架維護參考，不是單次Trip生成清單。  
+普通現行流程：根目錄 `SKILL.md`；本文僅用於 advanced/canonical 相容。
 
-本文记录旧手工B-Template字段如何归入Config、canonical data、generated assets与runtime state。不得因读取本文而修改某位用户的Core。
+本文記錄舊手工B-Template欄位如何歸入Config、canonical data、generated assets與runtime state。不得因讀取本文而修改某位使用者的Core。
 
 ## 1. Disposition vocabulary
 
 | Disposition | Meaning |
 |---|---|
-| `CONFIG` | 进入`trip-config.json`，由用户确认 |
-| `CANONICAL` | 进入仓库外 canonical build input 的唯一事实源；再由 compiler 生成 `travel-data.json` |
-| `REFERENCE` | 用stable typed ID关联 |
-| `DERIVE` | 由build/renderer生成，不再人工维护 |
-| `PRESENTATION` | 仅保持Golden显示文案，不参与identity |
-| `RUNTIME` | 运行后状态，默认浏览器local |
-| `GENERATE` | 由deterministic map/build tool输出 |
-| `PRIVATE INPUT` | 仅留在仓库外的Source Facts/原始资料 |
+| `CONFIG` | 進入`trip-config.json`，由使用者確認 |
+| `CANONICAL` | 進入倉庫外 canonical build input 的唯一事實源；再由 compiler 生成 `travel-data.json` |
+| `REFERENCE` | 用stable typed ID關聯 |
+| `DERIVE` | 由build/renderer生成，不再人工維護 |
+| `PRESENTATION` | 僅保持Golden顯示文案，不參與identity |
+| `RUNTIME` | 執行後狀態，預設瀏覽器local |
+| `GENERATE` | 由deterministic map/build tool輸出 |
+| `PRIVATE INPUT` | 僅留在倉庫外的Source Facts/原始資料 |
 
 ## 2. Module and deployment decisions
 
 | Old concern | Current owner | Disposition |
 |---|---|---|
-| 手工删除section/nav/init | `trip-config.json > modules` | `CONFIG` |
-| 组件自行判断是否存在内容 | Config + validator | `CONFIG` / `DERIVE` |
-| 默认请求shared API | `trip-config.json > persistence` | `CONFIG`; default local |
-| Pages/D1绑定信息 | 用户Cloudflare项目 | 不进入仓库 |
+| 手工刪除section/nav/init | `trip-config.json > modules` | `CONFIG` |
+| 元件自行判斷是否存在內容 | Config + validator | `CONFIG` / `DERIVE` |
+| 預設請求shared API | `trip-config.json > persistence` | `CONFIG`; default local |
+| Pages/D1繫結資訊 | 使用者Cloudflare專案 | 不進入倉庫 |
 
 ## 3. Core trip facts
 
 | Old concern | Current owner | Disposition |
 |---|---|---|
-| 重复Trip ID | canonical Trip ID | `CANONICAL` / `REFERENCE` |
-| 手写日期范围/day count | Days/events | `DERIVE` |
-| 重复Place/address/query | Place entity | `CANONICAL` |
-| schedule文字识别Place/Ticket | Day Item typed refs | `REFERENCE` |
-| schedule index识别Transport | Transport/Day Item IDs | `REFERENCE` |
-| 固定机场offset或租车offset | zoned endpoint/event | `CANONICAL` |
+| 重複Trip ID | canonical Trip ID | `CANONICAL` / `REFERENCE` |
+| 手寫日期範圍/day count | Days/events | `DERIVE` |
+| 重複Place/address/query | Place entity | `CANONICAL` |
+| schedule文字識別Place/Ticket | Day Item typed refs | `REFERENCE` |
+| schedule index識別Transport | Transport/Day Item IDs | `REFERENCE` |
+| 固定機場offset或租車offset | zoned endpoint/event | `CANONICAL` |
 | display route/duration/summary | canonical facts | `DERIVE` or `PRESENTATION` |
-| 原始订单、PDF、OCR | private workspace | `PRIVATE INPUT` |
+| 原始訂單、PDF、OCR | private workspace | `PRIVATE INPUT` |
 
 ## 4. Map
 
 | Old concern | Current owner | Disposition |
 |---|---|---|
-| 手写国家轮廓 | authorized boundary GeoJSON + generator | `GENERATE` |
+| 手寫國家輪廓 | authorized boundary GeoJSON + generator | `GENERATE` |
 | 人工x/y | Place geo + projection | `GENERATE` |
 | 人工route SVG | ordered Place/Transport refs | `GENERATE` |
 | 人工label anchor | deterministic default label layout | `GENERATE` |
-| Daily复用整国尺度 | Day places + generated bounds | `GENERATE` |
+| Daily複用整國尺度 | Day places + generated bounds | `GENERATE` |
 | schedule index pins | Transport/Day Item refs | `REFERENCE` / `GENERATE` |
-| 私人Golden map | private fixture | 永不迁入Public Template |
+| 私人Golden map | private fixture | 永不遷入Public Template |
 
-生成结果可以缓存于该Trip的assets/data；公共cache只能保存不含Trip地点、路线、日期、地址或query的纯country base。
+生成結果可以快取於該Trip的assets/data；公共cache只能儲存不含Trip地點、路線、日期、地址或query的純country base。
 
 ## 5. Tickets, Todo and Ledger
 

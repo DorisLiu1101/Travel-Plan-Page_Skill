@@ -63,7 +63,7 @@
     const title = document.getElementById("ticket-dialog-title");
     if (!dialog || !body || !title) return;
 
-    const label = ticket.attraction?.nameZh || ticket.attraction?.name || ticket.document.label || "门票 PDF";
+    const label = ticket.attraction?.nameZh || ticket.attraction?.name || ticket.document.label || "門票 PDF";
     title.textContent = label;
     const url = String(ticket.document.url);
     const frame = pdfFrame(ticket, label);
@@ -78,7 +78,7 @@
 
     const status = document.createElement("p");
     status.className = "ticket-dialog__status";
-    status.textContent = ticket.purchaseStatus === "purchased" ? "已购票" : "门票文件";
+    status.textContent = ticket.purchaseStatus === "purchased" ? "已購票" : "門票檔案";
 
     const links = document.createElement("div");
     links.className = "ticket-dialog__links";
@@ -86,7 +86,7 @@
     external.href = ticket.document.url;
     external.target = "_blank";
     external.rel = "noopener noreferrer";
-    external.textContent = "在新窗口打开 PDF ↗";
+    external.textContent = "在新視窗開啟 PDF ↗";
     links.append(external);
     body.append(status, frame, links);
     if (!dialog.open) dialog.showModal();

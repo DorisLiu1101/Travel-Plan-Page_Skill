@@ -7,7 +7,7 @@
   <meta name="format-detection" content="telephone=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <title>AI 旅行网页模板</title>
+  <title>AI 旅行網頁模板</title>
   <link rel="stylesheet" href="styles.css?v=20260910-3">
   <link rel="stylesheet" href="ledger.css?v=20260910-2">
   <script src="runtime-storage.js?v=20260910-2" defer></script>
@@ -19,28 +19,28 @@
   <script src="site-navigation.js?v=20260910-2" defer></script>
 </head>
 <body>
-  <a class="skip-link" id="skip-link" href="#main">跳到主要内容</a>
+  <a class="skip-link" id="skip-link" href="#main">跳到主要內容</a>
   <header class="topbar" id="topbar">
-    <a class="wordmark" id="wordmark" href="#top" aria-label="返回顶部"></a>
-    <nav class="primary-navigation" aria-label="主要模块">
+    <a class="wordmark" id="wordmark" href="#top" aria-label="返回頂部"></a>
+    <nav class="primary-navigation" aria-label="主要模組">
       <details class="travel-navigation" id="travel-navigation" hidden>
-        <summary id="travel-navigation-trigger">旅行信息</summary>
-        <div class="travel-navigation-menu" role="menu" aria-label="旅行信息栏目">
+        <summary id="travel-navigation-trigger">旅行資訊</summary>
+        <div class="travel-navigation-menu" role="menu" aria-label="旅行資訊欄目">
           <a href="#flights" role="menuitem" data-module="flights" hidden>航班</a>
-          <a href="#route" role="menuitem" data-module="overview" hidden>路线</a>
+          <a href="#route" role="menuitem" data-module="overview" hidden>路線</a>
           <a href="#itinerary" role="menuitem" data-module="itinerary" hidden>行程</a>
-          <a href="#drive" role="menuitem" data-module="driving" hidden>自驾</a>
+          <a href="#drive" role="menuitem" data-module="driving" hidden>自駕</a>
           <a href="#prep" role="menuitem" data-module="todo" hidden>Todo</a>
         </div>
       </details>
-      <a class="primary-navigation__ledger" id="ledger-navigation-link" href="#ledger" data-module="ledger" hidden>记账</a>
+      <a class="primary-navigation__ledger" id="ledger-navigation-link" href="#ledger" data-module="ledger" hidden>記賬</a>
     </nav>
   </header>
 
   <main id="main" data-site-view="travel">
     <section class="hero" id="top" aria-labelledby="trip-title">
       <div class="hero__eyebrow" id="trip-eyebrow"></div>
-      <h1 id="trip-title">正在载入旅程</h1>
+      <h1 id="trip-title">正在載入旅程</h1>
       <p class="hero__date" id="trip-date"></p>
     </section>
 
@@ -52,7 +52,7 @@
         </div>
         <p class="section-index" id="flight-index" aria-live="polite">1 / 3</p>
       </div>
-      <div class="flight-carousel" id="flight-carousel" aria-label="航班卡片，可左右滑动"></div>
+      <div class="flight-carousel" id="flight-carousel" aria-label="航班卡片，可左右滑動"></div>
       <div class="carousel-dots" id="flight-dots" aria-hidden="true"></div>
     </section>
 
@@ -65,7 +65,7 @@
         <span class="soft-label" id="route-day-count"></span>
       </div>
       <div id="route-explorer"></div>
-      <p class="route-caption">路线为行程示意，实际驾驶和步行请使用当天的 Google Maps 导航。</p>
+      <p class="route-caption">路線為行程示意，實際駕駛和步行請使用當天的 Google Maps 導航。</p>
     </section>
 
     <section class="section itinerary-section" id="itinerary" aria-labelledby="itinerary-title" data-module="itinerary" hidden>
@@ -83,7 +83,7 @@
       <div class="section-heading">
         <div>
           <p class="section-kicker">ON THE ROAD</p>
-          <h2 id="drive-title">自驾信息</h2>
+          <h2 id="drive-title">自駕資訊</h2>
         </div>
         <span class="soft-label" id="rental-provider-label">RENTAL</span>
       </div>
@@ -95,20 +95,20 @@
       <div class="section-heading">
         <div>
           <p class="section-kicker">BEFORE WE GO</p>
-          <h2 id="prep-title">旅行前准备</h2>
+          <h2 id="prep-title">旅行前準備</h2>
         </div>
         <span class="soft-label" id="todo-progress">0 / 0</span>
       </div>
       <form class="todo-form" id="todo-form">
-        <input id="todo-input" type="text" maxlength="80" placeholder="添加一项准备事项" aria-label="准备事项">
-        <button type="submit">添加</button>
+        <input id="todo-input" type="text" maxlength="80" placeholder="新增一項準備事項" aria-label="準備事項">
+        <button type="submit">新增</button>
       </form>
       <div class="todo-list" id="todo-list"></div>
     </section>
 
     <footer class="footer">
       <p id="footer-mark"></p>
-      <a href="#top">回到顶部 ↑</a>
+      <a href="#top">回到頂部 ↑</a>
     </footer>
   </main>
 
@@ -117,32 +117,32 @@
   </main>
 
   <dialog class="map-dialog" id="map-dialog">
-    <button type="button" class="dialog-close" id="map-close" aria-label="关闭路线图">关闭</button>
+    <button type="button" class="dialog-close" id="map-close" aria-label="關閉路線圖">關閉</button>
     <div id="map-dialog-content"></div>
   </dialog>
 
   <dialog class="ticket-dialog" id="ticket-dialog" aria-labelledby="ticket-dialog-title">
     <header>
       <div>
-        <span>门票与预订</span>
-        <h2 id="ticket-dialog-title">门票详情</h2>
+        <span>門票與預訂</span>
+        <h2 id="ticket-dialog-title">門票詳情</h2>
       </div>
-      <button type="button" id="ticket-dialog-close" aria-label="关闭门票详情">关闭</button>
+      <button type="button" id="ticket-dialog-close" aria-label="關閉門票詳情">關閉</button>
     </header>
     <div class="ticket-dialog__body" id="ticket-dialog-body"></div>
   </dialog>
 
   <div class="place-map-overlay" id="place-map" hidden>
     <section class="place-map-sheet" role="dialog" aria-modal="true" aria-labelledby="place-map-title">
-      <header><h2 id="place-map-title">地点地图</h2><button id="place-map-close" type="button" aria-label="关闭地点地图">关闭</button></header>
-      <iframe id="place-map-frame" title="地点地图" src="about:blank" sandbox="allow-scripts allow-same-origin allow-forms" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
-      <footer><p>地图需要能够访问 Google 的网络。若一直空白，请在系统浏览器中打开。</p><a id="place-map-external" target="_blank" rel="noopener noreferrer">用 Google Maps 打开 ↗</a></footer>
+      <header><h2 id="place-map-title">地點地圖</h2><button id="place-map-close" type="button" aria-label="關閉地點地圖">關閉</button></header>
+      <iframe id="place-map-frame" title="地點地圖" src="about:blank" sandbox="allow-scripts allow-same-origin allow-forms" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+      <footer><p>地圖需要能夠訪問 Google 的網路。若一直空白，請在系統瀏覽器中開啟。</p><a id="place-map-external" target="_blank" rel="noopener noreferrer">用 Google Maps 開啟 ↗</a></footer>
     </section>
   </div>
 
   <div class="loading-error" id="loading-error" hidden>
-    <strong>行程暂时无法载入</strong>
-    <span>请确认 trip-data.json 已通过生成校验，并与网页位于同一目录。</span>
+    <strong>行程暫時無法載入</strong>
+    <span>請確認 trip-data.json 已透過生成校驗，並與網頁位於同一目錄。</span>
   </div>
 </body>
 </html>

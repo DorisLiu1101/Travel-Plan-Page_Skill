@@ -1,18 +1,18 @@
 # Golden Ledger Regression Cases
 
 版本：Phase 0 / Round 2  
-金额单位：除显示值外，所有 Expected均为integer cents。  
-默认Traveler ID顺序：`A < B < C < D < E`；participantIds按题目书写顺序。
+金額單位：除顯示值外，所有 Expected均為integer cents。  
+預設Traveler ID順序：`A < B < C < D < E`；participantIds按題目書寫順序。
 
 ## Test Harness Rules
 
-- 测试必须比较完整 `{paidCents, owedCents, netCents}` 和有序 transfers，而非只比较总额。
-- 不得用浮点金额构造内部expected。
-- 每个case至少执行两层：纯Ledger/fake repository，以及当前D1 adapter integration。Settings case必须明确区分两层。
-- `[CODE-CONFIRMED]` 表示结果可从当前函数精确推出；`[UNVERIFIED-INTEGRATION]` 表示仍需真实浏览器/D1测试。
-- 对相同金额的排序依赖Traveler ID `localeCompare`；测试ID不可随机，否则tie-break不可复现。
+- 測試必須比較完整 `{paidCents, owedCents, netCents}` 和有序 transfers，而非只比較總額。
+- 不得用浮點金額構造內部expected。
+- 每個case至少執行兩層：純Ledger/fake repository，以及當前D1 adapter integration。Settings case必須明確區分兩層。
+- `[CODE-CONFIRMED]` 表示結果可從當前函式精確推出；`[UNVERIFIED-INTEGRATION]` 表示仍需真實瀏覽器/D1測試。
+- 對相同金額的排序依賴Traveler ID `localeCompare`；測試ID不可隨機，否則tie-break不可復現。
 
-## CASE 01 — A支付100.00，ABCD参与
+## CASE 01 — A支付100.00，ABCD參與
 
 **Status:** `[CODE-CONFIRMED]`
 
@@ -21,7 +21,7 @@
 - Travelers：A、B、C、D。
 - Bill：payer A，`baseAmountCents=10000`，participants `[A,B,C,D]`。
 
-**When** 计算split、members和settlement。
+**When** 計算split、members和settlement。
 
 **Expected**
 
@@ -34,7 +34,7 @@
 
 有序 transfers：`B→A 2500`、`C→A 2500`、`D→A 2500`。
 
-## CASE 02 — B支付100.00，BCD参与，验证余数
+## CASE 02 — B支付100.00，BCD參與，驗證餘數
 
 **Status:** `[CODE-CONFIRMED]`
 
@@ -45,7 +45,7 @@
 **Expected**
 
 - `floor(10000/3)=3333`，remainder `1`。
-- participantIds首位B承担 `3334`；C与D各 `3333`。
+- participantIds首位B承擔 `3334`；C與D各 `3333`。
 
 | Member | Paid | Owed | Net |
 |---|---:|---:|---:|
@@ -56,7 +56,7 @@
 
 Transfers：`C→B 3333`、`D→B 3333`。
 
-## CASE 03 — 100.01，ABC参与，验证cents remainder
+## CASE 03 — 100.01，ABC參與，驗證cents remainder
 
 **Status:** `[CODE-CONFIRMED]`
 
@@ -71,7 +71,7 @@ Transfers：`C→B 3333`、`D→B 3333`。
 - Net：A `+6667`，B `-3334`，C `-3333`。
 - Transfers：`B→A 3334`、`C→A 3333`。
 
-## CASE 04 — A/B多笔付款
+## CASE 04 — A/B多筆付款
 
 **Status:** `[CODE-CONFIRMED]`
 
@@ -80,7 +80,7 @@ Transfers：`C→B 3333`、`D→B 3333`。
 - Bill 1：A支付 `12000`，participants `[A,B,C,D]`。
 - Bill 2：B支付 `9000`，participants `[B,C,D]`。
 
-**When** 计算累计balance。
+**When** 計算累計balance。
 
 **Expected**
 
@@ -93,7 +93,7 @@ Transfers：`C→B 3333`、`D→B 3333`。
 
 有序 transfers：`C→A 6000`、`D→A 3000`、`D→B 3000`。
 
-## CASE 05 — 复杂debt，验证minimum transfer而非greedy
+## CASE 05 — 複雜debt，驗證minimum transfer而非greedy
 
 **Status:** `[CODE-CONFIRMED]`
 
@@ -105,96 +105,96 @@ Transfers：`C→B 3333`、`D→B 3333`。
 
 形成：A `+6000`、B `+4000`、C `-4000`、D `-3000`、E `-3000`。
 
-**When** settlement递归搜索。
+**When** settlement遞迴搜尋。
 
 **Expected**
 
-- 初始最大额配对 `C→A` 会需要4笔，因此算法必须继续搜索。
-- 最少结果为3笔，且按当前tie-break输出：
+- 初始最大額配對 `C→A` 會需要4筆，因此演算法必須繼續搜尋。
+- 最少結果為3筆，且按當前tie-break輸出：
   1. `C→B 4000`
   2. `D→A 3000`
   3. `E→A 3000`
 
-## CASE 06 — 单人账单
+## CASE 06 — 單人賬單
 
 **Status:** `[CODE-CONFIRMED]`
 
 **Given** A支付 `10000`，participants `[A]`。
 
-**When** 计算。
+**When** 計算。
 
-**Expected** A paid=`10000`、owed=`10000`、net=`0`；total=`10000`；transfers为空。
+**Expected** A paid=`10000`、owed=`10000`、net=`0`；total=`10000`；transfers為空。
 
-## CASE 07 — 编辑bill amount
+## CASE 07 — 編輯bill amount
 
 **Status:** `[CODE-CONFIRMED]`
 
 **Given** 原bill：A支付 `9000`，participants `[A,B,C]`；ID=`bill-1`。
 
-**When** amount编辑为 `12000` 并保存。
+**When** amount編輯為 `12000` 並儲存。
 
 **Expected**
 
-- bill ID与createdAt不变；updatedAt改变。
-- original/base amount均为 `12000`（base currency bill）。
+- bill ID與createdAt不變；updatedAt改變。
+- original/base amount均為 `12000`（base currency bill）。
 - A paid=`12000`、owed=`4000`、net=`+8000`；B/C各owed=`4000`、net=`-4000`。
 - Transfers：`B→A 4000`、`C→A 4000`。
 
-## CASE 08 — 编辑payer
+## CASE 08 — 編輯payer
 
 **Status:** `[CODE-CONFIRMED]`
 
 **Given** `10000` cents，participants `[A,B]`，原payer A。
 
-**When** payer改为B。
+**When** payer改為B。
 
 **Expected**
 
 - 修改前：A `+5000`、B `-5000`。
-- 修改后：A `-5000`、B `+5000`。
-- 修改后transfer：`A→B 5000`。
+- 修改後：A `-5000`、B `+5000`。
+- 修改後transfer：`A→B 5000`。
 
-## CASE 09 — 编辑participants
+## CASE 09 — 編輯participants
 
 **Status:** `[CODE-CONFIRMED]`
 
 **Given** A支付 `10000`；原participants `[A,B]`。
 
-**When** participants改为 `[A,B,C]`。
+**When** participants改為 `[A,B,C]`。
 
 **Expected**
 
 - 修改前shares A/B=`5000/5000`。
-- 修改后shares A/B/C=`3334/3333/3333`。
-- 修改后net：A `+6666`、B `-3333`、C `-3333`。
+- 修改後shares A/B/C=`3334/3333/3333`。
+- 修改後net：A `+6666`、B `-3333`、C `-3333`。
 - Transfers：`B→A 3333`、`C→A 3333`。
 
-## CASE 10 — 删除bill
+## CASE 10 — 刪除bill
 
 **Status:** `[CODE-CONFIRMED]`
 
-**Given** 只有CASE 01的一笔bill。
+**Given** 只有CASE 01的一筆bill。
 
-**When** 用户确认删除且save成功。
+**When** 使用者確認刪除且save成功。
 
-**Expected** bills为空；total=`0`；A/B/C/D paid/owed/net均为0；transfers为空；travelers保留。
+**Expected** bills為空；total=`0`；A/B/C/D paid/owed/net均為0；transfers為空；travelers保留。
 
-**And** 用户取消confirm时任何state、updatedAt、API均不变。
+**And** 使用者取消confirm時任何state、updatedAt、API均不變。
 
-## CASE 11 — 删除被引用traveler
+## CASE 11 — 刪除被引用traveler
 
 **Status:** `[CODE-CONFIRMED]`
 
-**Given** A是payer或participant，且至少一笔bill引用A。
+**Given** A是payer或participant，且至少一筆bill引用A。
 
-**When** 点击删除A。
+**When** 點選刪除A。
 
 **Expected**
 
-- 不出现删除confirm。
-- 不调用adapter.save。
-- A与bill保持不变。
-- Live notice提示需先处理相关账单。
+- 不出現刪除confirm。
+- 不呼叫adapter.save。
+- A與bill保持不變。
+- Live notice提示需先處理相關賬單。
 
 ## CASE 12 — Duplicate traveler name
 
@@ -202,57 +202,57 @@ Transfers：`C→B 3333`、`D→B 3333`。
 
 **Given** 已有 traveler name=`Alice`。
 
-**When** 新增 ` alice ` 或把另一成员改名为 `ALICE`。
+**When** 新增 ` alice ` 或把另一成員改名為 `ALICE`。
 
-**Expected** trim + locale lowercase后相等，操作被拒绝、focus姓名、显示duplicate notice、不调用save。
+**Expected** trim + locale lowercase後相等，操作被拒絕、focus姓名、顯示duplicate notice、不呼叫save。
 
-**And** `A lice`不因内部空格而判重；Unicode normalization不属于当前duplicate算法。
+**And** `A lice`不因內部空格而判重；Unicode normalization不屬於當前duplicate演算法。
 
 ## CASE 13 — Foreign currency
 
 **Status:** `[CODE-CONFIRMED]`
 
-**Given** baseCurrency=`CNY`；创建EUR bill：original=`100.00`，手动converted base=`780.50`，payer A，participants `[A,B]`。
+**Given** baseCurrency=`CNY`；建立EUR bill：original=`100.00`，手動converted base=`780.50`，payer A，participants `[A,B]`。
 
-**When** 保存和计算。
+**When** 儲存和計算。
 
 **Expected**
 
 - `currency="EUR"`
 - `originalAmountCents=10000`
 - `baseAmountCents=78050`
-- split基于base：A=`39025`、B=`39025`
+- split基於base：A=`39025`、B=`39025`
 - A paid=`78050`、owed=`39025`、net=`+39025`；B net=`-39025`
-- 列表显示原币金额，并额外显示折合CNY；settlement使用CNY `39025`。
-- 不进行自动汇率计算。
+- 列表顯示原幣金額，並額外顯示摺合CNY；settlement使用CNY `39025`。
+- 不進行自動匯率計算。
 
-## CASE 14 — 修改baseCurrency：无bill / 已有bill
+## CASE 14 — 修改baseCurrency：無bill / 已有bill
 
 **Status:** `[CODE-CONFIRMED]`，含已知integration issue。
 
-### 14A 无bill，settings-capable fake repository
+### 14A 無bill，settings-capable fake repository
 
-**Given** defaults且bills为空。
+**Given** defaults且bills為空。
 
-**When** base选择EUR。
+**When** base選擇EUR。
 
-**Expected** base=`EUR`；EUR从common移除；last=`EUR`；显示成功notice。
+**Expected** base=`EUR`；EUR從common移除；last=`EUR`；顯示成功notice。
 
 ### 14B 已有bill
 
-**Given** 至少一笔bill。
+**Given** 至少一筆bill。
 
-**When** 尝试修改base。
+**When** 嘗試修改base。
 
-**Expected** settings button disabled；即使直接触发action也拒绝、提示已有账单，settings不变、无save。
+**Expected** settings button disabled；即使直接觸發action也拒絕、提示已有賬單，settings不變、無save。
 
-### 14C 当前D1 adapter
+### 14C 當前D1 adapter
 
-**Given** 无bill且使用Golden D1 adapter。
+**Given** 無bill且使用Golden D1 adapter。
 
-**When** base选择EUR。
+**When** base選擇EUR。
 
-**Expected current issue** POST不含settings change；server返回`settings:null`；normalize后回到defaults。此结果用于记录当前bug，不得作为未来正确产品预期。
+**Expected current issue** POST不含settings change；server返回`settings:null`；normalize後回到defaults。此結果用於記錄當前bug，不得作為未來正確產品預期。
 
 ## CASE 15 — commonCurrencies / lastCurrency
 
@@ -262,76 +262,76 @@ Transfers：`C→B 3333`、`D→B 3333`。
 
 **When / Expected**
 
-- 添加USD → common append USD，顺序 `[EUR,CHF,HKD,USD]`。
-- 再选USD → remove USD。
-- 创建EUR bill → last=`EUR`。
-- 移除当前last EUR → common不含EUR、last回退CNY。
-- Edit一个CHF bill → last不改变。
+- 新增USD → common append USD，順序 `[EUR,CHF,HKD,USD]`。
+- 再選USD → remove USD。
+- 建立EUR bill → last=`EUR`。
+- 移除當前last EUR → common不含EUR、last回退CNY。
+- Edit一個CHF bill → last不改變。
 - Base currency不能加入common。
 
-**Current D1 integration Expected issue** 每次settings-only mutation响应`settings:null`并归一化defaults；new bill虽设置last，server响应后last也回退default。
+**Current D1 integration Expected issue** 每次settings-only mutation響應`settings:null`並歸一化defaults；new bill雖設定last，server響應後last也回退default。
 
-## CASE 16 — 刷新页面与持久化
+## CASE 16 — 重新整理頁面與持久化
 
-**Status:** `[CODE-CONFIRMED]` for code path；真实部署仍需integration run。
+**Status:** `[CODE-CONFIRMED]` for code path；真實部署仍需integration run。
 
-**Given** 成功保存travelers、bills，并尝试修改base/common/last。
+**Given** 成功儲存travelers、bills，並嘗試修改base/common/last。
 
-**When** reload并从当前D1 adapter加载。
+**When** reload並從當前D1 adapter載入。
 
 **Expected**
 
-| Field | 当前Golden持久化 |
+| Field | 當前Golden持久化 |
 |---|---|
 | travelers | 是，逐record D1 |
 | bills | 是，逐record D1 |
-| baseCurrency | 否，回到default/normalization结果 |
+| baseCurrency | 否，回到default/normalization結果 |
 | commonCurrencies | 否，回到defaults |
 | lastCurrency | 否，回到base/default |
 
-Todo/Ticket由同一API的其他collection持久，但不属于Ledger snapshot normalization。
+Todo/Ticket由同一API的其他collection持久，但不屬於Ledger snapshot normalization。
 
-## CASE 17 — 同一浏览器快速连续mutation
+## CASE 17 — 同一瀏覽器快速連續mutation
 
 **Status:** `[CODE-CONFIRMED]`
 
-**Given** 连续触发M1、M2、M3，adapter使用可控deferred promises。
+**Given** 連續觸發M1、M2、M3，adapter使用可控deferred promises。
 
-**When** 三个mutation快速入队。
+**When** 三個mutation快速入隊。
 
 **Expected**
 
-- save调用严格按M1→M2→M3，不并行。
-- M2在M1成功后clone包含M1的最新ledgerData。
-- 若M1失败，M2仍会执行，基于M1之前最后成功state。
-- 每次成功各发一次changed event；失败不发且显示notice。
+- save呼叫嚴格按M1→M2→M3，不併行。
+- M2在M1成功後clone包含M1的最新ledgerData。
+- 若M1失敗，M2仍會執行，基於M1之前最後成功state。
+- 每次成功各發一次changed event；失敗不發且顯示notice。
 
-## CASE 18 — 两设备修改不同bill
-
-**Status:** `[UNVERIFIED-INTEGRATION]`
-
-**Given** Device 1与Device 2加载同一snapshot；D1新增/修改不同bill ID。
-
-**When** 两端先后POST。
-
-**Expected from current code** 每个client diff只包含自己变更的record；server record-level upsert合并不同ID，后响应snapshot应包含两端records。
-
-**Verify** 网络顺序、D1 batch结果、两端本地snapshot是否只有发起mutation的一端立即看到合并结果；另一端需下一次save/reload才更新。
-
-## CASE 19 — 两设备修改同一bill
+## CASE 18 — 兩裝置修改不同bill
 
 **Status:** `[UNVERIFIED-INTEGRATION]`
 
-**Given** 两设备加载同一 `bill-1`，分别改不同字段或金额。
+**Given** Device 1與Device 2載入同一snapshot；D1新增/修改不同bill ID。
 
-**When** 两个完整payload先后upsert同一 `(trip_id,id)`。
+**When** 兩端先後POST。
 
-**Expected from current code** 后到达写入覆盖先到达payload；无revision、ETag、field merge、冲突提示或自动重试。旧设备之后再次保存同record可再次覆盖新值。
+**Expected from current code** 每個client diff只包含自己變更的record；server record-level upsert合併不同ID，後響應snapshot應包含兩端records。
 
-此“last write wins”是当前实现记录，不是Frozen正确行为。
+**Verify** 網路順序、D1 batch結果、兩端本地snapshot是否只有發起mutation的一端立即看到合併結果；另一端需下一次save/reload才更新。
+
+## CASE 19 — 兩裝置修改同一bill
+
+**Status:** `[UNVERIFIED-INTEGRATION]`
+
+**Given** 兩裝置載入同一 `bill-1`，分別改不同欄位或金額。
+
+**When** 兩個完整payload先後upsert同一 `(trip_id,id)`。
+
+**Expected from current code** 後到達寫入覆蓋先到達payload；無revision、ETag、field merge、衝突提示或自動重試。舊裝置之後再次儲存同record可再次覆蓋新值。
+
+此“last write wins”是當前實現記錄，不是Frozen正確行為。
 
 ## Acceptance Summary
 
-- Cases 01–13、17的算法/交互结果必须在重构前后完全一致。
-- Cases 14–16需同时保留“产品逻辑合同”和“当前D1 settings bug”两层expected；修复bug前Golden integration应匹配当前记录，修复必须另获批准并更新baseline。
-- Cases 18–19在真实D1验证前保持 `[UNVERIFIED-INTEGRATION]`，不得宣称已通过。
+- Cases 01–13、17的演算法/互動結果必須在重構前後完全一致。
+- Cases 14–16需同時保留“產品邏輯合同”和“當前D1 settings bug”兩層expected；修復bug前Golden integration應匹配當前記錄，修復必須另獲批准並更新baseline。
+- Cases 18–19在真實D1驗證前保持 `[UNVERIFIED-INTEGRATION]`，不得宣稱已透過。

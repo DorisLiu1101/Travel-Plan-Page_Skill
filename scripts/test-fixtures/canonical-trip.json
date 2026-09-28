@@ -6,7 +6,7 @@
     "title": "Synthetic map fixture",
     "language": "en",
     "countryNames": {
-      "ZZ": { "nameZh": "虚构之国" }
+      "ZZ": { "nameZh": "虛構之國" }
     },
     "primaryDestinationCountries": ["ZZ"]
   },

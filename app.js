@@ -92,15 +92,15 @@ function countdownParts(target, now = new Date()) {
   };
 }
 
-function countdownText(target, completionText = "已出发") {
+function countdownText(target, completionText = "已出發") {
   const value = countdownParts(target);
   if (value.difference <= 0) return completionText;
-  if (value.days > 0) return `${value.days}天 ${String(value.hours).padStart(2, "0")}小时`;
-  if (value.hours > 0) return `${value.hours}小时 ${String(value.minutes).padStart(2, "0")}分`;
-  return `${Math.max(1, value.minutes)}分钟`;
+  if (value.days > 0) return `${value.days}天 ${String(value.hours).padStart(2, "0")}小時`;
+  if (value.hours > 0) return `${value.hours}小時 ${String(value.minutes).padStart(2, "0")}分`;
+  return `${Math.max(1, value.minutes)}分鐘`;
 }
 
-function preciseCountdownText(target, completionText = "已出发") {
+function preciseCountdownText(target, completionText = "已出發") {
   const difference = target.getTime() - Date.now();
   if (difference <= 0) return completionText;
   const totalSeconds = Math.floor(difference / 1000);
@@ -151,7 +151,7 @@ function heroDestinationFor(trip) {
     return { title: customTitle, eyebrow: String(trip.heroEyebrow || "").trim(), destinations, isDomestic };
   }
   if (isDomestic) {
-    const destination = String(trip.primaryDestinationName || trip.primaryDestinationCity || trip.citiesAndAreas?.[0] || "目的地待补充").trim();
+    const destination = String(trip.primaryDestinationName || trip.primaryDestinationCity || trip.citiesAndAreas?.[0] || "目的地待補充").trim();
     return {
       title: destination,
       eyebrow: String(trip.primaryDestinationNameEn || trip.primaryDestinationCityEn || "DOMESTIC JOURNEY").trim(),
@@ -160,7 +160,7 @@ function heroDestinationFor(trip) {
     };
   }
   return {
-    title: destinations.map((country) => country.nameZh || country.name).join(" × ") || "目的地待补充",
+    title: destinations.map((country) => country.nameZh || country.name).join(" × ") || "目的地待補充",
     eyebrow: destinations.map((country) => country.nameEn || country.name).filter(Boolean).join(" × "),
     destinations,
     isDomestic
@@ -171,12 +171,12 @@ function renderHero() {
   const { trip } = state.data;
   if (trip.status === "uninitialized") {
     document.title = state.data.metadata.title;
-    $("#trip-title").textContent = "旅行计划待生成";
+    $("#trip-title").textContent = "旅行計劃待生成";
     $("#trip-eyebrow").textContent = "READY FOR YOUR JOURNEY";
     $("#wordmark").innerHTML = "TRIP <span>· READY</span>";
     $("#footer-mark").textContent = "TRIP · READY";
     $("#route-day-count").textContent = "0 DAYS";
-    $("#trip-date").textContent = "等待旅行资料";
+    $("#trip-date").textContent = "等待旅行資料";
     return;
   }
   const hero = heroDestinationFor(trip);
@@ -203,10 +203,10 @@ function journeyStatusAndTarget(flights) {
   for (const flight of flights) {
     const departure = localDateTime(flight.departure.date, flight.departure.time, flight.departure.airportCode, flight.departure.utcOffset);
     const arrival = localDateTime(flight.arrival.date, flight.arrival.time, flight.arrival.airportCode, flight.arrival.utcOffset);
-    if (now < departure) return { target: departure, label: flight === flights[0] ? "距离起飞还剩" : "距离下一程起飞还剩", complete: false };
-    if (now < arrival) return { target: arrival, label: "飞行中 · 距抵达", complete: false };
+    if (now < departure) return { target: departure, label: flight === flights[0] ? "距離起飛還剩" : "距離下一程起飛還剩", complete: false };
+    if (now < arrival) return { target: arrival, label: "飛行中 · 距抵達", complete: false };
   }
-  return { target: null, label: "已抵达", complete: true };
+  return { target: null, label: "已抵達", complete: true };
 }
 
 function relativeFlightDate(date, journeyStartDate) {
@@ -218,18 +218,18 @@ function relativeFlightDate(date, journeyStartDate) {
 function flightStopMarkup(stop, position, journeyStartDate) {
   let timing;
   if (position === 0) {
-    timing = `<span>${escapeHtml(relativeFlightDate(stop.departure.date, journeyStartDate))}</span><b>${escapeHtml(stop.departure.time)} 出发</b>`;
+    timing = `<span>${escapeHtml(relativeFlightDate(stop.departure.date, journeyStartDate))}</span><b>${escapeHtml(stop.departure.time)} 出發</b>`;
   } else if (position === stop.totalStops - 1) {
-    timing = `<span>${escapeHtml(relativeFlightDate(stop.arrival.date, journeyStartDate))}</span><b>${escapeHtml(stop.arrival.time)} 抵达</b>`;
+    timing = `<span>${escapeHtml(relativeFlightDate(stop.arrival.date, journeyStartDate))}</span><b>${escapeHtml(stop.arrival.time)} 抵達</b>`;
   } else {
     const nextFlight = stop.nextFlight;
     const connection = nextFlight.connectionFromPrevious || {};
-    const duration = connection.calculatedFromSchedule || connection.durationUsingTicketTimes || connection.plannedDurationText || "中转";
+    const duration = connection.calculatedFromSchedule || connection.durationUsingTicketTimes || connection.plannedDurationText || "中轉";
     timing = `
-      <span>${escapeHtml(stop.arrival.time)} 抵达</span>
+      <span>${escapeHtml(stop.arrival.time)} 抵達</span>
       <em>${escapeHtml(duration)}</em>
       <b>${escapeHtml(relativeFlightDate(nextFlight.departure.date, journeyStartDate))} ${escapeHtml(nextFlight.departure.time)}</b>
-      <span>起飞</span>
+      <span>起飛</span>
     `;
   }
   return `
@@ -245,15 +245,15 @@ function flightStopMarkup(stop, position, journeyStartDate) {
 function flightMissingFieldLabel(field) {
   return ({
     carrierId: "航空公司",
-    flightNumber: "航班号",
-    departure: "起飞信息",
-    arrival: "抵达信息",
-    departurePlace: "出发机场",
-    arrivalPlace: "抵达机场",
-    departureTime: "起飞时间",
-    arrivalTime: "抵达时间",
-    timeZone: "当地时区"
-  })[field] || String(field || "待补充信息");
+    flightNumber: "航班號",
+    departure: "起飛資訊",
+    arrival: "抵達資訊",
+    departurePlace: "出發機場",
+    arrivalPlace: "抵達機場",
+    departureTime: "起飛時間",
+    arrivalTime: "抵達時間",
+    timeZone: "當地時區"
+  })[field] || String(field || "待補充資訊");
 }
 
 function flightPlaceholderCard(journey, index) {
@@ -264,15 +264,15 @@ function flightPlaceholderCard(journey, index) {
         <span>FLIGHT ${String(index + 1).padStart(2, "0")} / ${String(state.data.flightJourneys.length).padStart(2, "0")}</span>
       </div>
       <div class="flight-placeholder">
-        <span class="flight-placeholder__eyebrow">资料待补充</span>
-        <h3>${escapeHtml(journey.title || "航班信息待补充")}</h3>
-        <p>已按第二轮确认继续生成标准预览；系统没有猜测或伪造缺失的航班事实。</p>
+        <span class="flight-placeholder__eyebrow">資料待補充</span>
+        <h3>${escapeHtml(journey.title || "航班資訊待補充")}</h3>
+        <p>已按第二輪確認繼續生成標準預覽；系統沒有猜測或偽造缺失的航班事實。</p>
         ${missingFields.length ? `<ul>${missingFields.map((field) => `<li>${escapeHtml(field)}</li>`).join("")}</ul>` : ""}
       </div>
       <div class="flight-card__countdown-row">
         <div class="flight-countdown" data-countdown-journey="${escapeHtml(journey.id)}" data-placeholder="true">
-          <span>当前状态</span>
-          <strong>待补充</strong>
+          <span>當前狀態</span>
+          <strong>待補充</strong>
         </div>
       </div>
     </article>
@@ -287,7 +287,7 @@ function flightCard(journey, index) {
   const first = flights[0];
   const last = flights[flights.length - 1];
   const status = journeyStatusAndTarget(flights);
-  const countdown = status.complete ? "已完成" : preciseCountdownText(status.target, "即将出发");
+  const countdown = status.complete ? "已完成" : preciseCountdownText(status.target, "即將出發");
   const stops = [
     { airport: first.departure, departure: first.departure },
     ...flights.map((flight, flightIndex) => ({
@@ -363,7 +363,7 @@ function updateFlightCountdowns() {
     const target = $(`[data-countdown-journey="${journey.id}"]`);
     if (!target || target.dataset.placeholder === "true" || journey.placeholder) return;
     const status = journeyStatusAndTarget(journeyFlights(journey.id));
-    $("strong", target).textContent = status.complete ? "已完成" : preciseCountdownText(status.target, "即将出发");
+    $("strong", target).textContent = status.complete ? "已完成" : preciseCountdownText(status.target, "即將出發");
     $("span", target).textContent = status.label;
   });
 }
@@ -401,14 +401,14 @@ function isTicketPurchased(ticket) {
 
 function ticketRequirement(ticket) {
   return ({
-    "advance-required": "需提前购票",
-    "advance-recommended": "建议预约",
-    "needs-confirmation": "购票方式待确认"
-  })[ticket.requirement] || "门票信息";
+    "advance-required": "需提前購票",
+    "advance-recommended": "建議預約",
+    "needs-confirmation": "購票方式待確認"
+  })[ticket.requirement] || "門票資訊";
 }
 
 function ticketTitle(ticket) {
-  return ticket.name || ticket.attraction?.nameZh || ticket.attraction?.name || "门票详情";
+  return ticket.name || ticket.attraction?.nameZh || ticket.attraction?.name || "門票詳情";
 }
 
 function ticketGuidance(ticket) {
@@ -419,10 +419,10 @@ function ticketGuidance(ticket) {
 function ticketDocument(ticket) {
   const document = ticket.document || ticket.booking?.document;
   if (document && typeof document === "object") {
-    return { url: document.url || document.path || "", type: document.type || "", label: document.label || "查看票据" };
+    return { url: document.url || document.path || "", type: document.type || "", label: document.label || "檢視票據" };
   }
   const url = ticket.documentUrl || ticket.booking?.documentUrl || "";
-  return url ? { url, type: "", label: ticket.documentLabel || "查看票据" } : null;
+  return url ? { url, type: "", label: ticket.documentLabel || "檢視票據" } : null;
 }
 
 function inlineTicketMarkup(ticket) {
@@ -431,15 +431,15 @@ function inlineTicketMarkup(ticket) {
   return `
     <div class="schedule-ticket ${purchased ? "is-purchased" : `is-${escapeHtml(ticket.requirement)}`}" data-inline-ticket="${escapeHtml(ticket.id)}">
       <label class="schedule-ticket__toggle">
-        <input type="checkbox" value="${escapeHtml(ticket.id)}" ${purchased ? "checked" : ""} aria-label="${purchased ? "取消已购票" : "标记为已购票"}：${escapeHtml(title)}">
+        <input type="checkbox" value="${escapeHtml(ticket.id)}" ${purchased ? "checked" : ""} aria-label="${purchased ? "取消已購票" : "標記為已購票"}：${escapeHtml(title)}">
         <span class="schedule-ticket__check" aria-hidden="true">✓</span>
         <span class="schedule-ticket__content">
-          <span class="schedule-ticket__status">${purchased ? "已购票" : escapeHtml(ticketRequirement(ticket))}</span>
+          <span class="schedule-ticket__status">${purchased ? "已購票" : escapeHtml(ticketRequirement(ticket))}</span>
           <strong>${escapeHtml(title)}</strong>
           <small>${escapeHtml(ticketGuidance(ticket))}</small>
         </span>
       </label>
-      <button type="button" class="schedule-ticket__open" data-ticket-open="${escapeHtml(ticket.id)}" aria-haspopup="dialog" aria-controls="ticket-dialog">查看</button>
+      <button type="button" class="schedule-ticket__open" data-ticket-open="${escapeHtml(ticket.id)}" aria-haspopup="dialog" aria-controls="ticket-dialog">檢視</button>
     </div>`;
 }
 
@@ -450,7 +450,7 @@ function dayCard(day) {
   const schedule = day.schedule.map((item) => {
     const destinations = navigationDestinations(item);
     const mapLinks = destinations.map((destination) => `
-      <button type="button" class="schedule-map-link" data-map-query="${escapeHtml(destination.query)}" data-map-url="${escapeHtml(destination.url || "")}" data-map-label="${escapeHtml(destination.label)}" aria-haspopup="dialog" aria-controls="place-map" aria-label="查看 ${escapeHtml(destination.label)} 的地图">📍 ${escapeHtml(destination.label)}</button>
+      <button type="button" class="schedule-map-link" data-map-query="${escapeHtml(destination.query)}" data-map-url="${escapeHtml(destination.url || "")}" data-map-label="${escapeHtml(destination.label)}" aria-haspopup="dialog" aria-controls="place-map" aria-label="檢視 ${escapeHtml(destination.label)} 的地圖">📍 ${escapeHtml(destination.label)}</button>
     `).join("");
     const scheduleTickets = ticketsForSchedule(day, item).map(inlineTicketMarkup).join("");
     return `
@@ -469,7 +469,7 @@ function dayCard(day) {
   const dayTickets = ticketsForDay(day);
   const pendingTicketCount = dayTickets.filter((ticket) => !isTicketPurchased(ticket)).length;
   const ticketSummary = dayTickets.length
-    ? `<span class="day-ticket-summary ${pendingTicketCount ? "has-pending" : "is-complete"}">${pendingTicketCount ? `${pendingTicketCount} 项待购票` : "门票已准备"}</span>`
+    ? `<span class="day-ticket-summary ${pendingTicketCount ? "has-pending" : "is-complete"}">${pendingTicketCount ? `${pendingTicketCount} 項待購票` : "門票已準備"}</span>`
     : "";
   return `
     <article class="day-card${isToday ? " is-today" : ""}" data-day="${day.day}">
@@ -606,8 +606,8 @@ function updateInlineTicketState(ticketId, purchased) {
   $$(`[data-inline-ticket="${ticketId}"]`).forEach((ticket) => {
     ticket.classList.toggle("is-purchased", purchased);
     ticket.querySelector("input").checked = purchased;
-    ticket.querySelector("input").setAttribute("aria-label", `${purchased ? "取消已购票" : "标记为已购票"}：${ticketTitle(ticketData)}`);
-    ticket.querySelector(".schedule-ticket__status").textContent = purchased ? "已购票" : ticketRequirement(ticketData);
+    ticket.querySelector("input").setAttribute("aria-label", `${purchased ? "取消已購票" : "標記為已購票"}：${ticketTitle(ticketData)}`);
+    ticket.querySelector(".schedule-ticket__status").textContent = purchased ? "已購票" : ticketRequirement(ticketData);
   });
   const day = state.data.days.find((item) => ticketData.dayId ? item.id === ticketData.dayId : item.day === ticketData.day);
   const dayCardElement = day ? $(`[data-day="${day.day}"]`) : null;
@@ -615,7 +615,7 @@ function updateInlineTicketState(ticketId, purchased) {
   const dayTickets = day ? ticketsForDay(day) : [];
   const pending = dayTickets.filter((ticket) => !isTicketPurchased(ticket)).length;
   if (!badge) return;
-  badge.textContent = pending ? `${pending} 项待购票` : "门票已准备";
+  badge.textContent = pending ? `${pending} 項待購票` : "門票已準備";
   badge.classList.toggle("has-pending", pending > 0);
   badge.classList.toggle("is-complete", pending === 0);
 }
@@ -632,9 +632,9 @@ function rentalStatus(rental) {
   const pickup = new Date(`${rental.pickup.date}T${rental.pickup.time}:00${rental.pickup.utcOffset || "+00:00"}`);
   const dropoff = new Date(`${rental.dropoff.date}T${rental.dropoff.time}:00${rental.dropoff.utcOffset || "+00:00"}`);
   const now = new Date();
-  if (now < pickup) return { label: "距取车", target: pickup, complete: false };
-  if (now < dropoff) return { label: "距还车", target: dropoff, complete: false };
-  return { label: "已超过预约还车时间", target: dropoff, complete: true };
+  if (now < pickup) return { label: "距取車", target: pickup, complete: false };
+  if (now < dropoff) return { label: "距還車", target: dropoff, complete: false };
+  return { label: "已超過預約還車時間", target: dropoff, complete: true };
 }
 
 function renderRental() {
@@ -647,22 +647,22 @@ function renderRental() {
   $("#rental-card").innerHTML = `
     <article class="rental-panel">
       <div class="return-deadline">
-        <span class="return-deadline__label">重要 · 还车截止时间</span>
+        <span class="return-deadline__label">重要 · 還車截止時間</span>
         <strong>${escapeHtml(formatCompactDate(rental.dropoff.date))} <time>${escapeHtml(rental.dropoff.time)}</time> 前</strong>
         <span>${escapeHtml(rental.dropoff.timeZoneLabel)}</span>
         <p>${escapeHtml(rental.dropoff.vehicleReturnPoint)}</p>
         <div class="return-deadline__timer" id="return-deadline-timer"></div>
         <p class="return-deadline__warning">${escapeHtml(rental.dropoff.deadlineWarning)}</p>
-        <small>建议 ${escapeHtml(rental.dropoff.recommendedArrivalTime)} 抵达机场区域，预留还车及值机时间。</small>
+        <small>建議 ${escapeHtml(rental.dropoff.recommendedArrivalTime)} 抵達機場區域，預留還車及值機時間。</small>
       </div>
       <div class="rental-countdown" id="rental-countdown">
         <span>${escapeHtml(status.label)}</span>
-        <strong>${status.complete ? `请立即联系 ${escapeHtml(rental.company)}` : escapeHtml(countdownText(status.target))}</strong>
+        <strong>${status.complete ? `請立即聯絡 ${escapeHtml(rental.company)}` : escapeHtml(countdownText(status.target))}</strong>
         <small>${formatCompactDate(rental.dropoff.date)} ${escapeHtml(rental.dropoff.time)} 前 · ${escapeHtml(rental.dropoff.vehicleReturnPoint)}</small>
       </div>
       <div class="rental-details">
         <div class="rental-car">${escapeHtml(rental.company)} · ${escapeHtml(vehicle.example)}</div>
-        <div class="rental-sub">${escapeHtml(vehicle.class)} · ${rental.unlimitedKilometers ? "无限里程" : "里程条款见订单"}</div>
+        <div class="rental-sub">${escapeHtml(vehicle.class)} · ${rental.unlimitedKilometers ? "無限里程" : "里程條款見訂單"}</div>
         <div class="rental-stops">
           <div class="rental-stop">
             <span class="rental-stop__label">PICK UP</span>
@@ -670,10 +670,10 @@ function renderRental() {
           </div>
           <div class="rental-stop">
             <span class="rental-stop__label">RETURN</span>
-            <div><b>${formatCompactDate(rental.dropoff.date)} ${escapeHtml(rental.dropoff.time)}</b><span>${escapeHtml(rental.dropoff.vehicleReturnPoint)}<br>建议 ${escapeHtml(rental.dropoff.recommendedArrivalTime)} 抵达机场区域</span></div>
+            <div><b>${formatCompactDate(rental.dropoff.date)} ${escapeHtml(rental.dropoff.time)}</b><span>${escapeHtml(rental.dropoff.vehicleReturnPoint)}<br>建議 ${escapeHtml(rental.dropoff.recommendedArrivalTime)} 抵達機場區域</span></div>
           </div>
         </div>
-        <div class="rental-price"><span>柜台支付 · ${rental.rentalPeriodDays} 天</span><strong>${escapeHtml(price.currency)} ${Number(price.payAtCounter).toFixed(2)}</strong></div>
+        <div class="rental-price"><span>櫃檯支付 · ${rental.rentalPeriodDays} 天</span><strong>${escapeHtml(price.currency)} ${Number(price.payAtCounter).toFixed(2)}</strong></div>
       </div>
     </article>
   `;
@@ -685,10 +685,10 @@ function renderRental() {
   };
   const notes = $("#drive-notes");
   notes.innerHTML = `
-    <div class="drive-note-tabs" role="group" aria-label="自驾注意事项">
-      <button type="button" aria-expanded="true" aria-controls="drive-note-content" data-drive-note="checklist">取还车检查</button>
-      <button type="button" aria-expanded="false" aria-controls="drive-note-content" data-drive-note="insurance">订单保障</button>
-      <button type="button" aria-expanded="false" aria-controls="drive-note-content" data-drive-note="driving">驾驶提醒</button>
+    <div class="drive-note-tabs" role="group" aria-label="自駕注意事項">
+      <button type="button" aria-expanded="true" aria-controls="drive-note-content" data-drive-note="checklist">取還車檢查</button>
+      <button type="button" aria-expanded="false" aria-controls="drive-note-content" data-drive-note="insurance">訂單保障</button>
+      <button type="button" aria-expanded="false" aria-controls="drive-note-content" data-drive-note="driving">駕駛提醒</button>
     </div>
     <div class="drive-note-panel" id="drive-note-content"><ul>${panels.checklist}</ul></div>`;
   notes.onclick = (event) => {
@@ -707,14 +707,14 @@ function updateRentalCountdown() {
   const deadline = new Date(`${dropoff.date}T${dropoff.time}:00${dropoff.utcOffset}`);
   const remaining = deadline.getTime() - Date.now();
   $("#return-deadline-timer").textContent = remaining > 0
-    ? `距还车截止 ${preciseCountdownText(deadline)}`
-    : "预约还车时间已过 · 如尚未还车，请立即联系租车公司";
+    ? `距還車截止 ${preciseCountdownText(deadline)}`
+    : "預約還車時間已過 · 如尚未還車，請立即聯絡租車公司";
   $(".return-deadline").classList.toggle("is-urgent", remaining <= 86400000);
   const panel = $("#rental-countdown");
   if (!panel) return;
   const status = rentalStatus(state.data.groundTransport.rentalCar);
   $("span", panel).textContent = status.label;
-  $("strong", panel).textContent = status.complete ? `请立即联系 ${state.data.groundTransport.rentalCar.company}` : countdownText(status.target);
+  $("strong", panel).textContent = status.complete ? `請立即聯絡 ${state.data.groundTransport.rentalCar.company}` : countdownText(status.target);
 }
 
 function loadTodoState() { state.todos = []; }
@@ -788,8 +788,8 @@ function renderTodoList() {
         <span class="todo-check" aria-hidden="true">✓</span>
         <span class="todo-text">${escapeHtml(todo.text)}</span>
       </label>
-      <button type="button" class="todo-delete" aria-label="删除：${escapeHtml(todo.text)}">删除</button>
-    </div>`).join("") : `<p class="todo-empty">还没有准备事项，添加第一项吧。</p>`;
+      <button type="button" class="todo-delete" aria-label="刪除：${escapeHtml(todo.text)}">刪除</button>
+    </div>`).join("") : `<p class="todo-empty">還沒有準備事項，新增第一項吧。</p>`;
 }
 
 function renderTravelPrep() {
@@ -864,14 +864,14 @@ function openTicketDialog(ticketId, opener) {
     preview = `<iframe class="ticket-dialog__preview" src="${escapeHtml(localDocument)}" title="${escapeHtml(ticketTitle(ticket))}" sandbox="allow-same-origin" referrerpolicy="no-referrer"></iframe>`;
   }
   const links = [
-    localDocument ? `<a href="${escapeHtml(localDocument)}" target="_blank" rel="noopener noreferrer">在新窗口打开票据 ↗</a>` : "",
-    externalDocument ? `<a href="${escapeHtml(externalDocument)}" target="_blank" rel="noopener noreferrer">${escapeHtml(document?.label || "查看票据")} ↗</a>` : "",
-    officialUrl ? `<a href="${escapeHtml(officialUrl)}" target="_blank" rel="noopener noreferrer">打开官方页面 ↗</a>` : ""
+    localDocument ? `<a href="${escapeHtml(localDocument)}" target="_blank" rel="noopener noreferrer">在新視窗開啟票據 ↗</a>` : "",
+    externalDocument ? `<a href="${escapeHtml(externalDocument)}" target="_blank" rel="noopener noreferrer">${escapeHtml(document?.label || "檢視票據")} ↗</a>` : "",
+    officialUrl ? `<a href="${escapeHtml(officialUrl)}" target="_blank" rel="noopener noreferrer">開啟官方頁面 ↗</a>` : ""
   ].filter(Boolean).join("");
   $("#ticket-dialog-body").innerHTML = `
-    <p class="ticket-dialog__status">${escapeHtml(isTicketPurchased(ticket) ? "已标记购票" : ticketRequirement(ticket))}</p>
+    <p class="ticket-dialog__status">${escapeHtml(isTicketPurchased(ticket) ? "已標記購票" : ticketRequirement(ticket))}</p>
     ${ticketGuidance(ticket) ? `<p class="ticket-dialog__guidance">${escapeHtml(ticketGuidance(ticket))}</p>` : ""}
-    ${preview || (!links ? `<p class="ticket-dialog__empty">当前没有可预览的票据文件或官方链接。</p>` : "")}
+    ${preview || (!links ? `<p class="ticket-dialog__empty">當前沒有可預覽的票據檔案或官方連結。</p>` : "")}
     ${links ? `<div class="ticket-dialog__links">${links}</div>` : ""}`;
   if (typeof dialog.showModal === "function") dialog.showModal();
   else dialog.setAttribute("open", "");

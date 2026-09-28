@@ -1,16 +1,16 @@
 # Golden Behavior Specification
 
-基线日期：2026-09-10  
-事实来源：Golden Version 的 `app.js`、`site-navigation.js`，以及此前已完成的 Map shell 浏览器/代码审计。Ledger 细节见 `golden-ledger-spec.md`。
+基線日期：2026-09-10  
+事實來源：Golden Version 的 `app.js`、`site-navigation.js`，以及此前已完成的 Map shell 瀏覽器/程式碼審計。Ledger 細節見 `golden-ledger-spec.md`。
 
-## 0. 分类
+## 0. 分類
 
-- **[FROZEN BEHAVIOR]**：成熟产品交互。架构重构必须保持用户可观察结果。
-- **[CURRENT IMPLEMENTATION]**：当前代码路径，可能在后续架构中被配置化或替换；不自动成为产品规则。
-- **[POTENTIAL BUG]**：代码已显示风险或不一致，但影响尚未完成真实边界验证。
-- **[UNVERIFIED]**：缺少足够的真实浏览器、失败注入或多设备验证；不得猜测。
+- **[FROZEN BEHAVIOR]**：成熟產品互動。架構重構必須保持使用者可觀察結果。
+- **[CURRENT IMPLEMENTATION]**：當前程式碼路徑，可能在後續架構中被配置化或替換；不自動成為產品規則。
+- **[POTENTIAL BUG]**：程式碼已顯示風險或不一致，但影響尚未完成真實邊界驗證。
+- **[UNVERIFIED]**：缺少足夠的真實瀏覽器、失敗注入或多裝置驗證；不得猜測。
 
-“冻结”指相同有效输入与状态下的行为结果一致，不要求函数名、文件位置或内部模块边界不变。
+“凍結”指相同有效輸入與狀態下的行為結果一致，不要求函式名、檔案位置或內部模組邊界不變。
 
 ## A. Travel Navigation
 
@@ -18,92 +18,92 @@
 
 **[FROZEN BEHAVIOR]**
 
-- Given `trip-data.json > config.modules`中某模块为`false`  
-  Then该section、导航入口与相关初始化均不出现，不留下空白，也不发起该模块的runtime/API请求。
-- Given前置模块关闭  
-  Then页面与导航从第一个启用模块开始；不得依赖手工删除HTML或JavaScript。
+- Given `trip-data.json > config.modules`中某模組為`false`  
+  Then該section、導航入口與相關初始化均不出現，不留下空白，也不發起該模組的runtime/API請求。
+- Given前置模組關閉  
+  Then頁面與導航從第一個啟用模組開始；不得依賴手工刪除HTML或JavaScript。
 - Given Config缺失或非法  
-  Then显示明确配置错误；不得自行猜测用户模块选择。
+  Then顯示明確配置錯誤；不得自行猜測使用者模組選擇。
 
-### A01 Travel / Ledger 页面切换
+### A01 Travel / Ledger 頁面切換
 
 **[FROZEN BEHAVIOR]**
 
-- Given 当前位于 Travel view  
-  When 点击顶部“记账”  
-  Then 阻止默认锚点跳转，关闭 Travel 下拉菜单，地址变为 `#ledger`，Travel `hidden + inert`，Ledger 取消 `hidden/inert`，body 标记 active view，Ledger Entry tab 激活。
+- Given 當前位於 Travel view  
+  When 點選頂部“記賬”  
+  Then 阻止預設錨點跳轉，關閉 Travel 下拉選單，地址變為 `#ledger`，Travel `hidden + inert`，Ledger 取消 `hidden/inert`，body 標記 active view，Ledger Entry tab 啟用。
 
-- Given 当前位于 Ledger view  
-  When 点击 Travel 菜单中的 section link 或 wordmark  
-  Then 关闭菜单、显示 Travel、隐藏并 inert Ledger；section link滚动到目标 section，wordmark滚动到 `#top`。
+- Given 當前位於 Ledger view  
+  When 點選 Travel 選單中的 section link 或 wordmark  
+  Then 關閉選單、顯示 Travel、隱藏並 inert Ledger；section link滾動到目標 section，wordmark滾動到 `#top`。
 
-- Given 页面由 `#ledger-stats` 打开  
-  When 初始 route 执行  
-  Then Ledger view显示且 Stats tab激活；`#ledger` 激活 Entry tab。
+- Given 頁面由 `#ledger-stats` 開啟  
+  When 初始 route 執行  
+  Then Ledger view顯示且 Stats tab啟用；`#ledger` 啟用 Entry tab。
 
-### A02 顶部导航和当前状态
+### A02 頂部導航和當前狀態
 
 **[FROZEN BEHAVIOR]**
 
 - Given Travel view active  
-  When 导航状态同步  
-  Then Travel summary具有 `aria-current="page"`，Ledger link移除该属性，skip link指向 `#main`。
+  When 導航狀態同步  
+  Then Travel summary具有 `aria-current="page"`，Ledger link移除該屬性，skip link指向 `#main`。
 
 - Given Ledger view active  
-  When 导航状态同步  
-  Then Ledger link具有 `aria-current="page"`，Travel summary移除该属性，skip link指向 `#ledger-root`。
+  When 導航狀態同步  
+  Then Ledger link具有 `aria-current="page"`，Travel summary移除該屬性，skip link指向 `#ledger-root`。
 
-### A03 Travel 下拉菜单
+### A03 Travel 下拉選單
 
 **[FROZEN BEHAVIOR]**
 
-- Given Travel details menu打开  
-  When 点击菜单外部  
+- Given Travel details menu開啟  
+  When 點選選單外部  
   Then 移除 `open`。
 
-- Given Travel details menu打开  
-  When 点击任一 Travel link或 Ledger link  
-  Then 菜单先关闭，再执行导航。
+- Given Travel details menu開啟  
+  When 點選任一 Travel link或 Ledger link  
+  Then 選單先關閉，再執行導航。
 
-- **[CURRENT IMPLEMENTATION]** 菜单为原生 `<details>/<summary>`；除浏览器原生行为外，没有单独实现 Escape、方向键或 menu roving focus。
-- **[UNVERIFIED]** 不同浏览器对原生 details 的 Escape 行为和 `role=menu/menuitem` 键盘体验尚未逐项验证。
+- **[CURRENT IMPLEMENTATION]** 選單為原生 `<details>/<summary>`；除瀏覽器原生行為外，沒有單獨實現 Escape、方向鍵或 menu roving focus。
+- **[UNVERIFIED]** 不同瀏覽器對原生 details 的 Escape 行為和 `role=menu/menuitem` 鍵盤體驗尚未逐項驗證。
 
-### A04 Scroll、历史和返回
+### A04 Scroll、歷史和返回
 
 **[FROZEN BEHAVIOR]**
 
-- Given Travel 与 Ledger 已分别滚动  
-  When 在两个 view 之间切换  
-  Then 离开 view 时把 `window.scrollY` 保存到内存中的对应 slot。
+- Given Travel 與 Ledger 已分別滾動  
+  When 在兩個 view 之間切換  
+  Then 離開 view 時把 `window.scrollY` 儲存到記憶體中的對應 slot。
 
-- Given 点击 Travel section link  
-  When Travel view显示  
-  Then 使用目标元素 `scrollIntoView({block:"start"})`；CSS smooth scroll/reduced-motion结果由 Frozen UI 控制。
+- Given 點選 Travel section link  
+  When Travel view顯示  
+  Then 使用目標元素 `scrollIntoView({block:"start"})`；CSS smooth scroll/reduced-motion結果由 Frozen UI 控制。
 
-- Given 切换到一个没有 section target 的新 view  
+- Given 切換到一個沒有 section target 的新 view  
   When 不是 browser restore  
-  Then 滚动到 top `0`。
+  Then 滾動到 top `0`。
 
-- Given 浏览器 Back/Forward 造成 view改变  
-  When `popstate` 在 animation frame 中处理  
-  Then 尝试恢复该 view 的内存 scroll position；`history.scrollRestoration` 为 `manual`。
+- Given 瀏覽器 Back/Forward 造成 view改變  
+  When `popstate` 在 animation frame 中處理  
+  Then 嘗試恢復該 view 的記憶體 scroll position；`history.scrollRestoration` 為 `manual`。
 
-- **[CURRENT IMPLEMENTATION]** Scroll positions只存于当前页面内存，不跨 reload/tab持久。
-- **[UNVERIFIED]** 同一 view 内 `#ledger ↔ #ledger-stats` 的 Back/Forward 与连续 `popstate/hashchange` 组合下，scroll精确恢复结果尚未做浏览器矩阵验证。
+- **[CURRENT IMPLEMENTATION]** Scroll positions只存於當前頁面記憶體，不跨 reload/tab持久。
+- **[UNVERIFIED]** 同一 view 內 `#ledger ↔ #ledger-stats` 的 Back/Forward 與連續 `popstate/hashchange` 組合下，scroll精確恢復結果尚未做瀏覽器矩陣驗證。
 
-### A05 外部链接
+### A05 外部連結
 
 **[FROZEN BEHAVIOR]**
 
-- Given 用户点击 Place overlay footer 的 Google Maps link或 driving reference link  
-  When 浏览器允许打开外部页面  
-  Then 以新 browsing context 打开，使用 `target="_blank"` 和 `rel="noopener noreferrer"`。
+- Given 使用者點選 Place overlay footer 的 Google Maps link或 driving reference link  
+  When 瀏覽器允許開啟外部頁面  
+  Then 以新 browsing context 開啟，使用 `target="_blank"` 和 `rel="noopener noreferrer"`。
 
-- Given 用户点击 timeline 的地点地图按钮  
-  When overlay打开  
-  Then 先在站内 iframe展示 Google Maps，并提供外部打开入口；不会直接离开当前行程页。
+- Given 使用者點選 timeline 的地點地圖按鈕  
+  When overlay開啟  
+  Then 先在站內 iframe展示 Google Maps，並提供外部開啟入口；不會直接離開當前行程頁。
 
-- **[UNVERIFIED]** 各浏览器 popup policy、Google 网络不可达与 iframe CSP/地区限制下的最终外部打开结果。
+- **[UNVERIFIED]** 各瀏覽器 popup policy、Google 網路不可達與 iframe CSP/地區限制下的最終外部開啟結果。
 
 ## B. Flight
 
@@ -111,345 +111,345 @@
 
 **[FROZEN BEHAVIOR]**
 
-- Given 多个 journey card已渲染  
-  When 用户水平滚动 carousel  
-  Then CSS执行 mandatory x snap；scroll handler在下一 animation frame计算 viewport center与每张 card center的绝对距离，距离最小的 card成为 active。
+- Given 多個 journey card已渲染  
+  When 使用者水平滾動 carousel  
+  Then CSS執行 mandatory x snap；scroll handler在下一 animation frame計算 viewport center與每張 card center的絕對距離，距離最小的 card成為 active。
 
-- Given active card改变  
-  When center计算完成  
-  Then 只有对应 dot获得 `is-active`，section index显示一基序号 `activeIndex + 1 / journeyCount`。
+- Given active card改變  
+  When center計算完成  
+  Then 只有對應 dot獲得 `is-active`，section index顯示一基序號 `activeIndex + 1 / journeyCount`。
 
 - Given 初次渲染  
-  When 尚未滚动  
-  Then 第一颗 dot active，index为 `1 / count`。
+  When 尚未滾動  
+  Then 第一顆 dot active，index為 `1 / count`。
 
-- **[CURRENT IMPLEMENTATION]** 两张 card center等距时，因只接受严格更小距离，数组中较早的 card胜出。
+- **[CURRENT IMPLEMENTATION]** 兩張 card center等距時，因只接受嚴格更小距離，陣列中較早的 card勝出。
 
 ### B02 Journey status
 
-**[FROZEN BEHAVIOR]**（状态阶段），**[CURRENT IMPLEMENTATION]**（时间解析来源）
+**[FROZEN BEHAVIOR]**（狀態階段），**[CURRENT IMPLEMENTATION]**（時間解析來源）
 
-- Given 当前时间早于某段 departure  
-  When 按航段顺序扫描  
-  Then 第一段显示“距离起飞还剩”，后续段显示“距离下一程起飞还剩”，target为该 departure。
+- Given 當前時間早於某段 departure  
+  When 按航段順序掃描  
+  Then 第一段顯示“距離起飛還剩”，後續段顯示“距離下一程起飛還剩”，target為該 departure。
 
-- Given departure已过且 arrival未到  
-  When 状态计算  
-  Then 显示“飞行中 · 距抵达”，target为 arrival。
+- Given departure已過且 arrival未到  
+  When 狀態計算  
+  Then 顯示“飛行中 · 距抵達”，target為 arrival。
 
-- Given 所有 arrival均已过  
-  When 状态计算  
-  Then label为“已抵达”，card value为“已完成”。
+- Given 所有 arrival均已過  
+  When 狀態計算  
+  Then label為“已抵達”，card value為“已完成”。
 
-- **[CURRENT IMPLEMENTATION]** departure/arrival分别由该端点的本地日期、时间和 `utcOffset` 解析；不再使用机场代码或固定 offset 表。非 placeholder 航段的 offset 由轻量 validator 按 `±HH:MM` 检查。
+- **[CURRENT IMPLEMENTATION]** departure/arrival分別由該端點的本地日期、時間和 `utcOffset` 解析；不再使用機場程式碼或固定 offset 表。非 placeholder 航段的 offset 由輕量 validator 按 `±HH:MM` 檢查。
 
-### B03 Countdown 与每秒刷新
+### B03 Countdown 與每秒重新整理
 
 **[FROZEN BEHAVIOR]**
 
-- Given target在未来  
+- Given target在未來  
   When precise countdown渲染  
-  Then 使用 floor后的总秒数；有天数显示 `N天 HH:MM:SS`，不足一天显示 `HH:MM:SS`，时分秒补零。
+  Then 使用 floor後的總秒數；有天數顯示 `N天 HH:MM:SS`，不足一天顯示 `HH:MM:SS`，時分秒補零。
 
-- Given target已到或已过  
+- Given target已到或已過  
   When countdown渲染  
-  Then 使用调用方 completion text；flight card最终显示“已完成”或过渡调用中的“即将出发”。
+  Then 使用呼叫方 completion text；flight card最終顯示“已完成”或過渡呼叫中的“即將出發”。
 
 - Given Travel初始化完成  
-  When countdown timer启动  
+  When countdown timer啟動  
   Then 立即更新一次 flight/rental，再以 `1000ms` interval更新。
 
 ### B04 跨日期
 
 **[FROZEN BEHAVIOR]**
 
-- Given stop日期与 journey起始日期相同  
-  When 日期标签渲染  
-  Then 显示紧凑月日。
+- Given stop日期與 journey起始日期相同  
+  When 日期標籤渲染  
+  Then 顯示緊湊月日。
 
 - Given stop日期比 journey起始日期晚一天  
-  When 日期标签渲染  
-  Then 显示“次日”。
+  When 日期標籤渲染  
+  Then 顯示“次日”。
 
 - Given日期差不是0或1  
-  Then 显示该日期的紧凑月日。
+  Then 顯示該日期的緊湊月日。
 
 ### B05 Today / future / past
 
-- **[FROZEN BEHAVIOR]** Flight的 future/in-flight/past阶段切换及文本语义冻结。
-- **[CURRENT IMPLEMENTATION]** Flight本身不使用 Today label；Daily Today优先使用可选的 `metadata.timeZone` IANA 时区覆盖值，缺失或无效时回退当前浏览器时区。
-- **[UNVERIFIED]** target精确等于当前毫秒、浏览器休眠唤醒、后台tab interval节流后的边界显示。
+- **[FROZEN BEHAVIOR]** Flight的 future/in-flight/past階段切換及文字語義凍結。
+- **[CURRENT IMPLEMENTATION]** Flight本身不使用 Today label；Daily Today優先使用可選的 `metadata.timeZone` IANA 時區覆蓋值，缺失或無效時回退當前瀏覽器時區。
+- **[UNVERIFIED]** target精確等於當前毫秒、瀏覽器休眠喚醒、後臺tab interval節流後的邊界顯示。
 
-### B06 缺失航班材料时继续预览
+### B06 缺失航班材料時繼續預覽
 
 **[FROZEN BEHAVIOR]**
 
-- Given 用户在 Round 1 保留航班模块，但已确认材料缺失，并在 Round 2 选择继续预览  
-  Then 渲染标准的“资料待补充”航班卡，明确列出缺失类别。
-- Placeholder 不包含猜测的航空公司、航班号、机场、起降时间或时区，也不运行倒计时。
-- Given 用户在 Round 1 关闭航班模块  
-  Then 整个航班 section、导航和倒计时初始化均不出现，不生成 placeholder。
+- Given 使用者在 Round 1 保留航班模組，但已確認材料缺失，並在 Round 2 選擇繼續預覽  
+  Then 渲染標準的“資料待補充”航班卡，明確列出缺失類別。
+- Placeholder 不包含猜測的航空公司、航班號、機場、起降時間或時區，也不執行倒計時。
+- Given 使用者在 Round 1 關閉航班模組  
+  Then 整個航班 section、導航和倒計時初始化均不出現，不生成 placeholder。
 
 ## C. Daily Itinerary
 
-### C01 初始展开逻辑和 Today
+### C01 初始展開邏輯和 Today
 
 **[FROZEN BEHAVIOR]**
 
-- Given trip days中存在日期等于“当前旅行日”的 day  
+- Given trip days中存在日期等於“當前旅行日”的 day  
   When timeline首次渲染  
-  Then 该 day为唯一展开项，card有 Today状态及“今天”文字。
+  Then 該 day為唯一展開項，card有 Today狀態及“今天”文字。
 
 - Given不存在匹配 day  
   When timeline首次渲染  
-  Then `expandedDay=null`，所有 day detail关闭。
+  Then `expandedDay=null`，所有 day detail關閉。
 
-- **[CURRENT IMPLEMENTATION]** “当前旅行日”优先由可选的 `metadata.timeZone` IANA 时区覆盖值决定；缺失或无效时使用当前浏览器时区。
+- **[CURRENT IMPLEMENTATION]** “當前旅行日”優先由可選的 `metadata.timeZone` IANA 時區覆蓋值決定；缺失或無效時使用當前瀏覽器時區。
 
-### C02 Accordion 单开、展开和收起
+### C02 Accordion 單開、展開和收起
 
 **[FROZEN BEHAVIOR]**
 
-- Given任意 day toggle被点击  
-  When该 day原本关闭  
-  Then 先把所有 toggles设为 collapsed、隐藏所有 details，再仅展开所点 day并更新 `expandedDay`。
+- Given任意 day toggle被點選  
+  When該 day原本關閉  
+  Then 先把所有 toggles設為 collapsed、隱藏所有 details，再僅展開所點 day並更新 `expandedDay`。
 
-- Given所点 day原本展开  
-  When再次点击  
-  Then 所有 days关闭，`expandedDay=null`。
+- Given所點 day原本展開  
+  When再次點選  
+  Then 所有 days關閉，`expandedDay=null`。
 
-- Given展开或收起  
-  Then 不自动把 day滚动到视口，也不重建 timeline DOM。
+- Given展開或收起  
+  Then 不自動把 day滾動到視口，也不重建 timeline DOM。
 
-### C03 Schedule content、地图按钮、note/cost/tag
+### C03 Schedule content、地圖按鈕、note/cost/tag
 
 **[FROZEN BEHAVIOR]**
 
 - Given day包含 schedule items  
   When渲染  
-  Then 保持数据顺序，并显示 time、escaped text、关联 ticket、地点按钮。
+  Then 保持資料順序，並顯示 time、escaped text、關聯 ticket、地點按鈕。
 
 - Given day包含 notes或 source date conflict  
   When渲染  
-  Then 普通 notes在前，source conflict附加在后，逐条显示。
+  Then 普通 notes在前，source conflict附加在後，逐條顯示。
 
 - Given day包含 cost references  
   When渲染  
-  Then 按 amount、standard、discounted、amountOptions的现有优先级生成 tag文字。
+  Then 按 amount、standard、discounted、amountOptions的現有優先順序生成 tag文字。
 
-- Given schedule item按 navigation policy被认定无需导航  
-  Then 不显示地点按钮。
+- Given schedule item按 navigation policy被認定無需導航  
+  Then 不顯示地點按鈕。
 
-- **[LEGACY COMPATIBILITY]** 旧Demo可能仍由schedule文本、match terms、名称、priority与字符串最后出现位置推断地点；新canonical Trip必须使用typed Place references，validator不得允许显示文案控制新数据关联。
+- **[LEGACY COMPATIBILITY]** 舊Demo可能仍由schedule文字、match terms、名稱、priority與字串最後出現位置推斷地點；新canonical Trip必須使用typed Place references，validator不得允許顯示文案控制新資料關聯。
 
 ## D. Ticket
 
-### D01 Ticket 与 schedule 的当前关联
+### D01 Ticket 與 schedule 的當前關聯
 
 **[CURRENT IMPLEMENTATION]**
 
-- Given ticket的 `day` 等于当前 day  
-  And schedule item text转为 locale lowercase  
-  When 任一 `scheduleMatchTerms` 小写后是该文本的 substring  
-  Then ticket渲染到该 schedule item。
+- Given ticket的 `day` 等於當前 day  
+  And schedule item text轉為 locale lowercase  
+  When 任一 `scheduleMatchTerms` 小寫後是該文字的 substring  
+  Then ticket渲染到該 schedule item。
 
-- Given同一 ticket命中同一天多个 item  
-  Then 当前实现可能在多个位置渲染同一 ticket；所有实例通过 ticket ID同步视觉状态。
+- Given同一 ticket命中同一天多個 item  
+  Then 當前實現可能在多個位置渲染同一 ticket；所有例項透過 ticket ID同步視覺狀態。
 
-- 该字符串关联不是 **[FROZEN BEHAVIOR]**，只允许作为旧fixture兼容。新canonical Trip必须由Day Item `ticketIds[]`关联；同一Golden fixture的可见结果仍须保持。
+- 該字串關聯不是 **[FROZEN BEHAVIOR]**，只允許作為舊fixture相容。新canonical Trip必須由Day Item `ticketIds[]`關聯；同一Golden fixture的可見結果仍須保持。
 
 ### D02 Pending / Purchased
 
 **[FROZEN BEHAVIOR]**
 
 - Given ticket data `purchaseStatus="purchased"` 或 runtime completion set包含 ticket ID  
-  Then ticket为 purchased。
+  Then ticket為 purchased。
 
 - Given ticket未 purchased  
-  Then 根据 requirement显示“需提前购票 / 建议预约 / 购票方式待确认 / 门票信息”。
+  Then 根據 requirement顯示“需提前購票 / 建議預約 / 購票方式待確認 / 門票資訊”。
 
 - Given day有 tickets  
-  Then day summary显示 pending数量；全部 purchased时显示“门票已准备”。
+  Then day summary顯示 pending數量；全部 purchased時顯示“門票已準備”。
 
 ### D03 完成、取消和 Runtime sync
 
-**[FROZEN BEHAVIOR]**（用户意图），**[CURRENT IMPLEMENTATION]**（保存时序）
+**[FROZEN BEHAVIOR]**（使用者意圖），**[CURRENT IMPLEMENTATION]**（儲存時序）
 
-- Given用户勾选 ticket  
-  When change触发  
-  Then立即把ID加入runtime Set、更新所有相同ticket实例及day summary，并交给当前persistence adapter保存。
+- Given使用者勾選 ticket  
+  When change觸發  
+  Then立即把ID加入runtime Set、更新所有相同ticket例項及day summary，並交給當前persistence adapter儲存。
 
-- Given用户取消勾选  
-  Then立即移除ID并更新UI，并交给当前persistence adapter删除。
+- Given使用者取消勾選  
+  Then立即移除ID並更新UI，並交給當前persistence adapter刪除。
 
-- Given默认local mode  
-  Then从当前浏览器按Trip ID读取/保存Ticket状态，不访问`/api/trip`。
+- Given預設local mode  
+  Then從當前瀏覽器按Trip ID讀取/儲存Ticket狀態，不訪問`/api/trip`。
 
-- Given用户明确启用D1且`tickets`在`sharedCollections`  
-  Then从共享快照读取truthy completion，并通过同源API同步变更。
+- Given使用者明確啟用D1且`tickets`在`sharedCollections`  
+  Then從共享快照讀取truthy completion，並透過同源API同步變更。
 
-- **[CONFIRMED ISSUE]** 可选D1模式下POST失败仍可能只`console.error`，不回滚Set/UI、不显示用户错误；刷新后的结果可能与刚才UI不同。此失败行为不冻结为正确产品行为。
+- **[CONFIRMED ISSUE]** 可選D1模式下POST失敗仍可能只`console.error`，不回滾Set/UI、不顯示使用者錯誤；重新整理後的結果可能與剛才UI不同。此失敗行為不凍結為正確產品行為。
 
 ### D04 Ticket document and purchase link
 
 **[FROZEN BEHAVIOR]**
 
-- Given Ticket有获准进入Trip assets的PDF或图片  
-  When用户点击票据入口  
-  Then先在站内dialog/overlay预览，不直接离开旅行页；close、backdrop、Escape和focus return遵守现有overlay规则。
-- Given Ticket只有官方购买URL  
-  Then入口明确标识为外部购买页，并使用`target="_blank"`与`rel="noopener noreferrer"`。
-- Given票据材料缺失且用户选择继续预览  
-  Then显示“待补充”，不生成无效或猜测URL。
+- Given Ticket有獲准進入Trip assets的PDF或圖片  
+  When使用者點選票據入口  
+  Then先在站內dialog/overlay預覽，不直接離開旅行頁；close、backdrop、Escape和focus return遵守現有overlay規則。
+- Given Ticket只有官方購買URL  
+  Then入口明確標識為外部購買頁，並使用`target="_blank"`與`rel="noopener noreferrer"`。
+- Given票據材料缺失且使用者選擇繼續預覽  
+  Then顯示“待補充”，不生成無效或猜測URL。
 
 ## E. Todo
 
-### E01 新增和空输入
+### E01 新增和空輸入
 
 **[FROZEN BEHAVIOR]**
 
-- Given输入 trim后为空  
+- Given輸入 trim後為空  
   When提交  
-  Then 不新增、不保存，保留页面状态。
+  Then 不新增、不儲存，保留頁面狀態。
 
-- Given输入非空  
+- Given輸入非空  
   When提交  
-  Then生成稳定唯一runtime ID，追加`{text,completed:false}`，清空input，交给当前persistence adapter保存并立即重绘。
+  Then生成穩定唯一runtime ID，追加`{text,completed:false}`，清空input，交給當前persistence adapter儲存並立即重繪。
 
-- ID生成格式属于 **[CURRENT IMPLEMENTATION]**；唯一、稳定的 runtime ID语义属于 Frozen behavior。
+- ID生成格式屬於 **[CURRENT IMPLEMENTATION]**；唯一、穩定的 runtime ID語義屬於 Frozen behavior。
 
-### E02 完成、取消和删除
+### E02 完成、取消和刪除
 
 **[FROZEN BEHAVIOR]**
 
-- Given用户切换checkbox  
-  When change触发  
-  Then立即更新对应todo.completed、交给当前persistence adapter保存、重绘progress/list。
+- Given使用者切換checkbox  
+  When change觸發  
+  Then立即更新對應todo.completed、交給當前persistence adapter儲存、重繪progress/list。
 
-- Given用户点击删除  
-  Then立即从数组移除、交给当前persistence adapter删除、重绘；当前没有confirm dialog。
+- Given使用者點選刪除  
+  Then立即從陣列移除、交給當前persistence adapter刪除、重繪；當前沒有confirm dialog。
 
-- Given list为空  
-  Then 显示“还没有准备事项，添加第一项吧。”，progress为 `0 / 0`。
+- Given list為空  
+  Then 顯示“還沒有準備事項，新增第一項吧。”，progress為 `0 / 0`。
 
-- Given默认local mode  
-  Then从当前浏览器按Trip ID读取/保存Todos，不访问`/api/trip`。
+- Given預設local mode  
+  Then從當前瀏覽器按Trip ID讀取/儲存Todos，不訪問`/api/trip`。
 
-- Given用户明确启用D1且`todos`在`sharedCollections`  
-  Then使用共享snapshot `todos`；非数组退回空数组。
+- Given使用者明確啟用D1且`todos`在`sharedCollections`  
+  Then使用共享snapshot `todos`；非陣列退回空陣列。
 
-- **[CONFIRMED ISSUE]** 可选D1模式的upsert/delete失败仍可能只写console；没有rollback、retry UI或用户可见notice，不冻结为正确行为。
+- **[CONFIRMED ISSUE]** 可選D1模式的upsert/delete失敗仍可能只寫console；沒有rollback、retry UI或使用者可見notice，不凍結為正確行為。
 
 ### E03 Optional shared load failure
 
-- **[CURRENT IMPLEMENTATION]** 仅D1 shared mode会访问Shared API；load失败时仍继续渲染Travel并保留可操作状态。
-- **[POTENTIAL BUG]** D1错误提示/重试与本地已存在状态的合并仍需失败注入验证；不得把读取失败静默解释为远端真实空状态。
+- **[CURRENT IMPLEMENTATION]** 僅D1 shared mode會訪問Shared API；load失敗時仍繼續渲染Travel並保留可操作狀態。
+- **[POTENTIAL BUG]** D1錯誤提示/重試與本地已存在狀態的合併仍需失敗注入驗證；不得把讀取失敗靜默解釋為遠端真實空狀態。
 
 ## F. Rental
 
 ### F01 Pickup / Return status
 
-**[FROZEN BEHAVIOR]**（阶段语义）
+**[FROZEN BEHAVIOR]**（階段語義）
 
-- Given now早于 pickup  
-  Then label为“距取车”，target为 pickup。
+- Given now早於 pickup  
+  Then label為“距取車”，target為 pickup。
 
-- Given now介于 pickup和dropoff  
-  Then label为“距还车”，target为 dropoff。
+- Given now介於 pickup和dropoff  
+  Then label為“距還車”，target為 dropoff。
 
-- Given now达到或超过dropoff  
-  Then label为“已超过预约还车时间”，主文案提示立即联系 rental company。
+- Given now達到或超過dropoff  
+  Then label為“已超過預約還車時間”，主文案提示立即聯絡 rental company。
 
-- **[CURRENT IMPLEMENTATION]** `rentalStatus()` 分别使用 pickup/dropoff 自己的 `utcOffset`，deadline timer 使用同一个 dropoff offset。已开启租车模块时，两个 offset 均由轻量 validator 按 `±HH:MM` 检查。
+- **[CURRENT IMPLEMENTATION]** `rentalStatus()` 分別使用 pickup/dropoff 自己的 `utcOffset`，deadline timer 使用同一個 dropoff offset。已開啟租車模組時，兩個 offset 均由輕量 validator 按 `±HH:MM` 檢查。
 
 ### F02 Countdown、deadline 和 urgent
 
 **[FROZEN BEHAVIOR]**
 
-- Given deadline未来  
-  Then deadline显示“距还车截止 {precise countdown}”。
+- Given deadline未來  
+  Then deadline顯示“距還車截止 {precise countdown}”。
 
-- Given deadline已过  
-  Then显示预约时间已过的联系提示。
+- Given deadline已過  
+  Then顯示預約時間已過的聯絡提示。
 
-- Given remaining `<= 86,400,000ms`，包括已过期  
-  Then deadline增加 urgent视觉状态。
+- Given remaining `<= 86,400,000ms`，包括已過期  
+  Then deadline增加 urgent視覺狀態。
 
-- Given rental阶段未完成  
-  Then status区使用较粗粒度 countdown：有天显示天/小时，有小时显示小时/分钟，不足一小时至少显示1分钟。
+- Given rental階段未完成  
+  Then status區使用較粗粒度 countdown：有天顯示天/小時，有小時顯示小時/分鐘，不足一小時至少顯示1分鐘。
 
 ### F03 Drive tabs
 
 **[FROZEN BEHAVIOR]**
 
 - Given首次渲染  
-  Then “取还车检查” active并显示对应列表。
+  Then “取還車檢查” active並顯示對應列表。
 
-- Given点击非active tab  
-  Then 关闭其他 tabs，仅所点 tab `aria-expanded=true`，panel替换为对应内容。
+- Given點選非active tab  
+  Then 關閉其他 tabs，僅所點 tab `aria-expanded=true`，panel替換為對應內容。
 
-- Given点击当前 active tab  
-  Then 当前 tab collapse，panel hidden；允许没有任何 active内容。
+- Given點選當前 active tab  
+  Then 當前 tab collapse，panel hidden；允許沒有任何 active內容。
 
-- Driving reference links按外部链接规则打开。
+- Driving reference links按外部連結規則開啟。
 
 ## G. Map Shell Interaction
 
-本节只冻结 shell行为，不重复地图视觉与数据审计。
+本節只凍結 shell行為，不重複地圖視覺與資料審計。
 
 ### G00 Country switch
 
 **[FROZEN BEHAVIOR]**
 
-- Given Trip Data包含多个`routeMap.regions[]` Map Packages  
-  When Route Explorer加载  
-  Then按数据顺序显示相同数量的国家标签，默认选择`defaultRegionId`或第一个Package。
+- Given Trip Data包含多個`routeMap.regions[]` Map Packages  
+  When Route Explorer載入  
+  Then按資料順序顯示相同數量的國家標籤，預設選擇`defaultRegionId`或第一個Package。
 
-- Given用户选择另一个国家  
-  When国家标签切换  
-  Then切换到该国自己的base artwork、总览routes、places、annotations、legend和日期标签，并回到该国总览状态；不得保留上一国家的Day选择或地图数据。
+- Given使用者選擇另一個國家  
+  When國家標籤切換  
+  Then切換到該國自己的base artwork、總覽routes、places、annotations、legend和日期標籤，並回到該國總覽狀態；不得保留上一國家的Day選擇或地圖資料。
 
 ### G01 Overview / Day switch
 
 **[FROZEN BEHAVIOR]**
 
-- Given某一国家的Route Explorer已加载  
-  When用户选择 Overview  
-  Then显示该国家的完整 artwork状态并同步 pressed tab。
+- Given某一國家的Route Explorer已載入  
+  When使用者選擇 Overview  
+  Then顯示該國家的完整 artwork狀態並同步 pressed tab。
 
-- Given用户选择某个 Day  
-  Then仅显示该 day的 daily map状态、地点/交通交互入口并同步 pressed tab。
+- Given使用者選擇某個 Day  
+  Then僅顯示該 day的 daily map狀態、地點/交通互動入口並同步 pressed tab。
 
-- **[CURRENT IMPLEMENTATION]** Day与内部 route/layout的具体选择由当前 route module完成；目的地差异必须由 generated Map Package 表达，Core 不添加目的地特判。
+- **[CURRENT IMPLEMENTATION]** Day與內部 route/layout的具體選擇由當前 route module完成；目的地差異必須由 generated Map Package 表達，Core 不新增目的地特判。
 
-### G02 Place popup 与 Google Maps
+### G02 Place popup 與 Google Maps
 
 **[FROZEN BEHAVIOR]**
 
-- Given用户点击地图 place dot  
-  Then打开 place popover，显示地点标题、可用选项、嵌入地图和 Google Maps外链。
+- Given使用者點選地圖 place dot  
+  Then開啟 place popover，顯示地點標題、可用選項、嵌入地圖和 Google Maps外鏈。
 
-- Given同一地点存在多个 place options  
-  When切换 option  
-  Then pressed状态、iframe query和外链同步更新。
+- Given同一地點存在多個 place options  
+  When切換 option  
+  Then pressed狀態、iframe query和外鏈同步更新。
 
 ### G03 Transport popup
 
 **[FROZEN BEHAVIOR]**
 
-- Given用户点击 transport pin  
-  Then打开固定定位 transport popover，展示关联交通 leg；同一时刻不保留冲突 popup。
+- Given使用者點選 transport pin  
+  Then開啟固定定位 transport popover，展示關聯交通 leg；同一時刻不保留衝突 popup。
 
-- Given popup已开  
-  When点击关闭、外部或另一入口  
-  Then关闭/替换 popup，并同步 `aria-expanded`。
+- Given popup已開  
+  When點選關閉、外部或另一入口  
+  Then關閉/替換 popup，並同步 `aria-expanded`。
 
-### G04 Fullscreen、Escape、outside、focus 与 scroll
+### G04 Fullscreen、Escape、outside、focus 與 scroll
 
-- **[FROZEN BEHAVIOR]** Fullscreen入口打开 map dialog，关闭按钮/原生 dialog关闭路径应关闭；移动 overview map允许水平滚动，daily map shell不横向滚动。
-- **[FROZEN BEHAVIOR]** Place overlay打开时锁定 body overflow，focus移动到 close；Escape、backdrop点击或 close关闭，清空 iframe、恢复原 body overflow并把focus还给 opener；Tab在 close和external link之间循环。
-- **[CURRENT IMPLEMENTATION]** Route popover/transport popover具有Escape、outside click/focusin关闭和focus恢复逻辑（据此前审计）。
-- **[UNVERIFIED]** Fullscreen map dialog在所有浏览器中的初始focus、完整focus trap、Escape后的focus return与fallback-open路径尚未逐项验证。
+- **[FROZEN BEHAVIOR]** Fullscreen入口開啟 map dialog，關閉按鈕/原生 dialog關閉路徑應關閉；移動 overview map允許水平滾動，daily map shell不橫向滾動。
+- **[FROZEN BEHAVIOR]** Place overlay開啟時鎖定 body overflow，focus移動到 close；Escape、backdrop點選或 close關閉，清空 iframe、恢復原 body overflow並把focus還給 opener；Tab在 close和external link之間迴圈。
+- **[CURRENT IMPLEMENTATION]** Route popover/transport popover具有Escape、outside click/focusin關閉和focus恢復邏輯（據此前審計）。
+- **[UNVERIFIED]** Fullscreen map dialog在所有瀏覽器中的初始focus、完整focus trap、Escape後的focus return與fallback-open路徑尚未逐項驗證。
 
 ## H. Dialog / Overlay
 
@@ -457,82 +457,82 @@
 
 **[FROZEN BEHAVIOR]**
 
-- Given一个 Ledger dialog打开  
-  When请求打开另一个 Ledger dialog  
-  Then先关闭当前 dialog，再打开目标 dialog；currency dialog可返回 settings。
+- Given一個 Ledger dialog開啟  
+  When請求開啟另一個 Ledger dialog  
+  Then先關閉當前 dialog，再開啟目標 dialog；currency dialog可返回 settings。
 
 - Given Ledger dialog open  
-  When点击显式 close、原生 Escape/cancel或dialog backdrop本身  
-  Then dialog关闭并清理对应 open state；members dialog同时清除 member edit state。
+  When點選顯式 close、原生 Escape/cancel或dialog backdrop本身  
+  Then dialog關閉並清理對應 open state；members dialog同時清除 member edit state。
 
-- Given浏览器无 `showModal()`  
+- Given瀏覽器無 `showModal()`  
   Then使用 `open` attribute fallback。
 
 ### H02 Focus
 
-- **[FROZEN BEHAVIOR]** Ledger dialog打开后在下一 frame focus search input或第一个非color input/button；currency search选区位于当前query末尾。
-- **[CURRENT IMPLEMENTATION]** Ledger dialog依赖原生 modal focus containment；没有自定义 Tab trap，也没有保存 opener引用。
-- **[UNVERIFIED]** Ledger dialog关闭后的focus return目标、fallback-open的focus containment和不同浏览器 cancel事件次序。
+- **[FROZEN BEHAVIOR]** Ledger dialog開啟後在下一 frame focus search input或第一個非color input/button；currency search選區位於當前query末尾。
+- **[CURRENT IMPLEMENTATION]** Ledger dialog依賴原生 modal focus containment；沒有自定義 Tab trap，也沒有儲存 opener引用。
+- **[UNVERIFIED]** Ledger dialog關閉後的focus return目標、fallback-open的focus containment和不同瀏覽器 cancel事件次序。
 
 ### H03 Inline note editor
 
 **[FROZEN BEHAVIOR]**
 
-- Given点击账单备注  
-  Then打开单行 editor、focus并select现有值。
+- Given點選賬單備註  
+  Then開啟單行 editor、focus並select現有值。
 
-- Given点击 editor外部或执行其他 Ledger action  
-  Then先尝试保存；保存失败阻止后续 action。
+- Given點選 editor外部或執行其他 Ledger action  
+  Then先嚐試儲存；儲存失敗阻止後續 action。
 
-- Given按 Escape或点击取消  
-  Then放弃未保存内容并恢复只读 trigger。
+- Given按 Escape或點選取消  
+  Then放棄未儲存內容並恢復只讀 trigger。
 
-- Given同一 bill正在完整编辑  
-  When点击其 inline note  
-  Then滚动/focus完整 bill form的 note字段，而非开启第二个 editor。
+- Given同一 bill正在完整編輯  
+  When點選其 inline note  
+  Then滾動/focus完整 bill form的 note欄位，而非開啟第二個 editor。
 
-## I. Initialization、Error、Responsive 与 Reduced Motion
+## I. Initialization、Error、Responsive 與 Reduced Motion
 
 ### I01 Travel load
 
-- **[FROZEN BEHAVIOR]** Config与travel-data加载成功后，只初始化已启用模块；默认先读取local runtime state。只有显式D1 mode与allowlist才尝试shared state。
-- **[FROZEN BEHAVIOR]** travel-data读取或主初始化失败时显示全局 loading error。
-- **[CURRENT IMPLEMENTATION]** 可选 D1 shared state 读取失败不触发全局 loading error；Travel 端当前会把 Todo/Ticket 暂时呈现为空，且只写 console。这是 `known-issues.md#pb-04--d1-shared-state读取失败可能被呈现为空状态` 记录的可选 shared-mode 风险，不是应冻结的理想行为。
+- **[FROZEN BEHAVIOR]** Config與travel-data載入成功後，只初始化已啟用模組；預設先讀取local runtime state。只有顯式D1 mode與allowlist才嘗試shared state。
+- **[FROZEN BEHAVIOR]** travel-data讀取或主初始化失敗時顯示全域性 loading error。
+- **[CURRENT IMPLEMENTATION]** 可選 D1 shared state 讀取失敗不觸發全域性 loading error；Travel 端當前會把 Todo/Ticket 暫時呈現為空，且只寫 console。這是 `known-issues.md#pb-04--d1-shared-state讀取失敗可能被呈現為空狀態` 記錄的可選 shared-mode 風險，不是應凍結的理想行為。
 
 ### I02 Ledger load/save
 
-- **[FROZEN BEHAVIOR]** Ledger初始化时root标记`aria-busy=true`；当前adapter load完成后归一化并渲染，再移除busy。
-- **[FROZEN BEHAVIOR]** 默认local mode无需D1；localStorage不可用时退回本标签页内存并保持可操作。
-- **[FROZEN BEHAVIOR]** 显式D1 load/save失败显示live notice并保留安全的本地/上一次成功state，不把错误显示成“必须绑定作者数据库”。
+- **[FROZEN BEHAVIOR]** Ledger初始化時root標記`aria-busy=true`；當前adapter load完成後歸一化並渲染，再移除busy。
+- **[FROZEN BEHAVIOR]** 預設local mode無需D1；localStorage不可用時退回本標籤頁記憶體並保持可操作。
+- **[FROZEN BEHAVIOR]** 顯式D1 load/save失敗顯示live notice並保留安全的本地/上一次成功state，不把錯誤顯示成“必須繫結作者資料庫”。
 
 ### I03 Responsive / keyboard / reduced motion
 
-- **[FROZEN BEHAVIOR]** 响应式改变布局而不删减功能；具体视觉见 Golden UI spec。
-- **[FROZEN BEHAVIOR]** Ledger tabs支持 ArrowLeft/ArrowRight在两个 tab间切换并把focus移到新 tab。
-- **[FROZEN BEHAVIOR]** Reduced motion时关闭 Ledger view animation并极小化CSS transition/animation duration。
+- **[FROZEN BEHAVIOR]** 響應式改變佈局而不刪減功能；具體視覺見 Golden UI spec。
+- **[FROZEN BEHAVIOR]** Ledger tabs支援 ArrowLeft/ArrowRight在兩個 tab間切換並把focus移到新 tab。
+- **[FROZEN BEHAVIOR]** Reduced motion時關閉 Ledger view animation並極小化CSS transition/animation duration。
 
 ## J. Ledger Product Interaction Summary
 
-以下属于 **[FROZEN BEHAVIOR]**，精确数据与算法见 `golden-ledger-spec.md`：
+以下屬於 **[FROZEN BEHAVIOR]**，精確資料與演算法見 `golden-ledger-spec.md`：
 
-- Traveler新增、编辑姓名/颜色、删除确认、重复姓名拦截、账单引用删除限制。
-- Bill新增、编辑、删除确认、inline note编辑、payer单选、participants多选与全选/全不选切换。
-- Base/foreign amount双字段，category/date/note，表单错误定位与live notice。
-- Entry/Stats tab切换、hash同步、统计卡默认展开、空状态文案语义。
-- 设置/成员/货币 dialogs与currency search。
-- Ledger mutation在单浏览器内串行；成功后才替换 ledgerData并重绘，失败保持旧state。
+- Traveler新增、編輯姓名/顏色、刪除確認、重複姓名攔截、賬單引用刪除限制。
+- Bill新增、編輯、刪除確認、inline note編輯、payer單選、participants多選與全選/全不選切換。
+- Base/foreign amount雙欄位，category/date/note，表單錯誤定位與live notice。
+- Entry/Stats tab切換、hash同步、統計卡預設展開、空狀態文案語義。
+- 設定/成員/貨幣 dialogs與currency search。
+- Ledger mutation在單瀏覽器內序列；成功後才替換 ledgerData並重繪，失敗保持舊state。
 
-以下不冻结为正确行为：settings persistence缺失、API无冲突控制、失败情况下的已知问题。
+以下不凍結為正確行為：settings persistence缺失、API無衝突控制、失敗情況下的已知問題。
 
 ## K. Unverified Register
 
-本轮仍为 **[UNVERIFIED]**：
+本輪仍為 **[UNVERIFIED]**：
 
-1. Travel menu原生 details在各浏览器的Escape/键盘行为。
-2. 同一 view内浏览器Back/Forward的精确scroll恢复。
-3. countdown临界毫秒、后台tab节流和系统时间跳变。
-4. Google iframe失败、popup policy与外部浏览器打开结果。
-5. Fullscreen map dialog的完整focus return/trap/fallback路径。
-6. Ledger native/fallback dialog关闭后的focus return与Tab containment。
-7. Cloudflare/D1真实失败注入后的端到端notice、重试和最终一致性。
-8. 两设备并发写入不同/相同记录的真实部署测试。
+1. Travel menu原生 details在各瀏覽器的Escape/鍵盤行為。
+2. 同一 view內瀏覽器Back/Forward的精確scroll恢復。
+3. countdown臨界毫秒、後臺tab節流和系統時間跳變。
+4. Google iframe失敗、popup policy與外部瀏覽器開啟結果。
+5. Fullscreen map dialog的完整focus return/trap/fallback路徑。
+6. Ledger native/fallback dialog關閉後的focus return與Tab containment。
+7. Cloudflare/D1真實失敗注入後的端到端notice、重試和最終一致性。
+8. 兩裝置併發寫入不同/相同記錄的真實部署測試。

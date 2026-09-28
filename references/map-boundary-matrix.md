@@ -1,51 +1,51 @@
 # Map Boundary Matrix — Public Template
 
-状态：Advanced/legacy Boundary 流程说明；不属于普通单文件生成流程。
+狀態：Advanced/legacy Boundary 流程說明；不屬於普通單檔案生成流程。
 
 | Source | Responsibility | Classification | Per-trip editable? | Main guardrail |
 |---|---|---|---:|---|
-| `index.html` | route section与dialog shell | FROZEN CORE | No | 通过Config隐藏，不删除DOM |
-| `styles.css` | viewport、响应式、route/point/label视觉 | FROZEN MAP STYLE | No | 保持Golden computed result |
-| `overview-map.js` | SVG layer composition与package rendering | MAP RENDERER | No | 不含国家/城市特判 |
-| `route-ui.js` | Overview/Day、popover、fullscreen交互 | MAP INTERACTION | No | 不从display text猜identity |
-| `scripts/generate-map-package.mjs` | boundary投影、routes、labels、Daily bounds/layouts/pins | MAP GENERATOR | No | 相同输入可复现；无手工geometry |
-| `schemas/*.json` | Map source/output与reference约束 | CORE CONTRACT | No | 单次生成不能放宽Schema |
-| authorized GeoJSON | 准确国家boundary及source/license | PRIVATE BUILD INPUT / LICENSED SOURCE | Input only | 不复制来源不明数据；不含Trip路线 |
-| private canonical Places/Days/Transport | 地点经纬度与语义顺序 | PRIVATE BUILD INPUT | Input only | stable ID、typed reference、one source |
-| `travel-data.json` | compiler输出的Renderer视图 | GENERATED TRIP DATA | Generated only | 不人工拼接canonical与region shape |
-| generated region JSON | routes、projected places、labels、daily layouts/bounds | GENERATED TRIP DATA | Generated only | 不由Agent手调 |
-| generated `*-base.svg` | Golden风格国家底图 | GENERATED TRIP ASSET | Generated only | 轮廓来自boundary；保留source/license metadata |
-| navigation query / private address | 地点交互目标 | PRIVATE TRIP VALUE | Yes | 仅进入用户Trip；发布前审查 |
-| pure country base cache | 无Trip内容的boundary/style输出 | PUBLIC-SAFE CACHE | Reusable | 不得包含地点、路线、日期、地址或query |
-| private Golden map package | 私人路线、坐标、queries、assets | PRIVATE FIXTURE | No | 永不复制到Public Template |
+| `index.html` | route section與dialog shell | FROZEN CORE | No | 透過Config隱藏，不刪除DOM |
+| `styles.css` | viewport、響應式、route/point/label視覺 | FROZEN MAP STYLE | No | 保持Golden computed result |
+| `overview-map.js` | SVG layer composition與package rendering | MAP RENDERER | No | 不含國家/城市特判 |
+| `route-ui.js` | Overview/Day、popover、fullscreen互動 | MAP INTERACTION | No | 不從display text猜identity |
+| `scripts/generate-map-package.mjs` | boundary投影、routes、labels、Daily bounds/layouts/pins | MAP GENERATOR | No | 相同輸入可復現；無手工geometry |
+| `schemas/*.json` | Map source/output與reference約束 | CORE CONTRACT | No | 單次生成不能放寬Schema |
+| authorized GeoJSON | 準確國家boundary及source/license | PRIVATE BUILD INPUT / LICENSED SOURCE | Input only | 不復制來源不明資料；不含Trip路線 |
+| private canonical Places/Days/Transport | 地點經緯度與語義順序 | PRIVATE BUILD INPUT | Input only | stable ID、typed reference、one source |
+| `travel-data.json` | compiler輸出的Renderer檢視 | GENERATED TRIP DATA | Generated only | 不人工拼接canonical與region shape |
+| generated region JSON | routes、projected places、labels、daily layouts/bounds | GENERATED TRIP DATA | Generated only | 不由Agent手調 |
+| generated `*-base.svg` | Golden風格國家底圖 | GENERATED TRIP ASSET | Generated only | 輪廓來自boundary；保留source/license metadata |
+| navigation query / private address | 地點互動目標 | PRIVATE TRIP VALUE | Yes | 僅進入使用者Trip；釋出前審查 |
+| pure country base cache | 無Trip內容的boundary/style輸出 | PUBLIC-SAFE CACHE | Reusable | 不得包含地點、路線、日期、地址或query |
+| private Golden map package | 私人路線、座標、queries、assets | PRIVATE FIXTURE | No | 永不復制到Public Template |
 
 ## Reusable Core
 
 - SVG layer renderer；
 - Frozen route/point/label/legend visual grammar；
-- Overview/Day切换；
+- Overview/Day切換；
 - place/transport popover；
-- fullscreen与responsive shell；
+- fullscreen與responsive shell；
 - deterministic projection、route、label和Daily bounds generation；
-- icon registry和交互事件。
+- icon registry和互動事件。
 
 ## Per-trip source and generated output
 
-用户或Agent只提供/确认：
+使用者或Agent只提供/確認：
 
 - `trip.primaryDestinationCountries`；
-- canonical Places的country code与geo；
-- Day/Transport/Place访问顺序与stable references；
-- 获授权的boundary source；
-- navigation query与特殊地点option。
+- canonical Places的country code與geo；
+- Day/Transport/Place訪問順序與stable references；
+- 獲授權的boundary source；
+- navigation query與特殊地點option。
 
 Generator派生：
 
 - country base SVG；
 - projected x/y；
-- route paths和颜色分配；
+- route paths和顏色分配；
 - label placement；
 - Daily layouts、bounds和transport pins；
-- Map Package metadata与source/license记录。
+- Map Package metadata與source/license記錄。
 
-单次生成不允许修改Core或手调这些派生geometry。若输出不能满足任务，先报告generator缺口，再在独立框架维护任务中修改和回归。
+單次生成不允許修改Core或手調這些派生geometry。若輸出不能滿足任務，先報告generator缺口，再在獨立框架維護任務中修改和迴歸。

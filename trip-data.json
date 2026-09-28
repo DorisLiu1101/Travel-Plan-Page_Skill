@@ -18,7 +18,7 @@
   },
   "metadata": {
     "tripId": "unconfigured",
-    "title": "旅行计划",
+    "title": "旅行計劃",
     "language": "zh-CN",
     "assets": {}
   },
@@ -51,7 +51,7 @@
   "bookingsAndTickets": [],
   "ticketPlanning": {
     "statusStorage": "local",
-    "statusStorageNote": "门票状态默认只保存在当前浏览器。",
+    "statusStorageNote": "門票狀態預設只儲存在當前瀏覽器。",
     "items": []
   },
   "preTrip": {
@@ -88,7 +88,7 @@
     "schemaVersion": "1.0-lite",
     "mapMode": "template-auto",
     "templateId": "auto",
-    "disclaimer": "本图仅表达地点的相对方位与路线顺序，不代表真实比例或精确地理边界。",
+    "disclaimer": "本圖僅表達地點的相對方位與路線順序，不代表真實比例或精確地理邊界。",
     "places": [],
     "routes": [],
     "dailyRoutes": []

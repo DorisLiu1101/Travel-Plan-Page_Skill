@@ -5,207 +5,207 @@ description: Assemble a Golden-style travel page from user materials with two sh
 
 # AI-Friendly Lightweight Travel Template
 
-普通生成中，Agent 是模板装配员。第一版优先速度、稳定性和复用，不重新设计页面、地图或记账功能。
+普通生成中，Agent 是模板裝配員。第一版優先速度、穩定性和複用，不重新設計頁面、地圖或記賬功能。
 
-## 首次生成优先级
+## 首次生成優先順序
 
-首次生成的目标是尽快交付一个可用、好看的网页底板，不是完成正式上线级验收。
+首次生成的目標是儘快交付一個可用、好看的網頁底板，不是完成正式上線級驗收。
 
-已有模板和规则明确时，直接按本 Skill 生成，不重新审计框架或重复分析项目结构。用户资料能够从文本中明确提取时直接使用；只有内容无法识别、排版异常或存在明显歧义时，才做进一步的页面级视觉检查。
+已有模板和規則明確時，直接按本 Skill 生成，不重新審計框架或重複分析專案結構。使用者資料能夠從文字中明確提取時直接使用；只有內容無法識別、排版異常或存在明顯歧義時，才做進一步的頁面級視覺檢查。
 
-首次生成只做必要校验：数据可读取、页面正常加载、已开启模块正常显示、地图正常生成、无明显运行错误。完整的桌面/手机交互测试、逐项事实复核和边界场景检查不是默认步骤，需要时再执行。
+首次生成只做必要校驗：資料可讀取、頁面正常載入、已開啟模組正常顯示、地圖正常生成、無明顯執行錯誤。完整的桌面/手機互動測試、逐項事實複核和邊界場景檢查不是預設步驟，需要時再執行。
 
-`trip-data.json` 默认是不含任何示例旅行事实的空白底板，所有旅行数组为空，六个模块关闭。新旅行直接根据用户资料一次性写入，不查找、不识别、也不合并旧 Demo 数据。
+`trip-data.json` 預設是不含任何示例旅行事實的空白底板，所有旅行陣列為空，六個模組關閉。新旅行直接根據使用者資料一次性寫入，不查詢、不識別、也不合並舊 Demo 資料。
 
-## 普通生成只读范围
+## 普通生成只讀範圍
 
-开始时只读：
+開始時只讀：
 
-- 用户上传的旅行资料；
+- 使用者上傳的旅行資料；
 - `trip-data.json`。
 
-不要扫描整个 Repo，不要重新分析 Golden UI、记账、Runtime 或架构。只有用户明确要求修改某个模块，或轻量校验指出对应问题时，才定向读取相关 reference。
+不要掃描整個 Repo，不要重新分析 Golden UI、記賬、Runtime 或架構。只有使用者明確要求修改某個模組，或輕量校驗指出對應問題時，才定向讀取相關 reference。
 
-## 固定权限边界
+## 固定許可權邊界
 
-普通生成只允许修改：
+普通生成只允許修改：
 
 - `trip-data.json`；
-- 本次旅行明确授权的 trip-specific assets。
+- 本次旅行明確授權的 trip-specific assets。
 
-`trip-data.json > routeMap` 和 `metadata.assets.routeMaps` 是构建派生字段，只由 `scripts/build-map.mjs` 写入；Agent 不手写这两处。
+`trip-data.json > routeMap` 和 `metadata.assets.routeMaps` 是構建派生欄位，只由 `scripts/build-map.mjs` 寫入；Agent 不手寫這兩處。
 
 普通生成禁止修改：
 
 - `index.html`、`styles.css`、`ledger.css`；
 - `app.js`、`overview-map.js`、`route-ui.js`、`site-navigation.js`；
-- `ledger.js`、记账金额/分账/结算算法；
-- Golden Map Style、路线颜色、双 stroke、圆点、字体、图例和核心交互；
-- Schema、Migration、Normalizer、Runtime、D1 或其他 Framework 级实现。
+- `ledger.js`、記賬金額/分賬/結算演算法；
+- Golden Map Style、路線顏色、雙 stroke、圓點、字型、圖例和核心互動；
+- Schema、Migration、Normalizer、Runtime、D1 或其他 Framework 級實現。
 
-用户生成第一版后明确提出 DIY 请求，才进入自由修改模式；仍需保护用户未授权的数据和文件。
+使用者生成第一版後明確提出 DIY 請求，才進入自由修改模式；仍需保護使用者未授權的資料和檔案。
 
-## 标准生成流程
+## 標準生成流程
 
-### STEP 1：读取旅行资料
+### STEP 1：讀取旅行資料
 
-一次性读取用户提供的文档、文本或公开资料。不得把私人原始文件当作公共示例或可复用模板资源；但用户提供并要求用于本次本地页面的门票 PDF，按下文门票规则复制完整副本到本次旅行 asset，不因其中包含票号或二维码而追加隐私确认。测试和公共资源必须使用完全虚构或明确允许公开的数据。
+一次性讀取使用者提供的文件、文字或公開資料。不得把私人原始檔案當作公共示例或可複用模板資源；但使用者提供並要求用於本次本地頁面的門票 PDF，按下文門票規則複製完整副本到本次旅行 asset，不因其中包含票號或二維碼而追加隱私確認。測試和公共資源必須使用完全虛構或明確允許公開的資料。
 
-### STEP 2：提取实际内容
+### STEP 2：提取實際內容
 
 提取：
 
-- 日期与基本旅行信息；
-- 国内/国外属性；国内行程在用户资料中明确表达的主要目的地名称；国外行程的目的地国家组合；
-- 航班与住宿；
-- 每日行程与地点顺序；
-- 门票；
-- 租车；
-- 准备事项；
-- 真正存在的缺口或冲突。
+- 日期與基本旅行資訊；
+- 國內/國外屬性；國內行程在使用者資料中明確表達的主要目的地名稱；國外行程的目的地國家組合；
+- 航班與住宿；
+- 每日行程與地點順序；
+- 門票；
+- 租車；
+- 準備事項；
+- 真正存在的缺口或衝突。
 
-不要建立 `source-facts.json`，不要记录逐条 provenance、页码或 confidence，不要创建 canonical 中间层，也不要强制补齐所有 Entity 或 Stable ID 类别。
+不要建立 `source-facts.json`，不要記錄逐條 provenance、頁碼或 confidence，不要建立 canonical 中間層，也不要強制補齊所有 Entity 或 Stable ID 類別。
 
-本地个人版以完整保留用户资料为默认。票号、二维码、Booking PIN、私人电话、完整预订号以及门票 PDF 中的其他内容都按用户提供的原文提取和使用；除非用户明确要求，否则不得在资料阅读、内容总结、模块确认、缺口确认或首次生成过程中主动建议隐藏、脱敏、删除、裁切或打码。它们不是“缺失材料”或需要额外确认的隐私问题。
+本地個人版以完整保留使用者資料為預設。票號、二維碼、Booking PIN、私人電話、完整預訂號以及門票 PDF 中的其他內容都按使用者提供的原文提取和使用；除非使用者明確要求，否則不得在資料閱讀、內容總結、模組確認、缺口確認或首次生成過程中主動建議隱藏、脫敏、刪除、裁切或打碼。它們不是“缺失材料”或需要額外確認的隱私問題。
 
-### STEP 3：第一次确认（模块）
+### STEP 3：第一次確認（模組）
 
-一次性告诉用户：
+一次性告訴使用者：
 
-- 哪些资料已经存在；
-- 建议开启哪些模块；
-- 哪些模块资料部分存在或暂未发现；
+- 哪些資料已經存在；
+- 建議開啟哪些模組；
+- 哪些模組資料部分存在或暫未發現；
 
-第一次确认只允许展示以下六个用户模块，并且必须按此顺序、使用中文名称编号：
+第一次確認只允許展示以下六個使用者模組，並且必須按此順序、使用中文名稱編號：
 
 1. 航班
-2. 地图
+2. 地圖
 3. 每日行程
-4. 租车
+4. 租車
 5. To Do
-6. 记账
+6. 記賬
 
-内部配置映射固定为：航班=`modules.flights`、地图=`modules.overview`、每日行程=`modules.itinerary`、租车=`modules.driving`、To Do=`modules.todo`、记账=`modules.ledger`。不得向用户展示内部英文键，不得把记账写成 `Ledger`，也不得出现第七个模块。
+內部配置對映固定為：航班=`modules.flights`、地圖=`modules.overview`、每日行程=`modules.itinerary`、租車=`modules.driving`、To Do=`modules.todo`、記賬=`modules.ledger`。不得向使用者展示內部英文鍵，不得把記賬寫成 `Ledger`，也不得出現第七個模組。
 
-门票不是独立模块：不编号、不单独确认、不写入 `config.modules`。门票资料是“每日行程”中的内容，有资料时显示在对应行程里；资料不足时，只在第二次确认中作为内容缺口说明；显示与隐藏始终跟随“每日行程”。
+門票不是獨立模組：不編號、不單獨確認、不寫入 `config.modules`。門票資料是“每日行程”中的內容，有資料時顯示在對應行程裡；資料不足時，只在第二次確認中作為內容缺口說明；顯示與隱藏始終跟隨“每日行程”。
 
-第一次确认输出后立即停止并等待用户回复。未收到明确回复前，不得进入第二次确认、写入旅行数据、构建地图或启动页面。没有资料不代表自动关闭，用户仍可保留模块并显示“待补充”。
+第一次確認輸出後立即停止並等待使用者回覆。未收到明確回覆前，不得進入第二次確認、寫入旅行資料、構建地圖或啟動頁面。沒有資料不代表自動關閉，使用者仍可保留模組並顯示“待補充”。
 
-地图只使用 `assets/maps/templates/manifest.json` 中登记的十张固定底图。普通生成不得临时绘制、生成或增加新模板；只有模板库维护任务才允许更新该目录与 manifest。
+地圖只使用 `assets/maps/templates/manifest.json` 中登記的十張固定底圖。普通生成不得臨時繪製、生成或增加新模板；只有模板庫維護任務才允許更新該目錄與 manifest。
 
-Agent 只确认模块；`scripts/build-map.mjs` 先根据地点经纬度、路线跨度、方向、密度和连通关系形成候选模板池，再根据由区域、地点与路线组成的旅行签名做稳定哈希，从候选池中确定性选择一张。不得要求用户选择地图风格。`trip-data.json > map.mapMode` 固定写为 `template-auto`，`map.templateId` 固定写为 `auto`；Builder 生成的 `routeMap.regions[].mapMode` 为 `frozen-template`。
+Agent 只確認模組；`scripts/build-map.mjs` 先根據地點經緯度、路線跨度、方向、密度和連通關係形成候選模板池，再根據由區域、地點與路線組成的旅行簽名做穩定雜湊，從候選池中確定性選擇一張。不得要求使用者選擇地圖風格。`trip-data.json > map.mapMode` 固定寫為 `template-auto`，`map.templateId` 固定寫為 `auto`；Builder 生成的 `routeMap.regions[].mapMode` 為 `frozen-template`。
 
-高密度点位由 Builder 在统一安全区域内确定性疏散。经纬度只负责相对东南西北和距离关系，不追求真实比例；同一输入必须得到相同位置。
+高密度點位由 Builder 在統一安全區域內確定性疏散。經緯度只負責相對東南西北和距離關係，不追求真實比例；同一輸入必須得到相同位置。
 
-### STEP 4：第二次确认（真正的数据缺口）
+### STEP 4：第二次確認（真正的資料缺口）
 
-只检查用户最终保留的模块，把所有缺失、冲突和歧义合并成一次确认。让用户选择：
+只檢查使用者最終保留的模組，把所有缺失、衝突和歧義合併成一次確認。讓使用者選擇：
 
-- 现在补充；或
-- 先生成，缺失处显示“待补充 / 待确认”。
+- 現在補充；或
+- 先生成，缺失處顯示“待補充 / 待確認”。
 
-不要重复询问已经明确的信息。少量缺失不得阻止生成；只标记缺失字段，不覆盖已经确认的事实。
+不要重複詢問已經明確的資訊。少量缺失不得阻止生成；只標記缺失欄位，不覆蓋已經確認的事實。
 
-收到用户对第二次确认的明确回复后，先向用户发送以下说明，再继续 STEP 5。这只是进度提示，不构成第三次确认，也不需要等待用户再次回复：
+收到使用者對第二次確認的明確回覆後，先向使用者傳送以下說明，再繼續 STEP 5。這只是進度提示，不構成第三次確認，也不需要等待使用者再次回覆：
 
-> 首次生成需要 AI 阅读并整理你的旅行资料，再套用模板生成页面，因此会需要一定时间。简单行程通常几分钟到十几分钟即可完成；如果行程天数较多、涉及多个城市/国家或资料比较复杂，生成时间可能更长
+> 首次生成需要 AI 閱讀並整理你的旅行資料，再套用模板生成頁面，因此會需要一定時間。簡單行程通常幾分鐘到十幾分鍾即可完成；如果行程天數較多、涉及多個城市/國家或資料比較複雜，生成時間可能更長
 
-### STEP 5：只写一份输入
+### STEP 5：只寫一份輸入
 
-只写入 `trip-data.json`：
+只寫入 `trip-data.json`：
 
-- 从空白容器一次性写入本次旅行的完整内容，把 `trip.status` 从 `uninitialized` 改为 `draft`，并替换 `metadata.tripId` 与标题；
-- `config`：六个模块开关、语言和本地优先持久化；
-- `map`：地点经纬度、区域归属、地点顺序、总览路线与每日路线。
+- 從空白容器一次性寫入本次旅行的完整內容，把 `trip.status` 從 `uninitialized` 改為 `draft`，並替換 `metadata.tripId` 與標題；
+- `config`：六個模組開關、語言和本地優先持久化；
+- `map`：地點經緯度、區域歸屬、地點順序、總覽路線與每日路線。
 
-用户未提供的内容保持空数组，或仅在已启用模块中按现有规则标为“待补充 / 待确认”。不得把空白底板中的占位状态当成用户事实。
+使用者未提供的內容保持空陣列，或僅在已啟用模組中按現有規則標為“待補充 / 待確認”。不得把空白底板中的佔位狀態當成使用者事實。
 
-不要手写 `routeMap`、SVG path、地图坐标、路线颜色或标签样式。
+不要手寫 `routeMap`、SVG path、地圖座標、路線顏色或標籤樣式。
 
-### 首次写入字段速查
+### 首次寫入欄位速查
 
-保留空白底板已有的容器键；模块关闭时保留空数组或 `null`，不要删除容器。首次生成至少遵守：
+保留空白底板已有的容器鍵；模組關閉時保留空陣列或 `null`，不要刪除容器。首次生成至少遵守：
 
-- `metadata` 写 `tripId`、`title`；`trip` 写 `status: "draft"`、起止日期、`dayCount`、国家和目的地区域。日期使用 `YYYY-MM-DD`。
-- `days[]` 写 `day`、`date`、`title`、`locations[]`、`schedule[]`；行程项写 `id`、`time`、`type`、`text`，有对应数据时再加 `placeId` / `placeIds` / `ticketIds`。`dayCount` 必须等于 Day 数量。
-- `accommodations[]` 可保留住宿记录；当前页面要显示的入住、退房和住宿文字仍写入对应的 `day.schedule[]`。
-- 完整航班使用 `flightJourneys[]:{id}` 和 `flights[]:{id,journeyId,sequence,airline:{name或nameZh},flightNumber,departure:{airportCode,city,date,time,utcOffset},arrival:{同结构}}`。资料缺失时只写带 `placeholder:true`、`status:"pending"`、`missingFields[]` 的 Journey，不猜航班事实。
-- `places[]` 写唯一 `id` 和 `name` 或 `nameZh`；`ticketPlanning.items[]` 用唯一 `id`、`day` / `dayId`、名称和 `requirement`，由行程项的 `ticketIds[]` 关联。
-- `preTrip.packingItems[]` 写 `id`、`text`、`completed`；没有用户明确提供的 To Do 时保持空数组。
-- 开启租车时，`rentalCar` 写 `company`、`rentalPeriodDays`、`vehicle:{example,class}`、`unlimitedKilometers`、`price:{currency,payAtCounter}`、`insurance[]`、`pickup:{date,time,location,address,utcOffset}`、`dropoff:{date,time,timeZoneLabel,vehicleReturnPoint,deadlineWarning,recommendedArrivalTime,utcOffset}`；同时保留租车检查、驾驶提醒和参考链接数组。
-- 地图开启时填写 `region`、`places[]`、`routes[]`、`dailyRoutes[]`。地图地点使用唯一 ID，优先提供经纬度；路线的 `day` 对应已有 Day，`placeIds` 至少两个且必须存在。多目的地地点还需 `countryCode` 或 `mapRegionId`；Daily Map 需要交通图标时，用 `scheduleItems` 按相邻路线段关联行程项 ID 或索引。
-- 地图关闭时三组地图数组可为空；地图开启时运行 Builder。Agent 不写 `routeMap` 或 `metadata.assets.routeMaps`。
+- `metadata` 寫 `tripId`、`title`；`trip` 寫 `status: "draft"`、起止日期、`dayCount`、國家和目的地區域。日期使用 `YYYY-MM-DD`。
+- `days[]` 寫 `day`、`date`、`title`、`locations[]`、`schedule[]`；行程項寫 `id`、`time`、`type`、`text`，有對應資料時再加 `placeId` / `placeIds` / `ticketIds`。`dayCount` 必須等於 Day 數量。
+- `accommodations[]` 可保留住宿記錄；當前頁面要顯示的入住、退房和住宿文字仍寫入對應的 `day.schedule[]`。
+- 完整航班使用 `flightJourneys[]:{id}` 和 `flights[]:{id,journeyId,sequence,airline:{name或nameZh},flightNumber,departure:{airportCode,city,date,time,utcOffset},arrival:{同結構}}`。資料缺失時只寫帶 `placeholder:true`、`status:"pending"`、`missingFields[]` 的 Journey，不猜航班事實。
+- `places[]` 寫唯一 `id` 和 `name` 或 `nameZh`；`ticketPlanning.items[]` 用唯一 `id`、`day` / `dayId`、名稱和 `requirement`，由行程項的 `ticketIds[]` 關聯。
+- `preTrip.packingItems[]` 寫 `id`、`text`、`completed`；沒有使用者明確提供的 To Do 時保持空陣列。
+- 開啟租車時，`rentalCar` 寫 `company`、`rentalPeriodDays`、`vehicle:{example,class}`、`unlimitedKilometers`、`price:{currency,payAtCounter}`、`insurance[]`、`pickup:{date,time,location,address,utcOffset}`、`dropoff:{date,time,timeZoneLabel,vehicleReturnPoint,deadlineWarning,recommendedArrivalTime,utcOffset}`；同時保留租車檢查、駕駛提醒和參考連結陣列。
+- 地圖開啟時填寫 `region`、`places[]`、`routes[]`、`dailyRoutes[]`。地圖地點使用唯一 ID，優先提供經緯度；路線的 `day` 對應已有 Day，`placeIds` 至少兩個且必須存在。多目的地地點還需 `countryCode` 或 `mapRegionId`；Daily Map 需要交通圖示時，用 `scheduleItems` 按相鄰路線段關聯行程項 ID 或索引。
+- 地圖關閉時三組地圖陣列可為空；地圖開啟時執行 Builder。Agent 不寫 `routeMap` 或 `metadata.assets.routeMaps`。
 
-Hero 标题与地图模式完全独立。固定规则只有两种：
+Hero 標題與地圖模式完全獨立。固定規則只有兩種：
 
-- 国内旅行：`trip.primaryDestinationName` 保留用户资料中的主要目的地表述，例如“内蒙古”“成都”“新疆”；Hero 不显示“中国”；
-- 国外旅行：Hero 根据 `primaryDestinationCountries` 显示国家名；多国之间使用 ` × `。
+- 國內旅行：`trip.primaryDestinationName` 保留使用者資料中的主要目的地表述，例如“內蒙古”“成都”“新疆”；Hero 不顯示“中國”；
+- 國外旅行：Hero 根據 `primaryDestinationCountries` 顯示國家名；多國之間使用 ` × `。
 
-优先从旅行计划标题、路线主题或用户原文提取 `primaryDestinationName`，不要机械取第一个城市，也不要根据地图 Scope 改写它。资料没有明确目的地表述时，才回退到 `primaryDestinationCity` 或 `citiesAndAreas` 第一项。`trip.heroTitle` 仅作为用户后续明确 DIY 时的直接展示覆盖值。
+優先從旅行計劃標題、路線主題或使用者原文提取 `primaryDestinationName`，不要機械取第一個城市，也不要根據地圖 Scope 改寫它。資料沒有明確目的地表述時，才回退到 `primaryDestinationCity` 或 `citiesAndAreas` 第一項。`trip.heroTitle` 僅作為使用者後續明確 DIY 時的直接展示覆蓋值。
 
-### STEP 6：构建并轻量校验
+### STEP 6：構建並輕量校驗
 
 ```bash
 npm run build:map
 npm run validate
 ```
 
-`build-map` 必须是唯一地图生成入口。它从 `trip-data.json > map` 读取地图输入，并把 Renderer 直接读取的 `routeMap` 写回同一份 `trip-data.json`。
+`build-map` 必須是唯一地圖生成入口。它從 `trip-data.json > map` 讀取地圖輸入，並把 Renderer 直接讀取的 `routeMap` 寫回同一份 `trip-data.json`。
 
-`validate-lite` 只检查会导致页面失败或泄露的问题：JSON、基本行程、Day、模块数据或明确待补充、地图地点/路线、模板清单与所引用底图、明显 Secret，以及核心运行文件。
+`validate-lite` 只檢查會導致頁面失敗或洩露的問題：JSON、基本行程、Day、模組資料或明確待補充、地圖地點/路線、模板清單與所引用底圖、明顯 Secret，以及核心執行檔案。
 
-不要在普通生成中运行完整 Entity、18 类 Stable ID、provenance、migration、architecture 或 Framework Schema 校验。
+不要在普通生成中執行完整 Entity、18 類 Stable ID、provenance、migration、architecture 或 Framework Schema 校驗。
 
-### STEP 7：启动并快速检查
+### STEP 7：啟動並快速檢查
 
 ```bash
 npm run preview
 ```
 
-从本次预览进程输出的 `Travel plan local preview:` 后取得实际 URL，用该地址确认 HTTP 200 或页面正常载入，并在交付后保留此预览进程运行。默认从 4173 端口开始；端口占用时服务器会自动尝试后续端口。链接必须来自本次成功运行的进程，不能预设端口、复用旧任务地址或仅凭启动日志判断。内置浏览器已经打开也不能替代最终交付链接。
+從本次預覽程序輸出的 `Travel plan local preview:` 後取得實際 URL，用該地址確認 HTTP 200 或頁面正常載入，並在交付後保留此預覽程序執行。預設從 4173 埠開始；埠占用時伺服器會自動嘗試後續埠。連結必須來自本次成功執行的程序，不能預設埠、複用舊任務地址或僅憑啟動日誌判斷。內建瀏覽器已經開啟也不能替代最終交付連結。
 
-只检查数据可读取、页面能载入、已启用模块可见、地图已生成，且没有明显运行错误。只有内容无法识别、排版异常或存在明显歧义时，才补充页面级视觉检查；完整桌面/手机交互、逐项事实和边界场景验收需要时再执行。完成后停止。
+只檢查資料可讀取、頁面能載入、已啟用模組可見、地圖已生成，且沒有明顯執行錯誤。只有內容無法識別、排版異常或存在明顯歧義時，才補充頁面級視覺檢查；完整桌面/手機互動、逐項事實和邊界場景驗收需要時再執行。完成後停止。
 
-## 地图硬边界
+## 地圖硬邊界
 
-Agent 只提供地点、经纬度、顺序和每日路线。Builder 从十张固定底图中自动选择一张，并叠加固定路线、节点、标签、标题和日期图例。禁止调用图片生成模型画地图，禁止自行设定颜色、字体、线宽、圆点、图例、地形装饰或交通图标，禁止绕过 `scripts/build-map.mjs`。
+Agent 只提供地點、經緯度、順序和每日路線。Builder 從十張固定底圖中自動選擇一張，併疊加固定路線、節點、標籤、標題和日期圖例。禁止呼叫圖片生成模型畫地圖，禁止自行設定顏色、字型、線寬、圓點、圖例、地形裝飾或交通圖示，禁止繞過 `scripts/build-map.mjs`。
 
-地图只收录目的地内部行程。出发国、返程终点国和纯转机国家不属于本次目的地时，其机场与跨国飞行路线不得写入地图；例如深圳飞往苏黎世，只显示苏黎世及之后的瑞士境内路线。抵达机场位于目的地内部时必须保留，例如苏黎世机场到瑞士其他地点。
+地圖只收錄目的地內部行程。出發國、返程終點國和純轉機國家不屬於本次目的地時，其機場與跨國飛行路線不得寫入地圖；例如深圳飛往蘇黎世，只顯示蘇黎世及之後的瑞士境內路線。抵達機場位於目的地內部時必須保留，例如蘇黎世機場到瑞士其他地點。
 
-多国旅行必须在 `trip-data.json > map.regions` 中按目的地拆分，每个地点提供 `countryCode` 或 `mapRegionId`。Builder 为每个目的地生成独立 `routeMap.regions[]`，并删除跨区域连线；瑞士地点只出现在瑞士地图，罗马或意大利地点只出现在对应地图。不得把多个国家的全部地点压进同一张模板图。
+多國旅行必須在 `trip-data.json > map.regions` 中按目的地拆分，每個地點提供 `countryCode` 或 `mapRegionId`。Builder 為每個目的地生成獨立 `routeMap.regions[]`，並刪除跨區域連線；瑞士地點只出現在瑞士地圖，羅馬或義大利地點只出現在對應地圖。不得把多個國家的全部地點壓進同一張模板圖。
 
-Overview 最多显示核心地点，Daily 显示当天详细地点；二者必须共用同一底图、画布、比例与地点坐标。禁止 Day zoom、fitBounds、crop-to-day 或重新计算当天 extent。
+Overview 最多顯示核心地點，Daily 顯示當天詳細地點；二者必須共用同一底圖、畫布、比例與地點座標。禁止 Day zoom、fitBounds、crop-to-day 或重新計算當天 extent。
 
-普通旅行生成不得读取 Boundary Library、研究地图版权、下载轮廓或为某个国家另做新模板。旧 Boundary 和国家轮廓能力只作为 advanced/reference 保留。
+普通旅行生成不得讀取 Boundary Library、研究地圖版權、下載輪廓或為某個國家另做新模板。舊 Boundary 和國家輪廓能力只作為 advanced/reference 保留。
 
-## To Do 提取规则
+## To Do 提取規則
 
-To Do 只允许提取用户资料中明确写出的待办、备忘、提醒、准备事项或尚未完成的动作。不得根据常识自行补充证件检查、天气、换汇、网络、保险、行李、地图或其他建议。用户没有明确提供 To Do 时，`preTrip.packingItems` 写为空数组，保留输入界面供用户自行添加；这不属于阻止生成的数据缺口。
+To Do 只允許提取使用者資料中明確寫出的待辦、備忘、提醒、準備事項或尚未完成的動作。不得根據常識自行補充證件檢查、天氣、換匯、網路、保險、行李、地圖或其他建議。使用者沒有明確提供 To Do 時，`preTrip.packingItems` 寫為空陣列，保留輸入介面供使用者自行新增；這不屬於阻止生成的資料缺口。
 
-## 门票 PDF
+## 門票 PDF
 
-用户提供门票 PDF 时，不修改源 PDF，只将获准使用的完整副本放入本次旅行的 `assets/tickets/`，并在对应 `ticketPlanning.items[].document` 写入相对 `url`、`type: application/pdf` 与用户可见 `label`。不得为了“安全”主动遮挡、裁切、打码或重新导出 PDF；只有用户明确要求时才处理其中内容。点击门票的“查看”按钮必须在现有门票 Dialog 内嵌 PDF，同时保留“在新窗口打开 PDF”作为浏览器不支持内嵌时的回退。没有 PDF 时继续显示现有文字说明，不伪造文件。
+使用者提供門票 PDF 時，不修改源 PDF，只將獲准使用的完整副本放入本次旅行的 `assets/tickets/`，並在對應 `ticketPlanning.items[].document` 寫入相對 `url`、`type: application/pdf` 與使用者可見 `label`。不得為了“安全”主動遮擋、裁切、打碼或重新匯出 PDF；只有使用者明確要求時才處理其中內容。點選門票的“檢視”按鈕必須在現有門票 Dialog 內嵌 PDF，同時保留“在新視窗開啟 PDF”作為瀏覽器不支援內嵌時的回退。沒有 PDF 時繼續顯示現有文字說明，不偽造檔案。
 
-## 记账与 Runtime
+## 記賬與 Runtime
 
-记账直接复用 Golden 实现。普通使用固定为 `config.persistence.mode = "local"`，不需要数据库。只有用户明确要求多人共享或多设备同步时，才定向读取 `optional/cloudflare-d1/` 并启用用户自己的 D1；不得提交数据库 ID、Account ID、Token、Secret 或私人运行数据。
+記賬直接複用 Golden 實現。普通使用固定為 `config.persistence.mode = "local"`，不需要資料庫。只有使用者明確要求多人共享或多裝置同步時，才定向讀取 `optional/cloudflare-d1/` 並啟用使用者自己的 D1；不得提交資料庫 ID、Account ID、Token、Secret 或私人執行資料。
 
-## 生成结束提示
+## 生成結束提示
 
-完成本地检查后，按以下格式向用户交付并结束任务。把下面两处 `ACTUAL_URL` 替换成本次验证成功的完整本地 URL，绝不能原样输出占位符；即使页面已经在内置浏览器打开，也不能省略可点击链接。公开访问风险只在这个最终交付阶段提醒一次，不得提前放入资料分析或两轮确认。不要展开 GitHub、Cloudflare Pages 或 D1 教程，不要要求用户选择下一步，也不要暗示已经完成公网部署：
+完成本地檢查後，按以下格式向使用者交付並結束任務。把下面兩處 `ACTUAL_URL` 替換成本次驗證成功的完整本地 URL，絕不能原樣輸出佔位符；即使頁面已經在內建瀏覽器開啟，也不能省略可點選連結。公開訪問風險只在這個最終交付階段提醒一次，不得提前放入資料分析或兩輪確認。不要展開 GitHub、Cloudflare Pages 或 D1 教程，不要要求使用者選擇下一步，也不要暗示已經完成公網部署：
 
-第一版旅行网页已生成完成，目前是本地可运行版本。
+第一版旅行網頁已生成完成，目前是本地可執行版本。
 
-网页地址：[打开旅行网页](ACTUAL_URL)
+網頁地址：[開啟旅行網頁](ACTUAL_URL)
 
 本地地址：`ACTUAL_URL`
 
-隐私提醒：当前是本地页面。如果以后公开部署，页面内容可能被任何人访问；是否移除或隐藏敏感内容、增加访问保护，由你自行决定。
+隱私提醒：當前是本地頁面。如果以後公開部署，頁面內容可能被任何人訪問；是否移除或隱藏敏感內容、增加訪問保護，由你自行決定。
 
-后续如需上线或多人共享，可以继续配置：
+後續如需上線或多人共享，可以繼續配置：
 
-本地网页 → GitHub（版本管理） → Cloudflare Pages（公网部署） → [可选] Cloudflare D1（多人共享数据）
+本地網頁 → GitHub（版本管理） → Cloudflare Pages（公網部署） → [可選] Cloudflare D1（多人共享資料）
 
-D1 仅在需要多人 / 多设备共享记账、Todo、Ticket 等数据时使用。
+D1 僅在需要多人 / 多裝置共享記賬、Todo、Ticket 等資料時使用。
 
-后续具体配置可再自行与 AI 沟通。
+後續具體配置可再自行與 AI 溝通。

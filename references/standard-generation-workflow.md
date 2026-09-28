@@ -1,112 +1,112 @@
 # Standard Generation Workflow
 
-状态：保留的 advanced/canonical 流程；普通单文件生成以根目录 `SKILL.md` 为准。  
-范围：从用户材料到本地标准预览；不包含个性化改版、公开部署或云数据库配置。
+狀態：保留的 advanced/canonical 流程；普通單檔案生成以根目錄 `SKILL.md` 為準。  
+範圍：從使用者材料到本地標準預覽；不包含個性化改版、公開部署或雲資料庫配置。
 
 ## 1. Outcome
 
-一次生成必须产出可在本地打开的标准旅行网页，同时满足：
+一次生成必須產出可在本地開啟的標準旅行網頁，同時滿足：
 
-- 用户只需要做两轮集中确认；
-- 单次旅行只替换配置、事实数据和该旅行资产；
-- 页面结构、视觉、交互和 Ledger 算法来自冻结 Core；
-- 缺失材料不会阻断预览，也不会被猜测；
-- 原始材料和提取中间结果不会进入发布目录；
-- 无网络、无 Cloudflare、无 D1 时，启用的本地功能仍可使用；
-- 生成耗时可以按阶段解释和复现。
+- 使用者只需要做兩輪集中確認；
+- 單次旅行只替換配置、事實資料和該旅行資產；
+- 頁面結構、視覺、互動和 Ledger 演算法來自凍結 Core；
+- 缺失材料不會阻斷預覽，也不會被猜測；
+- 原始材料和提取中間結果不會進入釋出目錄；
+- 無網路、無 Cloudflare、無 D1 時，啟用的本地功能仍可使用；
+- 生成耗時可以按階段解釋和復現。
 
 ## 2. Directory and privacy boundary
 
 ### Private work directory
 
-放在发布仓库之外，由当前用户单独控制：
+放在釋出倉庫之外，由當前使用者單獨控制：
 
 ```text
 <private-work-dir>/
-├── source-files/          原始 PDF、图片、票据、订单等
-├── source-facts.json      一次提取后的结构化事实与来源
-├── canonical-travel-data.json  确认后的规范化构建输入
-└── working-notes/         可选的临时 OCR、消歧和检查记录
+├── source-files/          原始 PDF、圖片、票據、訂單等
+├── source-facts.json      一次提取後的結構化事實與來源
+├── canonical-travel-data.json  確認後的規範化構建輸入
+└── working-notes/         可選的臨時 OCR、消歧和檢查記錄
 ```
 
-这些文件不得复制到模板、公开仓库、Demo、Skill、references、测试 fixture 或共享缓存。绝对路径也不得写入发布数据。
+這些檔案不得複製到模板、公開倉庫、Demo、Skill、references、測試 fixture 或共享快取。絕對路徑也不得寫入釋出資料。
 
 ### Publishable trip directory
 
-单次生成只允许改变以下类别：
+單次生成只允許改變以下類別：
 
 ```text
-trip-config.json           模块与持久化模式
-travel-data.json           编译后的Renderer数据
-assets/...                 本次旅行获授权使用的资产
-reports/...                不含原始材料或秘密的生成/校验报告
+trip-config.json           模組與持久化模式
+travel-data.json           編譯後的Renderer資料
+assets/...                 本次旅行獲授權使用的資產
+reports/...                不含原始材料或秘密的生成/校驗報告
 ```
 
-其余文件视为 Core 或框架工具。生成前后由 `schemas/core-integrity.json` 和 validator 比对。发生不一致时停止并报告；不得运行 `freeze` 将意外改动登记为正常。
+其餘檔案視為 Core 或框架工具。生成前後由 `schemas/core-integrity.json` 和 validator 比對。發生不一致時停止並報告；不得執行 `freeze` 將意外改動登記為正常。
 
 ## 3. Stage A — extract facts once
 
-优先读取 PDF 的文字层；只有无文字、表格错位、图像承载关键信息或低置信度页面才做视觉/OCR检查。不要反复从头阅读同一份材料。
+優先讀取 PDF 的文字層；只有無文字、表格錯位、影象承載關鍵資訊或低置信度頁面才做視覺/OCR檢查。不要反覆從頭閱讀同一份材料。
 
-将结果写入仓库外的`source-facts.json`，其结构由`schemas/source-facts.schema.json`定义。至少保留：
+將結果寫入倉庫外的`source-facts.json`，其結構由`schemas/source-facts.schema.json`定義。至少保留：
 
-- `sourceDocuments`及文档ID、media type、页数；
-- 每条事实的`sourceRefs`，指向文档页码或用户确认；
-- `issues`中的`missing-material / contradiction / uncertain / privacy-review`类型；
-- issue的`open / resolved / accepted-for-preview`状态；
-- `confirmations.moduleSelection`与`confirmations.missingMaterials`两轮结果。
+- `sourceDocuments`及文件ID、media type、頁數；
+- 每條事實的`sourceRefs`，指向文件頁碼或使用者確認；
+- `issues`中的`missing-material / contradiction / uncertain / privacy-review`型別；
+- issue的`open / resolved / accepted-for-preview`狀態；
+- `confirmations.moduleSelection`與`confirmations.missingMaterials`兩輪結果。
 
-若提取置信度不足，将其登记为`uncertain` issue，而不是增加Schema之外的自由字段。
+若提取置信度不足，將其登記為`uncertain` issue，而不是增加Schema之外的自由欄位。
 
-提取阶段不生成 HTML，不画地图，不连接数据库，也不改模板。
+提取階段不生成 HTML，不畫地圖，不連線資料庫，也不改模板。
 
 ## 4. Round 1 — module confirmation
 
-事实提取完成后，一次性向用户展示七个模块。可以标注“材料中已检测到 / 未检测到”，但最终开关由用户决定。
+事實提取完成後，一次性向使用者展示七個模組。可以標註“材料中已檢測到 / 未檢測到”，但最終開關由使用者決定。
 
-| Config key | 用户看到的模块 | 关闭后的行为 |
+| Config key | 使用者看到的模組 | 關閉後的行為 |
 |---|---|---|
-| `flights` | 航班 | 不渲染、不导航、不初始化倒计时 |
-| `overview` | 旅行总览与路线地图 | 不渲染国家总览或路线地图 |
+| `flights` | 航班 | 不渲染、不導航、不初始化倒計時 |
+| `overview` | 旅行總覽與路線地圖 | 不渲染國家總覽或路線地圖 |
 | `itinerary` | 逐日行程 | 不渲染 Timeline 或每日入口 |
-| `tickets` | 门票 | 不渲染票据状态或打开入口 |
+| `tickets` | 門票 | 不渲染票據狀態或開啟入口 |
 | `todo` | Todo | 不渲染或初始化 Todo |
-| `driving` | 自驾 | 不渲染租车、还车倒计时或驾驶提醒 |
-| `ledger` | 记账 | 不渲染或初始化 Ledger |
+| `driving` | 自駕 | 不渲染租車、還車倒計時或駕駛提醒 |
+| `ledger` | 記賬 | 不渲染或初始化 Ledger |
 
-把确认值写入 `trip-config.json > modules`。配置结构由 `schemas/trip-config.schema.json` 验证。
+把確認值寫入 `trip-config.json > modules`。配置結構由 `schemas/trip-config.schema.json` 驗證。
 
-Ticket卡片嵌在逐日行程中，因此`tickets=true`要求`itinerary=true`。在Round 1清楚说明这个依赖，并在进入Round 2之前解决冲突；不要等生成失败后再追加一轮提问。
+Ticket卡片嵌在逐日行程中，因此`tickets=true`要求`itinerary=true`。在Round 1清楚說明這個依賴，並在進入Round 2之前解決衝突；不要等生成失敗後再追加一輪提問。
 
-关闭模块只能通过 Config 生效。禁止为某个用户删除 section、导航、事件处理器或初始化代码。第一个可见 section 和导航顺序由 Core 根据已启用模块自动决定。
+關閉模組只能透過 Config 生效。禁止為某個使用者刪除 section、導航、事件處理器或初始化程式碼。第一個可見 section 和導航順序由 Core 根據已啟用模組自動決定。
 
 ## 5. Round 2 — missing-material decision
 
-只检查已启用模块。把所有缺失、矛盾或歧义合并成一次清单，每项说明：
+只檢查已啟用模組。把所有缺失、矛盾或歧義合併成一次清單，每項說明：
 
-- 缺什么；
-- 影响哪个模块或哪条事实；
-- 是否阻止可靠显示；
-- 继续预览时会怎样表示。
+- 缺什麼；
+- 影響哪個模組或哪條事實；
+- 是否阻止可靠顯示；
+- 繼續預覽時會怎樣表示。
 
-然后只让用户决定：
+然後只讓使用者決定：
 
-1. **现在补充材料**：等待用户一次性补充，再合并进同一份 `source-facts.json`；
-2. **继续生成预览**：把问题记录为 accepted/open，并用“待补充 / 待确认”状态完成页面。
+1. **現在補充材料**：等待使用者一次性補充，再合併進同一份 `source-facts.json`；
+2. **繼續生成預覽**：把問題記錄為 accepted/open，並用“待補充 / 待確認”狀態完成頁面。
 
-选择预览后，禁止：
+選擇預覽後，禁止：
 
-- 用常识、搜索结果或相似订单补写未知事实；
-- 把多个候选地点压成一个泛化城市点；
-- 因一个交通班次未知而删除已知起点、终点或途经点；
-- 为了让校验通过而删除用户已确认的信息；
-- 在生成过程中拆成第三、第四轮零散确认。
+- 用常識、搜尋結果或相似訂單補寫未知事實；
+- 把多個候選地點壓成一個泛化城市點；
+- 因一個交通班次未知而刪除已知起點、終點或途經點；
+- 為了讓校驗透過而刪除使用者已確認的資訊；
+- 在生成過程中拆成第三、第四輪零散確認。
 
-只有当缺失项会导致安全风险、无法确定同名地点国家/城市，或无法生成任何有效结果时，才再次阻塞并说明原因。
+只有當缺失項會導致安全風險、無法確定同名地點國家/城市，或無法生成任何有效結果時，才再次阻塞並說明原因。
 
 ## 6. Stage B — canonical trip data
 
-根据两轮确认生成：
+根據兩輪確認生成：
 
 ```json
 {
@@ -127,32 +127,32 @@ Ticket卡片嵌在逐日行程中，因此`tickets=true`要求`itinerary=true`�
 }
 ```
 
-上例只说明字段结构；每个模块的布尔值必须来自 Round 1，不能把示例值当作用户选择。
+上例只說明欄位結構；每個模組的布林值必須來自 Round 1，不能把示例值當作使用者選擇。
 
-先在仓库外生成`<private-work-dir>/canonical-travel-data.json`。它应遵守`references/travel-data-contract.md`和`schemas/travel-data.schema.json`支持的canonical形状：
+先在倉庫外生成`<private-work-dir>/canonical-travel-data.json`。它應遵守`references/travel-data-contract.md`和`schemas/travel-data.schema.json`支援的canonical形狀：
 
-- 一个事实只有一个权威来源；
-- Place、Day、Day Item、Ticket、Transport 等使用稳定 ID；
-- 日程通过 ID 引用地点、票务和交通，不用显示文字或数组位置充当关系；
-- 文字只是展示内容；
-- Todo、Ticket 勾选状态和 Ledger 账目不进入静态旅行事实；
-- 未确认字段保留明确状态，不伪造成已确认值。
+- 一個事實只有一個權威來源；
+- Place、Day、Day Item、Ticket、Transport 等使用穩定 ID；
+- 日程透過 ID 引用地點、票務和交通，不用顯示文字或陣列位置充當關係；
+- 文字只是展示內容；
+- Todo、Ticket 勾選狀態和 Ledger 賬目不進入靜態旅行事實；
+- 未確認欄位保留明確狀態，不偽造成已確認值。
 
-已保留但材料不全的航班必须写成 `status="missing"` 的 typed placeholder，包含 `title + missingFields + issueIds`，不填写猜测的起降信息。已保留但没有票据文件的 Ticket 保留为 `materialStatus="missing"`。这两种状态都是第二轮“继续预览”的标准输出，不是校验逃生口。
+已保留但材料不全的航班必須寫成 `status="missing"` 的 typed placeholder，包含 `title + missingFields + issueIds`，不填寫猜測的起降資訊。已保留但沒有票據檔案的 Ticket 保留為 `materialStatus="missing"`。這兩種狀態都是第二輪“繼續預覽”的標準輸出，不是校驗逃生口。
 
 ## 7. Stage C — standardized maps
 
 ### Required inputs
 
-每个保留的目的地国家需要：
+每個保留的目的地國家需要：
 
-- 用户有权使用的国家边界 GeoJSON，并记录来源与许可；
+- 使用者有權使用的國家邊界 GeoJSON，並記錄來源與許可；
 - `trip.primaryDestinationCountries[]` 中的 ISO 3166-1 alpha-2 code；
-- canonical Places 中的 `countryCode` 与 `geo.lat/lng`；
-- Days 和 Day Items 对 Place/Transport 的明确引用；
-- 已确认的访问顺序。
+- canonical Places 中的 `countryCode` 與 `geo.lat/lng`；
+- Days 和 Day Items 對 Place/Transport 的明確引用；
+- 已確認的訪問順序。
 
-不要从显示文案猜国家或地点，不要从私人 Golden 地图反推 geometry，也不要用手写贝塞尔曲线替代真实国家轮廓。
+不要從顯示文案猜國家或地點，不要從私人 Golden 地圖反推 geometry，也不要用手寫貝塞爾曲線替代真實國家輪廓。
 
 ### Generation
 
@@ -166,24 +166,24 @@ node scripts/generate-map-package.mjs \
   --license <BOUNDARY_LICENSE>
 ```
 
-生成器负责：
+生成器負責：
 
-- 把准确国家边界投影到固定 `1448×1086` 画布；
-- 输出 Golden 风格底图 SVG，而不是临时卡通轮廓；
-- 从 canonical geo Places 投影地点；
-- 按引用顺序生成 Overview route；
-- 按 Day 生成 `dailyLayouts`、路线和 transport pins；
-- 为每日地点计算带padding的viewport，使城市内行程使用城市尺度，而不是整国尺度；
-- 输出确定性的默认标签信息；当前不承诺完整的自动collision求解；
-- 记录边界来源、许可和生成参数，便于安全复用与复现。
+- 把準確國家邊界投影到固定 `1448×1086` 畫布；
+- 輸出 Golden 風格底圖 SVG，而不是臨時卡通輪廓；
+- 從 canonical geo Places 投影地點；
+- 按引用順序生成 Overview route；
+- 按 Day 生成 `dailyLayouts`、路線和 transport pins；
+- 為每日地點計算帶padding的viewport，使城市內行程使用城市尺度，而不是整國尺度；
+- 輸出確定性的預設標籤資訊；當前不承諾完整的自動collision求解；
+- 記錄邊界來源、許可和生成引數，便於安全複用與復現。
 
-自动路线表达的是地点之间的行程关系，不等同实时公交、步行或驾车导航。具体线路未确认时可以标记为待确认，但已知地点仍须显示。需要真实路网时，应作为用户明确要求的后续增强，不阻塞首版预览。
+自動路線表達的是地點之間的行程關係，不等同實時公交、步行或駕車導航。具體線路未確認時可以標記為待確認，但已知地點仍須顯示。需要真實路網時，應作為使用者明確要求的後續增強，不阻塞首版預覽。
 
-相同国家的纯边界/风格底图可缓存，但缓存不得包含任何用户路线、日期、地点、地址或 query。仅在 source、license、projection、canvas 和 style fingerprint 一致时复用。
+相同國家的純邊界/風格底圖可快取，但快取不得包含任何使用者路線、日期、地點、地址或 query。僅在 source、license、projection、canvas 和 style fingerprint 一致時複用。
 
 ### Compile to renderer data
 
-Map generator输出 region package 后，使用固定 compiler 生成页面实际读取的 `travel-data.json`。`overview=true`时，每个目的地国家重复一次 `--region`；`overview=false`时省略 `--region`：
+Map generator輸出 region package 後，使用固定 compiler 生成頁面實際讀取的 `travel-data.json`。`overview=true`時，每個目的地國家重複一次 `--region`；`overview=false`時省略 `--region`：
 
 ```bash
 node scripts/compile-travel-data.mjs \
@@ -193,20 +193,20 @@ node scripts/compile-travel-data.mjs \
   --out travel-data.json
 ```
 
-Compiler负责把canonical entities/typed references与generated Map Packages转换为现有Renderer需要的只读shape。禁止手工复制字段、改Renderer适配本次Trip，或把private source provenance带入输出。
+Compiler負責把canonical entities/typed references與generated Map Packages轉換為現有Renderer需要的只讀shape。禁止手工複製欄位、改Renderer適配本次Trip，或把private source provenance帶入輸出。
 
 ## 8. Stage D — tickets and runtime modules
 
-- Ticket 有本地 PDF/图片且允许进入输出资产时，使用站内预览入口；不要把站内打开伪装成外部链接。
-- 官方购买页属于外部链接，必须明确标识并安全地新开页面。
-- 缺少票据文件时显示待补充，不生成无效 URL。
-- Todo 只装载用户确认的初始准备事项；运行时新增、完成和删除属于本地状态。
-- Driving 和 Ledger 只读取 Config；无数据或关闭时不修改 Core。
-- Ledger 的 cents、平分余数、paid/owed/net 和最少转账算法不得因旅行生成而改变。
+- Ticket 有本地 PDF/圖片且允許進入輸出資產時，使用站內預覽入口；不要把站內開啟偽裝成外部連結。
+- 官方購買頁屬於外部連結，必須明確標識並安全地新開頁面。
+- 缺少票據檔案時顯示待補充，不生成無效 URL。
+- Todo 只裝載使用者確認的初始準備事項；執行時新增、完成和刪除屬於本地狀態。
+- Driving 和 Ledger 只讀取 Config；無資料或關閉時不修改 Core。
+- Ledger 的 cents、平分餘數、paid/owed/net 和最少轉賬演算法不得因旅行生成而改變。
 
 ## 9. Stage E — validation and preview
 
-运行：
+執行：
 
 ```bash
 node scripts/validate-generation.mjs check \
@@ -214,37 +214,37 @@ node scripts/validate-generation.mjs check \
   --profile preview
 ```
 
-`check` 是默认命令；需要机器可读结果时追加 `--json`。校验至少覆盖：
+`check` 是預設命令；需要機器可讀結果時追加 `--json`。校驗至少覆蓋：
 
 - Config/Data/Source Facts schema；
-- 模块开关与数据、导航、初始化的一致性；
+- 模組開關與資料、導航、初始化的一致性；
 - stable ID 和 typed reference 完整性；
-- 地图国家、地点、路线、Daily bounds 与许可记录；
-- Core 文件未改变；
-- 发布目录没有原始材料、秘密、Cloudflare identity 或私人工作路径；
-- accepted uncertainties 有对应页面状态。
+- 地圖國家、地點、路線、Daily bounds 與許可記錄；
+- Core 檔案未改變；
+- 釋出目錄沒有原始材料、秘密、Cloudflare identity 或私人工作路徑；
+- accepted uncertainties 有對應頁面狀態。
 
-然后运行：
+然後執行：
 
 ```bash
 node local-preview-server.mjs
 ```
 
-`local-preview-server.mjs`是纯静态 GET/HEAD 服务器，不提供 `/api/trip`，不写本地数据文件，也不连接 D1。可选 shared mode 的联调必须在用户明确选择 D1 后使用 Cloudflare 开发环境，不得把普通本地预览服务器当作 D1 adapter。
+`local-preview-server.mjs`是純靜態 GET/HEAD 伺服器，不提供 `/api/trip`，不寫本地資料檔案，也不連線 D1。可選 shared mode 的聯調必須在使用者明確選擇 D1 後使用 Cloudflare 開發環境，不得把普通本地預覽伺服器當作 D1 adapter。
 
-打开服务器输出的 `127.0.0.1` URL，验证：
+開啟伺服器輸出的 `127.0.0.1` URL，驗證：
 
-- 第一个启用模块直接出现，无空 section；
-- 所有启用模块可用，关闭模块没有 DOM 可见入口或后台请求；
-- Overview 与每个 Day 的地点、顺序、范围正确；
-- Ticket 站内入口、Todo 和 Ledger 本地保存可用；
-- 移动端和桌面端无明显溢出或交互失效。
+- 第一個啟用模組直接出現，無空 section；
+- 所有啟用模組可用，關閉模組沒有 DOM 可見入口或後臺請求；
+- Overview 與每個 Day 的地點、順序、範圍正確；
+- Ticket 站內入口、Todo 和 Ledger 本地儲存可用；
+- 移動端和桌面端無明顯溢位或互動失效。
 
-发布前另运行 `--profile publish`。它是发布准备检查，不代表已经部署。
+釋出前另執行 `--profile publish`。它是釋出準備檢查，不代表已經部署。
 
 ## 10. Persistence boundary
 
-默认：
+預設：
 
 ```json
 {
@@ -254,34 +254,34 @@ node local-preview-server.mjs
 }
 ```
 
-本地模式不访问 `/api/trip`，不要求 Cloudflare，且不能显示“未绑定 D1”错误。Todo、Ticket 状态、Ledger 同行人、账单和设置按 Trip ID 保存在当前浏览器；浏览器存储不可用时可退回本标签页内存。
+本地模式不訪問 `/api/trip`，不要求 Cloudflare，且不能顯示“未繫結 D1”錯誤。Todo、Ticket 狀態、Ledger 同行人、賬單和設定按 Trip ID 儲存在當前瀏覽器；瀏覽器儲存不可用時可退回本標籤頁記憶體。
 
-D1 只用于用户明确选择的多人员、多设备共享。启用方式、限制与权限边界见 `deployment-guide.md`。静态页面存在 Ledger 并不意味着需要数据库。
+D1 只用於使用者明確選擇的多人員、多裝置共享。啟用方式、限制與許可權邊界見 `deployment-guide.md`。靜態頁面存在 Ledger 並不意味著需要資料庫。
 
 ## 11. Performance budget
 
-不计算等待用户回复的时间：
+不計算等待使用者回覆的時間：
 
 | Stage | Target |
 |---|---:|
-| PDF 文字提取与结构化 | 1–2 分钟 |
-| 两轮结果合并与 canonical data | 约 1 分钟 |
-| 已准备/可复用国家边界地图 | 1 分钟内 |
-| 新国家边界、投影和地图包 | 2–4 分钟 |
-| 校验与本地浏览器检查 | 1–2 分钟 |
+| PDF 文字提取與結構化 | 1–2 分鐘 |
+| 兩輪結果合併與 canonical data | 約 1 分鐘 |
+| 已準備/可複用國家邊界地圖 | 1 分鐘內 |
+| 新國家邊界、投影和地圖包 | 2–4 分鐘 |
+| 校驗與本地瀏覽器檢查 | 1–2 分鐘 |
 
-常见任务目标 3–6 分钟；首次新国家目标 5–10 分钟。如果超过 10 分钟，必须报告当前 stage、耗时、阻塞输入和下一步，不得静默重新设计页面或反复手工调整地图。
+常見任務目標 3–6 分鐘；首次新國家目標 5–10 分鐘。如果超過 10 分鐘，必須報告當前 stage、耗時、阻塞輸入和下一步，不得靜默重新設計頁面或反覆手工調整地圖。
 
 ## 12. Handoff contract
 
-交付首版预览时，最终消息必须明确：
+交付首版預覽時，最終訊息必須明確：
 
-1. 已启用/关闭模块和仍待补充内容；
-2. 本地预览地址与校验结果；
-3. “该地址只在本机预览服务运行时可访问，目前没有公开部署”；
-4. 发布需要另走 GitHub + Cloudflare Pages 流程；
-5. 普通本地使用和静态发布不需要数据库；
-6. 多人、多设备共享 Ledger/Todo/Ticket 时，用户需明确启用并绑定自己的 Cloudflare D1；
-7. 未经这次单独授权，没有执行 Git push、Cloudflare 部署、D1 创建、migration 或 binding。
+1. 已啟用/關閉模組和仍待補充內容；
+2. 本地預覽地址與校驗結果；
+3. “該地址只在本機預覽服務執行時可訪問，目前沒有公開部署”；
+4. 釋出需要另走 GitHub + Cloudflare Pages 流程；
+5. 普通本地使用和靜態釋出不需要資料庫；
+6. 多人、多裝置共享 Ledger/Todo/Ticket 時，使用者需明確啟用並繫結自己的 Cloudflare D1；
+7. 未經這次單獨授權，沒有執行 Git push、Cloudflare 部署、D1 建立、migration 或 binding。
 
-首版交付后，用户可以另开个性化优化阶段。该阶段的设计改动不得回写公共 Skill、Demo 或其他用户的模板。
+首版交付後，使用者可以另開個性化最佳化階段。該階段的設計改動不得回寫公共 Skill、Demo 或其他使用者的模板。

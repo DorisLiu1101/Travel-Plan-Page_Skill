@@ -1,45 +1,45 @@
 # Phase 0 Checkpoint — Historical Record
 
-状态：历史审计记录；旧B-Template执行方向已被`standard-generation-workflow.md`取代。
+狀態：歷史審計記錄；舊B-Template執行方向已被`standard-generation-workflow.md`取代。
 
 ## Retained findings
 
-Phase 0确认并保留了这些长期有效的成果：
+Phase 0確認並保留了這些長期有效的成果：
 
-- Golden UI、Behavior、Ledger Algorithm与Map Style拥有独立合同；
-- HTML/CSS/JavaScript、Ledger、Pages Function与D1 migration职责已审计；
-- 旧版存在Trip ID重复、文字/数组位置关联、固定时区、D1无认证和Ledger settings共享缺失等风险；
-- 私人Golden fixture、真实Trip ID、路线、日期、坐标和assets不得进入Public Template；
-- 公开Demo必须完全虚构或取得明确授权。
+- Golden UI、Behavior、Ledger Algorithm與Map Style擁有獨立合同；
+- HTML/CSS/JavaScript、Ledger、Pages Function與D1 migration職責已審計；
+- 舊版存在Trip ID重複、文字/陣列位置關聯、固定時區、D1無認證和Ledger settings共享缺失等風險；
+- 私人Golden fixture、真實Trip ID、路線、日期、座標和assets不得進入Public Template；
+- 公開Demo必須完全虛構或取得明確授權。
 
 ## Superseded Phase 0 decisions
 
-以下曾是早期B-Template的临时方向，现已废止，不能再指导单次生成：
+以下曾是早期B-Template的臨時方向，現已廢止，不能再指導單次生成：
 
-- 允许为每个Trip局部修改HTML/CSS/JavaScript；
-- 缺少Config时手工删除模块；
-- 人工放置地图坐标、手画route和daily layouts；
-- 不实现projection、validator或标准Map Generator；
-- 默认围绕Cloudflare D1 shared adapter运行。
+- 允許為每個Trip區域性修改HTML/CSS/JavaScript；
+- 缺少Config時手工刪除模組；
+- 人工放置地圖座標、手畫route和daily layouts；
+- 不實現projection、validator或標準Map Generator；
+- 預設圍繞Cloudflare D1 shared adapter執行。
 
-现行方向是：
+現行方向是：
 
-- 两轮确认；
+- 兩輪確認；
 - Config-driven modules；
-- canonical data与stable references；
-- 自动boundary projection、route和Daily bounds；
-- Core integrity验证；
+- canonical data與stable references；
+- 自動boundary projection、route和Daily bounds；
+- Core integrity驗證；
 - local-first persistence；
-- deployment与D1均为用户明确选择的后续任务。
+- deployment與D1均為使用者明確選擇的後續任務。
 
 ## Privacy note
 
-早期Phase 0审计曾包含私人仓库与Custom Map Fixture信息。那些值已从本公开目录移除；不得通过Git history、线上页面、截图或私人目录还原到Public Template。
+早期Phase 0審計曾包含私人倉庫與Custom Map Fixture資訊。那些值已從本公開目錄移除；不得透過Git history、線上頁面、截圖或私人目錄還原到Public Template。
 
 ## Current entry points
 
-- `../SKILL.md`：Agent入口与强制边界；
-- `standard-generation-workflow.md`：当前单次生成权威流程；
-- `deployment-guide.md`：本地预览之后的可选发布与D1流程；
-- `golden-contract.md`：Core、隐私、行为和算法总合同；
-- `golden-map-spec.md`：当前标准地图生成与视觉合同。
+- `../SKILL.md`：Agent入口與強制邊界；
+- `standard-generation-workflow.md`：當前單次生成權威流程；
+- `deployment-guide.md`：本地預覽之後的可選釋出與D1流程；
+- `golden-contract.md`：Core、隱私、行為和演算法總合同；
+- `golden-map-spec.md`：當前標準地圖生成與視覺合同。

@@ -2,9 +2,9 @@
 let mapRoutes = [];
 let mapInstance = 0;
 const transportNames = {
-  drive: "自驾", train: "火车", rail: "火车", "cable-car": "缆车",
-  hike: "步行", walk: "步行", return: "返程", "rental-car": "租车",
-  boat: "游船", ferry: "渡轮", flight: "飞行", transfer: "接驳"
+  drive: "自駕", train: "火車", rail: "火車", "cable-car": "纜車",
+  hike: "步行", walk: "步行", return: "返程", "rental-car": "租車",
+  boat: "遊船", ferry: "渡輪", flight: "飛行", transfer: "接駁"
 };
 
 function mapRouteDefinitions(source) {
@@ -63,7 +63,7 @@ function mapArtwork(source, selected, id, viewport) {
   svg.setAttribute("data-daily-version", "3");
   svg.setAttribute("aria-label", day.title);
   svg.querySelector("title").textContent = day.title;
-  svg.querySelector("desc").textContent = "仅显示当天路线；地点圆点打开地图，交通图标查看行程。";
+  svg.querySelector("desc").textContent = "僅顯示當天路線；地點圓點開啟地圖，交通圖示檢視行程。";
   svg.querySelectorAll('[id^="overview-route-"]').forEach((group) => {
     if (group.id !== `overview-route-${selected.day}`) group.remove();
   });
@@ -85,10 +85,10 @@ function mapArtwork(source, selected, id, viewport) {
 
 function dailyPointRole(layout, placeId, index) {
   if (layout.roles?.[placeId]) return layout.roles[placeId];
-  if (layout.places.length === 1) return "起点 / 终点";
-  if (index === 0) return "起点";
-  if (index === layout.places.length - 1) return "终点";
-  return "途经点";
+  if (layout.places.length === 1) return "起點 / 終點";
+  if (index === 0) return "起點";
+  if (index === layout.places.length - 1) return "終點";
+  return "途經點";
 }
 
 function travelMapMarkup(source, route) {
@@ -103,17 +103,17 @@ function travelMapMarkup(source, route) {
     const place = placeLayers.find((item) => item.id === placeId);
     if (!place) return "";
     const role = dailyPointRole(layout, placeId, index);
-    return `<button type="button" class="map-place-dot" style="${position(place.x, place.y)}" data-map-region="${escapeHtml(source.id)}" data-place-id="${placeId}" data-place-day="${day.day}" data-place-role="${role}" aria-label="${role}：${escapeHtml(placeOptions(source, placeId)[0][0])}，打开 Google Maps" aria-haspopup="dialog" aria-expanded="false"><span></span></button>`;
+    return `<button type="button" class="map-place-dot" style="${position(place.x, place.y)}" data-map-region="${escapeHtml(source.id)}" data-place-id="${placeId}" data-place-day="${day.day}" data-place-role="${role}" aria-label="${role}：${escapeHtml(placeOptions(source, placeId)[0][0])}，開啟 Google Maps" aria-haspopup="dialog" aria-expanded="false"><span></span></button>`;
   }).join("") : "";
   const transport = route && layout ? layout.transport.map((pin, index) => {
     const item = scheduleItemsForPin(day, pin)[0];
     if (!item) return "";
-    return `<button class="transport-pin" type="button" style="${position(pin.x, pin.y)}" data-map-region="${escapeHtml(source.id)}" data-transport-day="${day.day}" data-transport-group="${index}" aria-expanded="false" aria-haspopup="dialog" aria-label="查看${escapeHtml(transportNames[item.type] || "交通")}：${escapeHtml(item.text)}">${transportIcon(item.type)}</button>`;
+    return `<button class="transport-pin" type="button" style="${position(pin.x, pin.y)}" data-map-region="${escapeHtml(source.id)}" data-transport-day="${day.day}" data-transport-group="${index}" aria-expanded="false" aria-haspopup="dialog" aria-label="檢視${escapeHtml(transportNames[item.type] || "交通")}：${escapeHtml(item.text)}">${transportIcon(item.type)}</button>`;
   }).join("") : "";
-  const mapNote = source.disclaimer || "本图为模板化行程示意图，仅表达地点的相对方位与路线顺序，不代表真实比例或精确地理边界。如需使用真实国家或城市地图，可在生成后自行调整。";
+  const mapNote = source.disclaimer || "本圖為模板化行程示意圖，僅表達地點的相對方位與路線順序，不代表真實比例或精確地理邊界。如需使用真實國家或城市地圖，可在生成後自行調整。";
   return `<div class="travel-map-block ${route ? "is-daily" : "is-overview"}" ${route ? `style="--route-color:${route.color}"` : ""}>
     <div class="travel-map-scroll"><div class="travel-map-canvas" id="${id}">${mapArtwork(source, route, id, viewport)}${places}${transport}</div></div>
-    <div class="map-utility"><span>${route ? "点圆点看地图 · 点图标看交通" : escapeHtml(mapNote)}</span><button type="button" data-expand-map="${id}">放大 ↗</button></div>
+    <div class="map-utility"><span>${route ? "點圓點看地圖 · 點圖示看交通" : escapeHtml(mapNote)}</span><button type="button" data-expand-map="${id}">放大 ↗</button></div>
   </div>`;
 }
 
@@ -133,8 +133,8 @@ function renderRoutePanel(regionId, dayNumber = 0) {
   root.dataset.region = source.id || "";
   mapRoutes = mapRouteDefinitions(source);
   const route = mapRoutes.find((item) => item.day === dayNumber);
-  root.innerHTML = `<div class="route-region-tabs" aria-label="旅行国家">${regions.map((region) => `<button type="button" data-route-region="${escapeHtml(region.id)}" aria-pressed="${region.id === source.id}">${escapeHtml(region.label || region.heading?.text || region.id)}</button>`).join("")}</div>
-  <div class="route-day-tabs" aria-label="${escapeHtml(source.label || "当前国家")}路线日期"><button type="button" data-route-day="0" aria-pressed="${!route}">总览</button>${mapRoutes.map((item) => { const day = state.data.days.find((candidate) => candidate.day === item.day); return day ? `<button type="button" data-route-day="${item.day}" style="--route-color:${item.color}" aria-pressed="${item === route}"><i></i>${day.date.slice(5).replace("-", "/")}</button>` : ""; }).join("")}</div>${travelMapMarkup(source, route)}`;
+  root.innerHTML = `<div class="route-region-tabs" aria-label="旅行國家">${regions.map((region) => `<button type="button" data-route-region="${escapeHtml(region.id)}" aria-pressed="${region.id === source.id}">${escapeHtml(region.label || region.heading?.text || region.id)}</button>`).join("")}</div>
+  <div class="route-day-tabs" aria-label="${escapeHtml(source.label || "當前國家")}路線日期"><button type="button" data-route-day="0" aria-pressed="${!route}">總覽</button>${mapRoutes.map((item) => { const day = state.data.days.find((candidate) => candidate.day === item.day); return day ? `<button type="button" data-route-day="${item.day}" style="--route-color:${item.color}" aria-pressed="${item === route}"><i></i>${day.date.slice(5).replace("-", "/")}</button>` : ""; }).join("")}</div>${travelMapMarkup(source, route)}`;
   if (route) activateDayMaps(root);
 }
 
@@ -158,8 +158,8 @@ function setupRouteExplorer() {
     const wasOpen = activePin === pin; closePopover(); if (wasOpen) return;
     activePin = pin; pin.setAttribute("aria-expanded", "true"); pin.setAttribute("aria-controls", "route-active-popover");
     popover = document.createElement("section"); popover.id = "route-active-popover"; popover.className = `route-popover ${map ? "route-place-popover" : "transport-popover"}`;
-    popover.setAttribute("role", "dialog"); popover.setAttribute("aria-label", map ? "地点 Google Maps" : "交通信息");
-    popover.innerHTML = `<button type="button" class="route-popover-close" data-close-route-popover aria-label="关闭">×</button>${content}`;
+    popover.setAttribute("role", "dialog"); popover.setAttribute("aria-label", map ? "地點 Google Maps" : "交通訊息");
+    popover.innerHTML = `<button type="button" class="route-popover-close" data-close-route-popover aria-label="關閉">×</button>${content}`;
     (pin.closest("dialog") || document.body).append(popover); positionPopover();
     popover.querySelector("[data-close-route-popover]").focus({ preventScroll: true });
   };
@@ -181,7 +181,7 @@ function setupRouteExplorer() {
       showPopover(placePin, `<header><small>${escapeHtml(placePin.dataset.placeRole)}</small><strong data-popup-place-label>${escapeHtml(label)}</strong></header>
         ${options.length > 1 ? `<div class="popup-place-options">${options.map(([name, value], index) => `<button type="button" data-popup-query="${escapeHtml(value)}" data-popup-label="${escapeHtml(name)}" aria-pressed="${index === 0}">${escapeHtml(name)}</button>`).join("")}</div>` : ""}
         <iframe title="${escapeHtml(label)} Google Maps" src="https://maps.google.com/maps?q=${encodeURIComponent(query)}&output=embed" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
-        <footer><a data-popup-external href="${mapsSearch(query)}" target="_blank" rel="noopener noreferrer">用 Google Maps 打开 ↗</a><small>页内地图供查看，实际导航以地图服务结果为准。</small></footer>`, true);
+        <footer><a data-popup-external href="${mapsSearch(query)}" target="_blank" rel="noopener noreferrer">用 Google Maps 開啟 ↗</a><small>頁內地圖供檢視，實際導航以地圖服務結果為準。</small></footer>`, true);
       return;
     }
     const pin = event.target.closest("[data-transport-day]");

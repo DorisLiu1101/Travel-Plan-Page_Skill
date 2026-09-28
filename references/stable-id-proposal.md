@@ -1,24 +1,24 @@
 # Stable ID Convention
 
-状态：Standard Generator关系约束；具体可执行要求以当前Schema与validator为准。  
-用途：避免文字匹配和数组索引关联。本文示例均为虚构值。
+狀態：Standard Generator關係約束；具體可執行要求以當前Schema與validator為準。  
+用途：避免文字匹配和陣列索引關聯。本文示例均為虛構值。
 
 ## 1. Current Generator Rule
 
 - canonical Trip ID是唯一Trip ID；
-- 已存在的flight、journey、stay、ticket、place、day/item与transport ID不得因显示文案、日期或排序变化而改名；
-- 新ID清晰、唯一、稳定且不包含私人敏感信息；
-- Day Item通过typed IDs引用Place、Ticket与Transport；
-- Map直接引用Day、Place、Transport与Map Segment IDs；
-- validator拒绝schedule/day array index、substring、match terms或display name充当Core-facing identity。
+- 已存在的flight、journey、stay、ticket、place、day/item與transport ID不得因顯示文案、日期或排序變化而改名；
+- 新ID清晰、唯一、穩定且不包含私人敏感資訊；
+- Day Item透過typed IDs引用Place、Ticket與Transport；
+- Map直接引用Day、Place、Transport與Map Segment IDs；
+- validator拒絕schedule/day array index、substring、match terms或display name充當Core-facing identity。
 
 ## 2. Naming convention
 
 - lowercase ASCII kebab-case；
-- 带type prefix；
-- 首次mint后不因name、language、date或sorting改变；
+- 帶type prefix；
+- 首次mint後不因name、language、date或sorting改變；
 - readable slug是初始提示，不是每次重算公式；
-- object map key可作为canonical ID，value不再重复漂移的`id`。
+- object map key可作為canonical ID，value不再重複漂移的`id`。
 
 示例：
 
@@ -51,11 +51,11 @@ map.layouts.places["place-demo-airport"]
 | 17 | Map Feature | `map-feature-*` | `map-feature-demo-ferry-pin` |
 | 18 | Issue | `issue-*` | `issue-demo-time-unconfirmed` |
 
-Runtime Todo IDs不属于静态Trip Package；多设备并发ID策略应在专门的Runtime State工作中决定。
+Runtime Todo IDs不屬於靜態Trip Package；多裝置併發ID策略應在專門的Runtime State工作中決定。
 
 ## 4. Typed references
 
-Day Item按需要显式引用：
+Day Item按需要顯式引用：
 
 | Field | Target |
 |---|---|
@@ -68,30 +68,30 @@ Day Item按需要显式引用：
 | `restaurantId` | Restaurant |
 | `issueIds` | Issues |
 
-Flight Group可拥有ordered `flightIds[]`；Flight不再同时保存group membership和sequence。Map可直接引用Day、Place、Transport与Map Segment IDs。
+Flight Group可擁有ordered `flightIds[]`；Flight不再同時儲存group membership和sequence。Map可直接引用Day、Place、Transport與Map Segment IDs。
 
 ## 5. Relations an Upgrade Should Remove
 
-- `schedule[index]`或`days[index]`作为跨模块identity；
-- numeric day number作为唯一关系键；
+- `schedule[index]`或`days[index]`作為跨模組identity；
+- numeric day number作為唯一關係鍵；
 - `scheduleMatchTerms`、`matchTerms`和substring entity lookup；
-- 从display name动态生成restaurant/entity ID；
-- SVG child order决定route branch；
+- 從display name動態生成restaurant/entity ID；
+- SVG child order決定route branch；
 - destination/day-specific name conditions。
 
-Arrays仍可表达显示顺序，strings仍可用于标题、说明和provider query；禁止的是用它们隐式发现identity。
+Arrays仍可表達顯示順序，strings仍可用於標題、說明和provider query；禁止的是用它們隱式發現identity。
 
 ## 6. Validation
 
-validator至少检查：
+validator至少檢查：
 
-- ID格式和collection内唯一性；
-- typed reference存在且类型正确；
-- Day Item ID在Trip内唯一；
-- ordered reference array无重复；
+- ID格式和collection內唯一性；
+- typed reference存在且型別正確；
+- Day Item ID在Trip內唯一；
+- ordered reference array無重複；
 - map/day/place/transport/segment引用全部可解析；
-- display text修改不会改变entity selection。
+- display text修改不會改變entity selection。
 
 ## 7. Implementation boundary
 
-Schema可以分阶段支持上述ID classes，但单次Trip生成不得通过修改Renderer或放宽validator来容纳例外。需要新增entity type或关系时，记录为独立框架维护任务，并包含data adapter、behavior regression、map regression与rollback。
+Schema可以分階段支援上述ID classes，但單次Trip生成不得透過修改Renderer或放寬validator來容納例外。需要新增entity type或關係時，記錄為獨立框架維護任務，幷包含data adapter、behavior regression、map regression與rollback。

@@ -7,7 +7,7 @@
     commonCurrencies: ["EUR", "CHF", "HKD"],
     lastCurrency: "CNY"
   });
-  const CATEGORIES = Object.freeze(["餐饮", "交通", "住宿", "门票", "购物", "其他"]);
+  const CATEGORIES = Object.freeze(["餐飲", "交通", "住宿", "門票", "購物", "其他"]);
   const AVATAR_COLORS = Object.freeze([
     "#D96C42", "#217D91", "#5C8E62", "#8B6AA8", "#C58B32",
     "#4F72A2", "#B85F76", "#4E8F86", "#9A6B4F", "#68798E"
@@ -16,86 +16,86 @@
   // The picker searches every field, so the complete catalog can stay out of view
   // until a traveler asks for a particular currency.
   const SEEDED_CURRENCY_CATALOG = Object.freeze([
-    ["CNY", "人民币", "Chinese Yuan", "¥", "中国 大陆 人民币 rmb yuan renminbi"],
-    ["HKD", "港币", "Hong Kong Dollar", "HK$", "香港 港元 hongkong"],
-    ["MOP", "澳门元", "Macanese Pataca", "MOP$", "澳门 澳币 macau pataca"],
-    ["TWD", "新台币", "New Taiwan Dollar", "NT$", "台湾 台币 taiwan"],
-    ["EUR", "欧元", "Euro", "€", "欧盟 欧洲 eurozone europe"],
-    ["CHF", "瑞士法郎", "Swiss Franc", "CHF", "瑞士 列支敦士登 switzerland liechtenstein"],
-    ["USD", "美元", "US Dollar", "$", "美国 美金 united states america usa"],
-    ["GBP", "英镑", "British Pound", "£", "英国 联合王国 britain uk sterling"],
+    ["CNY", "人民幣", "Chinese Yuan", "¥", "中國 大陸 人民幣 rmb yuan renminbi"],
+    ["HKD", "港幣", "Hong Kong Dollar", "HK$", "香港 港元 hongkong"],
+    ["MOP", "澳門元", "Macanese Pataca", "MOP$", "澳門 澳幣 macau pataca"],
+    ["TWD", "新臺幣", "New Taiwan Dollar", "NT$", "臺灣 臺幣 taiwan"],
+    ["EUR", "歐元", "Euro", "€", "歐盟 歐洲 eurozone europe"],
+    ["CHF", "瑞士法郎", "Swiss Franc", "CHF", "瑞士 列支敦斯登 switzerland liechtenstein"],
+    ["USD", "美元", "US Dollar", "$", "美國 美金 united states america usa"],
+    ["GBP", "英鎊", "British Pound", "£", "英國 聯合王國 britain uk sterling"],
     ["JPY", "日元", "Japanese Yen", "¥", "日本 japan yen"],
-    ["KRW", "韩元", "South Korean Won", "₩", "韩国 korea won"],
-    ["SGD", "新加坡元", "Singapore Dollar", "S$", "新加坡 singapore 新币"],
-    ["MYR", "马来西亚林吉特", "Malaysian Ringgit", "RM", "马来西亚 malaysia 马币"],
-    ["THB", "泰铢", "Thai Baht", "฿", "泰国 thailand baht"],
-    ["IDR", "印度尼西亚盾", "Indonesian Rupiah", "Rp", "印度尼西亚 印尼 indonesia rupiah"],
-    ["PHP", "菲律宾比索", "Philippine Peso", "₱", "菲律宾 philippines peso"],
+    ["KRW", "韓元", "South Korean Won", "₩", "韓國 korea won"],
+    ["SGD", "新加坡元", "Singapore Dollar", "S$", "新加坡 singapore 新幣"],
+    ["MYR", "馬來西亞林吉特", "Malaysian Ringgit", "RM", "馬來西亞 malaysia 馬幣"],
+    ["THB", "泰銖", "Thai Baht", "฿", "泰國 thailand baht"],
+    ["IDR", "印度尼西亞盾", "Indonesian Rupiah", "Rp", "印度尼西亞 印尼 indonesia rupiah"],
+    ["PHP", "菲律賓比索", "Philippine Peso", "₱", "菲律賓 philippines peso"],
     ["VND", "越南盾", "Vietnamese Dong", "₫", "越南 vietnam dong"],
-    ["KHR", "柬埔寨瑞尔", "Cambodian Riel", "៛", "柬埔寨 cambodia riel"],
-    ["LAK", "老挝基普", "Lao Kip", "₭", "老挝 laos kip"],
-    ["MMK", "缅甸元", "Myanmar Kyat", "K", "缅甸 myanmar burma kyat"],
-    ["BND", "文莱元", "Brunei Dollar", "B$", "文莱 brunei"],
-    ["INR", "印度卢比", "Indian Rupee", "₹", "印度 india rupee"],
-    ["PKR", "巴基斯坦卢比", "Pakistani Rupee", "₨", "巴基斯坦 pakistan rupee"],
-    ["BDT", "孟加拉塔卡", "Bangladeshi Taka", "৳", "孟加拉国 bangladesh taka"],
-    ["LKR", "斯里兰卡卢比", "Sri Lankan Rupee", "Rs", "斯里兰卡 sri lanka rupee"],
-    ["NPR", "尼泊尔卢比", "Nepalese Rupee", "रू", "尼泊尔 nepal rupee"],
-    ["MVR", "马尔代夫拉菲亚", "Maldivian Rufiyaa", "Rf", "马尔代夫 maldives rufiyaa"],
-    ["AED", "阿联酋迪拉姆", "UAE Dirham", "د.إ", "阿联酋 迪拜 dubai united arab emirates"],
-    ["SAR", "沙特里亚尔", "Saudi Riyal", "﷼", "沙特阿拉伯 saudi arabia riyal"],
-    ["QAR", "卡塔尔里亚尔", "Qatari Riyal", "﷼", "卡塔尔 qatar riyal"],
-    ["KWD", "科威特第纳尔", "Kuwaiti Dinar", "د.ك", "科威特 kuwait dinar"],
-    ["BHD", "巴林第纳尔", "Bahraini Dinar", ".د.ب", "巴林 bahrain dinar"],
-    ["OMR", "阿曼里亚尔", "Omani Rial", "﷼", "阿曼 oman rial"],
-    ["JOD", "约旦第纳尔", "Jordanian Dinar", "د.ا", "约旦 jordan dinar"],
-    ["ILS", "以色列新谢克尔", "Israeli New Shekel", "₪", "以色列 israel shekel"],
+    ["KHR", "柬埔寨瑞爾", "Cambodian Riel", "៛", "柬埔寨 cambodia riel"],
+    ["LAK", "寮國基普", "Lao Kip", "₭", "寮國 laos kip"],
+    ["MMK", "緬甸元", "Myanmar Kyat", "K", "緬甸 myanmar burma kyat"],
+    ["BND", "汶萊元", "Brunei Dollar", "B$", "汶萊 brunei"],
+    ["INR", "印度盧比", "Indian Rupee", "₹", "印度 india rupee"],
+    ["PKR", "巴基斯坦盧比", "Pakistani Rupee", "₨", "巴基斯坦 pakistan rupee"],
+    ["BDT", "孟加拉塔卡", "Bangladeshi Taka", "৳", "孟加拉國 bangladesh taka"],
+    ["LKR", "斯里蘭卡盧比", "Sri Lankan Rupee", "Rs", "斯里蘭卡 sri lanka rupee"],
+    ["NPR", "尼泊爾盧比", "Nepalese Rupee", "रू", "尼泊爾 nepal rupee"],
+    ["MVR", "馬爾地夫拉菲亞", "Maldivian Rufiyaa", "Rf", "馬爾地夫 maldives rufiyaa"],
+    ["AED", "阿聯酋迪拉姆", "UAE Dirham", "د.إ", "阿聯酋 迪拜 dubai united arab emirates"],
+    ["SAR", "沙特里亞爾", "Saudi Riyal", "﷼", "沙烏地阿拉伯 saudi arabia riyal"],
+    ["QAR", "卡達里亞爾", "Qatari Riyal", "﷼", "卡達 qatar riyal"],
+    ["KWD", "科威特第納爾", "Kuwaiti Dinar", "د.ك", "科威特 kuwait dinar"],
+    ["BHD", "巴林第納爾", "Bahraini Dinar", ".د.ب", "巴林 bahrain dinar"],
+    ["OMR", "阿曼里亞爾", "Omani Rial", "﷼", "阿曼 oman rial"],
+    ["JOD", "約旦第納爾", "Jordanian Dinar", "د.ا", "約旦 jordan dinar"],
+    ["ILS", "以色列新謝克爾", "Israeli New Shekel", "₪", "以色列 israel shekel"],
     ["TRY", "土耳其里拉", "Turkish Lira", "₺", "土耳其 türkiye turkey lira"],
-    ["GEL", "格鲁吉亚拉里", "Georgian Lari", "₾", "格鲁吉亚 georgia lari"],
-    ["AMD", "亚美尼亚德拉姆", "Armenian Dram", "֏", "亚美尼亚 armenia dram"],
-    ["AZN", "阿塞拜疆马纳特", "Azerbaijani Manat", "₼", "阿塞拜疆 azerbaijan manat"],
-    ["KZT", "哈萨克斯坦坚戈", "Kazakhstani Tenge", "₸", "哈萨克斯坦 kazakhstan tenge"],
-    ["UZS", "乌兹别克斯坦苏姆", "Uzbekistani Som", "soʻm", "乌兹别克斯坦 uzbekistan som"],
-    ["RUB", "俄罗斯卢布", "Russian Ruble", "₽", "俄罗斯 russian russia ruble"],
-    ["UAH", "乌克兰格里夫纳", "Ukrainian Hryvnia", "₴", "乌克兰 ukraine hryvnia"],
-    ["PLN", "波兰兹罗提", "Polish Zloty", "zł", "波兰 poland zloty"],
+    ["GEL", "喬治亞拉里", "Georgian Lari", "₾", "喬治亞 georgia lari"],
+    ["AMD", "亞美尼亞德拉姆", "Armenian Dram", "֏", "亞美尼亞 armenia dram"],
+    ["AZN", "亞塞拜然馬納特", "Azerbaijani Manat", "₼", "亞塞拜然 azerbaijan manat"],
+    ["KZT", "哈薩克堅戈", "Kazakhstani Tenge", "₸", "哈薩克 kazakhstan tenge"],
+    ["UZS", "烏茲別克蘇姆", "Uzbekistani Som", "soʻm", "烏茲別克 uzbekistan som"],
+    ["RUB", "俄羅斯盧布", "Russian Ruble", "₽", "俄羅斯 russian russia ruble"],
+    ["UAH", "烏克蘭格里夫納", "Ukrainian Hryvnia", "₴", "烏克蘭 ukraine hryvnia"],
+    ["PLN", "波蘭茲羅提", "Polish Zloty", "zł", "波蘭 poland zloty"],
     ["CZK", "捷克克朗", "Czech Koruna", "Kč", "捷克 czechia czech koruna"],
     ["HUF", "匈牙利福林", "Hungarian Forint", "Ft", "匈牙利 hungary forint"],
-    ["RON", "罗马尼亚列伊", "Romanian Leu", "lei", "罗马尼亚 romania leu"],
-    ["BGN", "保加利亚列弗", "Bulgarian Lev", "лв", "保加利亚 bulgaria lev"],
-    ["RSD", "塞尔维亚第纳尔", "Serbian Dinar", "дин", "塞尔维亚 serbia dinar"],
+    ["RON", "羅馬尼亞列伊", "Romanian Leu", "lei", "羅馬尼亞 romania leu"],
+    ["BGN", "保加利亞列弗", "Bulgarian Lev", "лв", "保加利亞 bulgaria lev"],
+    ["RSD", "塞爾維亞第納爾", "Serbian Dinar", "дин", "塞爾維亞 serbia dinar"],
     ["SEK", "瑞典克朗", "Swedish Krona", "kr", "瑞典 sweden krona"],
     ["NOK", "挪威克朗", "Norwegian Krone", "kr", "挪威 norway krone"],
-    ["DKK", "丹麦克朗", "Danish Krone", "kr", "丹麦 denmark krone"],
-    ["ISK", "冰岛克朗", "Icelandic Krona", "kr", "冰岛 iceland krona"],
+    ["DKK", "丹麥克朗", "Danish Krone", "kr", "丹麥 denmark krone"],
+    ["ISK", "冰島克朗", "Icelandic Krona", "kr", "冰島 iceland krona"],
     ["CAD", "加拿大元", "Canadian Dollar", "C$", "加拿大 canada 加元"],
-    ["AUD", "澳大利亚元", "Australian Dollar", "A$", "澳大利亚 澳洲 australia 澳元"],
-    ["NZD", "新西兰元", "New Zealand Dollar", "NZ$", "新西兰 new zealand 纽币"],
+    ["AUD", "澳大利亞元", "Australian Dollar", "A$", "澳大利亞 澳洲 australia 澳元"],
+    ["NZD", "紐西蘭元", "New Zealand Dollar", "NZ$", "紐西蘭 new zealand 紐幣"],
     ["MXN", "墨西哥比索", "Mexican Peso", "Mex$", "墨西哥 mexico peso"],
-    ["BRL", "巴西雷亚尔", "Brazilian Real", "R$", "巴西 brazil real"],
+    ["BRL", "巴西雷亞爾", "Brazilian Real", "R$", "巴西 brazil real"],
     ["ARS", "阿根廷比索", "Argentine Peso", "AR$", "阿根廷 argentina peso"],
     ["CLP", "智利比索", "Chilean Peso", "CLP$", "智利 chile peso"],
-    ["COP", "哥伦比亚比索", "Colombian Peso", "COL$", "哥伦比亚 colombia peso"],
-    ["PEN", "秘鲁索尔", "Peruvian Sol", "S/", "秘鲁 peru sol"],
-    ["UYU", "乌拉圭比索", "Uruguayan Peso", "$U", "乌拉圭 uruguay peso"],
-    ["BOB", "玻利维亚诺", "Bolivian Boliviano", "Bs", "玻利维亚 bolivia boliviano"],
-    ["ZAR", "南非兰特", "South African Rand", "R", "南非 south africa rand"],
-    ["EGP", "埃及镑", "Egyptian Pound", "E£", "埃及 egypt pound"],
+    ["COP", "哥倫比亞比索", "Colombian Peso", "COL$", "哥倫比亞 colombia peso"],
+    ["PEN", "秘魯索爾", "Peruvian Sol", "S/", "秘魯 peru sol"],
+    ["UYU", "烏拉圭比索", "Uruguayan Peso", "$U", "烏拉圭 uruguay peso"],
+    ["BOB", "玻利維亞諾", "Bolivian Boliviano", "Bs", "玻利維亞 bolivia boliviano"],
+    ["ZAR", "南非蘭特", "South African Rand", "R", "南非 south africa rand"],
+    ["EGP", "埃及鎊", "Egyptian Pound", "E£", "埃及 egypt pound"],
     ["MAD", "摩洛哥迪拉姆", "Moroccan Dirham", "د.م.", "摩洛哥 morocco dirham"],
-    ["KES", "肯尼亚先令", "Kenyan Shilling", "KSh", "肯尼亚 kenya shilling"],
-    ["TZS", "坦桑尼亚先令", "Tanzanian Shilling", "TSh", "坦桑尼亚 tanzania shilling"],
-    ["NGN", "尼日利亚奈拉", "Nigerian Naira", "₦", "尼日利亚 nigeria naira"],
-    ["GHS", "加纳塞地", "Ghanaian Cedi", "₵", "加纳 ghana cedi"],
-    ["ETB", "埃塞俄比亚比尔", "Ethiopian Birr", "Br", "埃塞俄比亚 ethiopia birr"],
-    ["MUR", "毛里求斯卢比", "Mauritian Rupee", "₨", "毛里求斯 mauritius rupee"],
-    ["FJD", "斐济元", "Fijian Dollar", "FJ$", "斐济 fiji"],
-    ["XPF", "太平洋法郎", "CFP Franc", "₣", "法属波利尼西亚 新喀里多尼亚 tahiti cfp"],
-    ["XCD", "东加勒比元", "East Caribbean Dollar", "EC$", "东加勒比 caribbean"],
-    ["JMD", "牙买加元", "Jamaican Dollar", "J$", "牙买加 jamaica"],
-    ["DOP", "多米尼加比索", "Dominican Peso", "RD$", "多米尼加 dominican peso"],
-    ["CRC", "哥斯达黎加科朗", "Costa Rican Colon", "₡", "哥斯达黎加 costa rica colon"],
-    ["PAB", "巴拿马巴波亚", "Panamanian Balboa", "B/.", "巴拿马 panama balboa"],
-    ["MNT", "蒙古图格里克", "Mongolian Tugrik", "₮", "蒙古 mongolia tugrik"]
+    ["KES", "肯亞先令", "Kenyan Shilling", "KSh", "肯亞 kenya shilling"],
+    ["TZS", "坦尚尼亞先令", "Tanzanian Shilling", "TSh", "坦尚尼亞 tanzania shilling"],
+    ["NGN", "奈及利亞奈拉", "Nigerian Naira", "₦", "奈及利亞 nigeria naira"],
+    ["GHS", "迦納塞地", "Ghanaian Cedi", "₵", "迦納 ghana cedi"],
+    ["ETB", "衣索比亞比爾", "Ethiopian Birr", "Br", "衣索比亞 ethiopia birr"],
+    ["MUR", "模里西斯盧比", "Mauritian Rupee", "₨", "模里西斯 mauritius rupee"],
+    ["FJD", "斐濟元", "Fijian Dollar", "FJ$", "斐濟 fiji"],
+    ["XPF", "太平洋法郎", "CFP Franc", "₣", "法屬波利尼西亞 新喀里多尼亞 tahiti cfp"],
+    ["XCD", "東加勒比元", "East Caribbean Dollar", "EC$", "東加勒比 caribbean"],
+    ["JMD", "牙買加元", "Jamaican Dollar", "J$", "牙買加 jamaica"],
+    ["DOP", "多明尼加比索", "Dominican Peso", "RD$", "多明尼加 dominican peso"],
+    ["CRC", "哥斯大黎加科朗", "Costa Rican Colon", "₡", "哥斯大黎加 costa rica colon"],
+    ["PAB", "巴拿馬巴波亞", "Panamanian Balboa", "B/.", "巴拿馬 panama balboa"],
+    ["MNT", "蒙古圖格里克", "Mongolian Tugrik", "₮", "蒙古 mongolia tugrik"]
   ].map(([code, nameZh, nameEn, symbol, aliases]) => ({ code, nameZh, nameEn, symbol, aliases })));
 
   function buildCurrencyCatalog(seed) {
@@ -645,21 +645,21 @@
       || ledgerData.travelers.map((traveler) => traveler.id)
     );
     const selectedPayerId = editingBill?.payerId || draft?.payerId || "";
-    const selectedCategory = editingBill?.category || draft?.category || "餐饮";
+    const selectedCategory = editingBill?.category || draft?.category || "餐飲";
     return `
       <section class="ledger-entry-card" aria-labelledby="ledger-bill-form-title">
         <div class="ledger-section-heading">
           <div>
-            <p class="ledger-section-kicker">${editingBill ? "编辑账单" : "记一笔"}</p>
-            <h2 id="ledger-bill-form-title">${editingBill ? "修改这笔账" : "记录本次花费"}</h2>
+            <p class="ledger-section-kicker">${editingBill ? "編輯賬單" : "記一筆"}</p>
+            <h2 id="ledger-bill-form-title">${editingBill ? "修改這筆賬" : "記錄本次花費"}</h2>
           </div>
-          ${editingBill ? `<button class="ledger-text-button" type="button" data-ledger-action="cancel-edit">取消编辑</button>` : ""}
+          ${editingBill ? `<button class="ledger-text-button" type="button" data-ledger-action="cancel-edit">取消編輯</button>` : ""}
         </div>
         ${ledgerData.travelers.length ? `
           <form class="ledger-bill-form" data-ledger-form="bill" novalidate>
             <div class="ledger-amount-block">
               <label class="ledger-field ledger-field-currency">
-                <span class="ledger-field-label">币种</span>
+                <span class="ledger-field-label">幣種</span>
                 <input type="hidden" name="currency" data-ledger-field="currency" value="${escapeAttribute(currency)}">
                 <details class="ledger-currency-dropdown">
                   <summary><span data-ledger-currency-display>${escapeHtml(currency)} · ${escapeHtml(currencyByCode(currency).nameZh)}</span><span aria-hidden="true">⌄</span></summary>
@@ -667,21 +667,21 @@
                 </details>
               </label>
               <label class="ledger-field ledger-field-amount">
-                <span class="ledger-field-label">金额</span>
+                <span class="ledger-field-label">金額</span>
                 <input class="ledger-amount-input" name="originalAmount" data-ledger-field="original-amount" type="text" inputmode="decimal" autocomplete="off" placeholder="0.00" value="${escapeAttribute(editingBill ? centsToInput(editingBill.originalAmountCents) : draft?.originalAmount || "")}" required>
               </label>
             </div>
             <label class="ledger-field ledger-converted-field" data-ledger-converted-field ${isForeign ? "" : "hidden"}>
-              <span class="ledger-field-label">折合${escapeHtml(currencyByCode(baseCurrency).nameZh)}</span>
+              <span class="ledger-field-label">摺合${escapeHtml(currencyByCode(baseCurrency).nameZh)}</span>
               <span class="ledger-converted-input-wrap">
                 <span class="ledger-converted-code">${escapeHtml(baseCurrency)}</span>
-                <input class="ledger-input" name="baseAmount" data-ledger-field="base-amount" type="text" inputmode="decimal" autocomplete="off" placeholder="手动填写换算后的总金额" value="${escapeAttribute(editingBill && isForeign ? centsToInput(editingBill.baseAmountCents) : draft?.baseAmount || "")}" ${isForeign ? "required" : ""}>
+                <input class="ledger-input" name="baseAmount" data-ledger-field="base-amount" type="text" inputmode="decimal" autocomplete="off" placeholder="手動填寫換算後的總金額" value="${escapeAttribute(editingBill && isForeign ? centsToInput(editingBill.baseAmountCents) : draft?.baseAmount || "")}" ${isForeign ? "required" : ""}>
               </span>
-              <small class="ledger-field-help">按付款当时采用的汇率手动填写</small>
+              <small class="ledger-field-help">按付款當時採用的匯率手動填寫</small>
             </label>
 
             <fieldset class="ledger-fieldset">
-              <legend class="ledger-field-label">分类</legend>
+              <legend class="ledger-field-label">分類</legend>
               <div class="ledger-category-grid">
                 ${CATEGORIES.map((category) => `
                   <label class="ledger-category-choice">
@@ -692,17 +692,17 @@
             </fieldset>
 
             <label class="ledger-field ledger-note-field">
-              <span class="ledger-field-label">备注 <small>选填</small></span>
-              <input class="ledger-input" type="text" name="note" maxlength="160" autocomplete="off" placeholder="例如：米兰大教堂门票" value="${escapeAttribute(editingBill?.note || draft?.note || "")}">
+              <span class="ledger-field-label">備註 <small>選填</small></span>
+              <input class="ledger-input" type="text" name="note" maxlength="160" autocomplete="off" placeholder="例如：米蘭大教堂門票" value="${escapeAttribute(editingBill?.note || draft?.note || "")}">
             </label>
 
             <label class="ledger-field ledger-date-field">
-              <span class="ledger-field-label">下单时间 <small>选填</small></span>
+              <span class="ledger-field-label">下單時間 <small>選填</small></span>
               <input class="ledger-input" type="datetime-local" name="orderedAt" value="${escapeAttribute(editingBill?.orderedAt || draft?.orderedAt || "")}">
             </label>
 
             <fieldset class="ledger-fieldset">
-              <legend class="ledger-field-label">买单人 <small>单选</small></legend>
+              <legend class="ledger-field-label">買單人 <small>單選</small></legend>
               <div class="ledger-person-grid">
                 ${ledgerData.travelers.map((traveler) => renderPersonChoice(traveler, "radio", "payerId", selectedPayerId === traveler.id)).join("")}
               </div>
@@ -710,8 +710,8 @@
 
             <fieldset class="ledger-fieldset">
               <div class="ledger-fieldset-heading">
-                <legend class="ledger-field-label">参与分账人 <small>多选</small></legend>
-                <button class="ledger-text-button" type="button" data-ledger-action="select-all-participants">全选</button>
+                <legend class="ledger-field-label">參與分賬人 <small>多選</small></legend>
+                <button class="ledger-text-button" type="button" data-ledger-action="select-all-participants">全選</button>
               </div>
               <div class="ledger-person-grid">
                 ${ledgerData.travelers.map((traveler) => renderPersonChoice(traveler, "checkbox", "participantIds", selectedParticipants.has(traveler.id))).join("")}
@@ -720,17 +720,17 @@
             </fieldset>
 
             <p class="ledger-form-error" data-ledger-form-error role="alert"></p>
-            <button class="ledger-primary-button" type="submit">${editingBill ? "保存修改" : "保存账单"}</button>
+            <button class="ledger-primary-button" type="submit">${editingBill ? "儲存修改" : "儲存賬單"}</button>
           </form>` : `
           <div class="ledger-onboarding">
-            <p>先添加本次同行人，再开始记账。</p>
-            <button class="ledger-primary-button" type="button" data-ledger-action="open-members">添加同行人</button>
+            <p>先新增本次同行人，再開始記賬。</p>
+            <button class="ledger-primary-button" type="button" data-ledger-action="open-members">新增同行人</button>
           </div>`}
       </section>`;
   }
 
   function formatBillDate(value) {
-    if (!value) return "未填写时间";
+    if (!value) return "未填寫時間";
     const parsed = new Date(value);
     if (Number.isNaN(parsed.getTime())) return value.replace("T", " ");
     return new Intl.DateTimeFormat("zh-CN", {
@@ -747,13 +747,13 @@
     const value = options.value ?? bill.note ?? "";
     return editing ? `
       <form class="ledger-bill-note-form" data-ledger-form="bill-note" data-ledger-id="${escapeAttribute(bill.id)}">
-        <span>备注：</span>
-        <input name="note" maxlength="160" autocomplete="off" value="${escapeAttribute(value)}" placeholder="暂无">
-        <button type="submit" aria-label="保存备注">✓</button>
-        <button type="button" data-ledger-action="cancel-note-edit" aria-label="取消修改备注">×</button>
+        <span>備註：</span>
+        <input name="note" maxlength="160" autocomplete="off" value="${escapeAttribute(value)}" placeholder="暫無">
+        <button type="submit" aria-label="儲存備註">✓</button>
+        <button type="button" data-ledger-action="cancel-note-edit" aria-label="取消修改備註">×</button>
       </form>` : `
-      <button class="ledger-bill-note-trigger" type="button" data-ledger-action="edit-bill-note" data-ledger-id="${escapeAttribute(bill.id)}" aria-label="编辑备注：${escapeAttribute(bill.note || "暂无")}">
-        <span>备注：</span><span>${escapeHtml(bill.note || "暂无")}</span>
+      <button class="ledger-bill-note-trigger" type="button" data-ledger-action="edit-bill-note" data-ledger-id="${escapeAttribute(bill.id)}" aria-label="編輯備註：${escapeAttribute(bill.note || "暫無")}">
+        <span>備註：</span><span>${escapeHtml(bill.note || "暫無")}</span>
       </button>`;
   }
 
@@ -854,24 +854,24 @@
           </div>
           <div class="ledger-bill-amount">
             <strong>${escapeHtml(formatMoney(bill.originalAmountCents, bill.currency))}</strong>
-            ${bill.currency !== baseCurrency ? `<span>折合 ${escapeHtml(formatMoney(bill.baseAmountCents, baseCurrency))}</span>` : ""}
+            ${bill.currency !== baseCurrency ? `<span>摺合 ${escapeHtml(formatMoney(bill.baseAmountCents, baseCurrency))}</span>` : ""}
           </div>
         </div>
         <div class="ledger-bill-people">
           <div class="ledger-bill-payer">
-            <span>买单</span>
+            <span>買單</span>
             ${renderAvatar(payer, "small")}
             <b>${escapeHtml(payer?.name || "")}</b>
           </div>
-          <div class="ledger-bill-participants" aria-label="参与分账：${escapeAttribute(participants.map((person) => person.name).join("、"))}">
-            <span>分账</span>
+          <div class="ledger-bill-participants" aria-label="參與分賬：${escapeAttribute(participants.map((person) => person.name).join("、"))}">
+            <span>分賬</span>
             <span class="ledger-avatar-stack">${participants.map((person) => renderAvatar(person, "tiny")).join("")}</span>
             <b>${participants.length} 人</b>
           </div>
         </div>
         <div class="ledger-row-actions">
-          <button class="ledger-text-button" type="button" data-ledger-action="edit-bill" data-ledger-id="${escapeAttribute(bill.id)}">编辑账单</button>
-          <button class="ledger-text-button ledger-danger-button" type="button" data-ledger-action="delete-bill" data-ledger-id="${escapeAttribute(bill.id)}">删除</button>
+          <button class="ledger-text-button" type="button" data-ledger-action="edit-bill" data-ledger-id="${escapeAttribute(bill.id)}">編輯賬單</button>
+          <button class="ledger-text-button ledger-danger-button" type="button" data-ledger-action="delete-bill" data-ledger-id="${escapeAttribute(bill.id)}">刪除</button>
         </div>
       </article>`;
   }
@@ -888,17 +888,17 @@
       <section class="ledger-list-section" aria-labelledby="ledger-list-title">
         <div class="ledger-section-heading ledger-list-heading">
           <div>
-            <p class="ledger-section-kicker">账单明细</p>
-            <h2 id="ledger-list-title">${bills.length ? `${bills.length} 笔账单` : "还没有账单"}</h2>
+            <p class="ledger-section-kicker">賬單明細</p>
+            <h2 id="ledger-list-title">${bills.length ? `${bills.length} 筆賬單` : "還沒有賬單"}</h2>
           </div>
           <div class="ledger-list-total">
-            <span>总支出</span>
+            <span>總支出</span>
             <strong>${escapeHtml(formatMoney(totalCents, baseCurrency))}</strong>
           </div>
         </div>
         ${bills.length
           ? `<div class="ledger-bill-list">${bills.map(renderBillRow).join("")}</div>`
-          : `<div class="ledger-empty-state"><p>记下第一笔花费后，账单会显示在这里。</p></div>`}
+          : `<div class="ledger-empty-state"><p>記下第一筆花費後，賬單會顯示在這裡。</p></div>`}
       </section>`;
   }
 
@@ -912,7 +912,7 @@
           </div>
           <div class="ledger-members-inline">
             ${ledgerData.travelers.map((traveler) => `<div class="ledger-person-static">${renderAvatar(traveler)}<span>${escapeHtml(traveler.name)}</span></div>`).join("")}
-            <button class="ledger-add-person" type="button" data-ledger-action="open-members" aria-label="添加同行人"><span aria-hidden="true">＋</span><small>添加</small></button>
+            <button class="ledger-add-person" type="button" data-ledger-action="open-members" aria-label="新增同行人"><span aria-hidden="true">＋</span><small>新增</small></button>
           </div>
         </section>
         ${renderBillForm()}
@@ -921,15 +921,15 @@
   }
 
   function renderRelatedBills(member) {
-    if (!member.billIds.length) return `<p class="ledger-member-empty">暂无相关账单</p>`;
+    if (!member.billIds.length) return `<p class="ledger-member-empty">暫無相關賬單</p>`;
     return member.billIds.map((billId) => {
       const bill = ledgerData.bills.find((entry) => entry.id === billId);
       if (!bill) return "";
       const share = billShares(bill).get(member.traveler.id) || 0;
       return `
         <div class="ledger-member-bill">
-          <span>${escapeHtml(bill.category)}${bill.payerId === member.traveler.id ? " · 买单" : ""}</span>
-          <span>${share ? `分摊 ${escapeHtml(formatMoney(share, ledgerData.settings.baseCurrency))}` : "未参与分摊"}</span>
+          <span>${escapeHtml(bill.category)}${bill.payerId === member.traveler.id ? " · 買單" : ""}</span>
+          <span>${share ? `分攤 ${escapeHtml(formatMoney(share, ledgerData.settings.baseCurrency))}` : "未參與分攤"}</span>
         </div>`;
     }).join("");
   }
@@ -940,18 +940,18 @@
     return `
       <section class="ledger-tab-panel" data-ledger-panel="stats" role="tabpanel" aria-labelledby="ledger-stats-tab" ${activeTab === "stats" ? "" : "hidden"}>
         <section class="ledger-stats-overview" aria-labelledby="ledger-stats-title">
-          <p class="ledger-section-kicker">账单结算</p>
+          <p class="ledger-section-kicker">賬單結算</p>
           <h2 id="ledger-stats-title">${escapeHtml(formatMoney(stats.totalCents, baseCurrency))}</h2>
-          <span>${ledgerData.bills.length} 笔账单 · 以 ${escapeHtml(baseCurrency)} 结算</span>
+          <span>${ledgerData.bills.length} 筆賬單 · 以 ${escapeHtml(baseCurrency)} 結算</span>
         </section>
 
         <section class="ledger-settlement-section" aria-labelledby="ledger-settlement-title">
           <div class="ledger-section-heading">
             <div>
-              <p class="ledger-section-kicker">结算方案</p>
-              <h2 id="ledger-settlement-title">谁需要转给谁</h2>
+              <p class="ledger-section-kicker">結算方案</p>
+              <h2 id="ledger-settlement-title">誰需要轉給誰</h2>
             </div>
-            <span class="ledger-soft-count">${stats.transfers.length} 笔转账</span>
+            <span class="ledger-soft-count">${stats.transfers.length} 筆轉賬</span>
           </div>
           ${stats.transfers.length ? `
             <div class="ledger-transfer-list">
@@ -962,20 +962,20 @@
                   <div class="ledger-transfer-row">
                     <div class="ledger-transfer-person">
                       ${renderAvatar(from)}
-                      <span><strong>${escapeHtml(from?.name || "")}</strong><small>转给 ${escapeHtml(to?.name || "")}</small></span>
+                      <span><strong>${escapeHtml(from?.name || "")}</strong><small>轉給 ${escapeHtml(to?.name || "")}</small></span>
                     </div>
                     <strong class="ledger-transfer-amount">${escapeHtml(formatMoney(transfer.amountCents, baseCurrency))}</strong>
                   </div>`;
               }).join("")}
             </div>` : `
-            <div class="ledger-empty-state"><p>${ledgerData.bills.length ? "大家已经结清，无需转账。" : "添加账单后，这里会自动生成结算单。"}</p></div>`}
+            <div class="ledger-empty-state"><p>${ledgerData.bills.length ? "大家已經結清，無需轉賬。" : "新增賬單後，這裡會自動生成結算單。"}</p></div>`}
         </section>
 
         <section class="ledger-member-stats-section" aria-labelledby="ledger-member-stats-title">
           <div class="ledger-section-heading">
             <div>
-              <p class="ledger-section-kicker">成员消费明细</p>
-              <h2 id="ledger-member-stats-title">每个人的收支</h2>
+              <p class="ledger-section-kicker">成員消費明細</p>
+              <h2 id="ledger-member-stats-title">每個人的收支</h2>
             </div>
           </div>
           ${stats.members.length ? `
@@ -988,14 +988,14 @@
                   </summary>
                   <div class="ledger-member-stat-body">
                     <dl class="ledger-member-metrics">
-                      <div><dt>实际支付</dt><dd>${escapeHtml(formatMoney(member.paidCents, baseCurrency))}</dd></div>
-                      <div><dt>个人应分摊</dt><dd>${escapeHtml(formatMoney(member.owedCents, baseCurrency))}</dd></div>
-                      <div><dt>结算结果</dt><dd class="${member.netCents > 0 ? "ledger-positive" : member.netCents < 0 ? "ledger-negative" : "ledger-neutral"}">${member.netCents > 0 ? "应收 " : member.netCents < 0 ? "应付 " : "已结清 "}${member.netCents === 0 ? "" : escapeHtml(formatMoney(Math.abs(member.netCents), baseCurrency))}</dd></div>
+                      <div><dt>實際支付</dt><dd>${escapeHtml(formatMoney(member.paidCents, baseCurrency))}</dd></div>
+                      <div><dt>個人應分攤</dt><dd>${escapeHtml(formatMoney(member.owedCents, baseCurrency))}</dd></div>
+                      <div><dt>結算結果</dt><dd class="${member.netCents > 0 ? "ledger-positive" : member.netCents < 0 ? "ledger-negative" : "ledger-neutral"}">${member.netCents > 0 ? "應收 " : member.netCents < 0 ? "應付 " : "已結清 "}${member.netCents === 0 ? "" : escapeHtml(formatMoney(Math.abs(member.netCents), baseCurrency))}</dd></div>
                     </dl>
                     <div class="ledger-member-bills">${renderRelatedBills(member)}</div>
                   </div>
                 </details>`).join("")}
-            </div>` : `<div class="ledger-empty-state"><p>添加同行人后，这里会显示每个人的收支。</p></div>`}
+            </div>` : `<div class="ledger-empty-state"><p>新增同行人後，這裡會顯示每個人的收支。</p></div>`}
         </section>
       </section>`;
   }
@@ -1005,14 +1005,14 @@
       return `
         <form class="ledger-member-edit-row ledger-member-edit-row-is-open" data-ledger-form="member-edit" data-ledger-id="${escapeAttribute(traveler.id)}">
           ${renderAvatar(traveler)}
-          <label class="ledger-visually-hidden" for="ledger-name-${escapeAttribute(traveler.id)}">成员姓名</label>
+          <label class="ledger-visually-hidden" for="ledger-name-${escapeAttribute(traveler.id)}">成員姓名</label>
           <input class="ledger-input" id="ledger-name-${escapeAttribute(traveler.id)}" name="name" maxlength="30" value="${escapeAttribute(traveler.name)}" required>
-          <label class="ledger-color-picker" title="修改头像颜色">
-            <span class="ledger-visually-hidden">头像颜色</span>
+          <label class="ledger-color-picker" title="修改頭像顏色">
+            <span class="ledger-visually-hidden">頭像顏色</span>
             <input type="color" name="color" value="${escapeAttribute(traveler.color)}">
           </label>
           <button class="ledger-text-button" type="submit">完成</button>
-          <button class="ledger-icon-button ledger-danger-button" type="button" data-ledger-action="delete-member" data-ledger-id="${escapeAttribute(traveler.id)}" aria-label="删除 ${escapeAttribute(traveler.name)}">删除</button>
+          <button class="ledger-icon-button ledger-danger-button" type="button" data-ledger-action="delete-member" data-ledger-id="${escapeAttribute(traveler.id)}" aria-label="刪除 ${escapeAttribute(traveler.name)}">刪除</button>
         </form>`;
     }
     return `
@@ -1020,8 +1020,8 @@
         ${renderAvatar(traveler)}
         <strong>${escapeHtml(traveler.name)}</strong>
         <span class="ledger-member-edit-actions">
-          <button class="ledger-text-button" type="button" data-ledger-action="edit-member" data-ledger-id="${escapeAttribute(traveler.id)}">编辑</button>
-          <button class="ledger-icon-button ledger-danger-button" type="button" data-ledger-action="delete-member" data-ledger-id="${escapeAttribute(traveler.id)}" aria-label="删除 ${escapeAttribute(traveler.name)}">删除</button>
+          <button class="ledger-text-button" type="button" data-ledger-action="edit-member" data-ledger-id="${escapeAttribute(traveler.id)}">編輯</button>
+          <button class="ledger-icon-button ledger-danger-button" type="button" data-ledger-action="delete-member" data-ledger-id="${escapeAttribute(traveler.id)}" aria-label="刪除 ${escapeAttribute(traveler.name)}">刪除</button>
         </span>
       </div>`;
   }
@@ -1033,28 +1033,28 @@
         <div class="ledger-dialog-header">
           <div>
             <p class="ledger-section-kicker">同行人</p>
-            <h2 id="ledger-members-dialog-title">管理本次成员</h2>
+            <h2 id="ledger-members-dialog-title">管理本次成員</h2>
           </div>
-          <button class="ledger-dialog-close" type="button" data-ledger-action="close-dialog" aria-label="关闭">×</button>
+          <button class="ledger-dialog-close" type="button" data-ledger-action="close-dialog" aria-label="關閉">×</button>
         </div>
         <div class="ledger-dialog-body">
           ${ledgerData.travelers.length ? `
             <div class="ledger-member-edit-list">
               ${ledgerData.travelers.map(renderMemberEditRow).join("")}
-            </div>` : `<p class="ledger-dialog-empty">还没有同行人。</p>`}
+            </div>` : `<p class="ledger-dialog-empty">還沒有同行人。</p>`}
           <form class="ledger-add-member-form" data-ledger-form="member-add">
             <div class="ledger-add-member-preview" data-ledger-member-preview style="--ledger-avatar-color:${escapeAttribute(suggestedColor)}">?</div>
             <label class="ledger-field ledger-add-member-name">
-              <span class="ledger-field-label">添加成员</span>
-              <input class="ledger-input" name="name" maxlength="30" placeholder="输入姓名" autocomplete="off" required>
+              <span class="ledger-field-label">新增成員</span>
+              <input class="ledger-input" name="name" maxlength="30" placeholder="輸入姓名" autocomplete="off" required>
             </label>
-            <label class="ledger-color-picker" title="选择头像颜色">
-              <span class="ledger-visually-hidden">头像颜色</span>
+            <label class="ledger-color-picker" title="選擇頭像顏色">
+              <span class="ledger-visually-hidden">頭像顏色</span>
               <input type="color" name="color" value="${escapeAttribute(suggestedColor)}">
             </label>
-            <button class="ledger-secondary-button" type="submit">添加</button>
+            <button class="ledger-secondary-button" type="submit">新增</button>
           </form>
-          <p class="ledger-dialog-note">头像文字会从姓名自动提取；颜色可以随时修改。</p>
+          <p class="ledger-dialog-note">頭像文字會從姓名自動提取；顏色可以隨時修改。</p>
         </div>
       </dialog>`;
   }
@@ -1076,31 +1076,31 @@
       <dialog class="ledger-dialog ledger-settings-dialog" data-ledger-dialog="settings" aria-labelledby="ledger-settings-dialog-title">
         <div class="ledger-dialog-header">
           <div>
-            <p class="ledger-section-kicker">记账设置</p>
-            <h2 id="ledger-settings-dialog-title">货币</h2>
+            <p class="ledger-section-kicker">記賬設定</p>
+            <h2 id="ledger-settings-dialog-title">貨幣</h2>
           </div>
-          <button class="ledger-dialog-close" type="button" data-ledger-action="close-dialog" aria-label="关闭">×</button>
+          <button class="ledger-dialog-close" type="button" data-ledger-action="close-dialog" aria-label="關閉">×</button>
         </div>
         <div class="ledger-dialog-body">
           <section class="ledger-setting-group">
             <div class="ledger-setting-heading">
-              <div><h3>记账本位币</h3><p>统计与最终结算都使用这个币种</p></div>
+              <div><h3>記賬本位幣</h3><p>統計與最終結算都使用這個幣種</p></div>
             </div>
             <button class="ledger-currency-select-button" type="button" data-ledger-action="pick-base-currency" ${baseLocked ? "disabled" : ""}>
               <span class="ledger-currency-symbol">${escapeHtml(baseCurrency.symbol)}</span>
               <span><strong>${escapeHtml(baseCurrency.code)} · ${escapeHtml(baseCurrency.nameZh)}</strong><small>${escapeHtml(baseCurrency.nameEn)}</small></span>
               <span aria-hidden="true">›</span>
             </button>
-            ${baseLocked ? `<p class="ledger-setting-note">已有账单后，本位币会锁定，避免历史换算金额失真。</p>` : ""}
+            ${baseLocked ? `<p class="ledger-setting-note">已有賬單後，本位幣會鎖定，避免歷史換算金額失真。</p>` : ""}
           </section>
           <section class="ledger-setting-group">
             <div class="ledger-setting-heading">
-              <div><h3>常用外币</h3><p>只在记账时显示你选中的币种</p></div>
-              <button class="ledger-text-button" type="button" data-ledger-action="pick-common-currency">添加货币</button>
+              <div><h3>常用外幣</h3><p>只在記賬時顯示你選中的幣種</p></div>
+              <button class="ledger-text-button" type="button" data-ledger-action="pick-common-currency">新增貨幣</button>
             </div>
             ${ledgerData.settings.commonCurrencies.length
               ? `<div class="ledger-currency-chips">${ledgerData.settings.commonCurrencies.map(renderCurrencyChip).join("")}</div>`
-              : `<p class="ledger-dialog-empty">尚未添加常用外币。</p>`}
+              : `<p class="ledger-dialog-empty">尚未新增常用外幣。</p>`}
           </section>
         </div>
       </dialog>`;
@@ -1124,18 +1124,18 @@
       <button class="ledger-currency-result ${isSelected ? "ledger-is-selected" : ""}" type="button" data-ledger-action="choose-currency" data-ledger-code="${escapeAttribute(currency.code)}" ${disabled ? "disabled" : ""}>
         <span class="ledger-currency-symbol">${escapeHtml(currency.symbol)}</span>
         <span class="ledger-currency-result-name"><strong>${escapeHtml(currency.code)} · ${escapeHtml(currency.nameZh)}</strong><small>${escapeHtml(currency.nameEn)}</small></span>
-        <span class="ledger-currency-result-state">${disabled ? "本位币" : isSelected ? "已选择" : "选择"}</span>
+        <span class="ledger-currency-result-state">${disabled ? "本位幣" : isSelected ? "已選擇" : "選擇"}</span>
       </button>`;
   }
 
   function renderCurrencyResultsMarkup() {
     const currencies = searchedCurrencies();
     if (!normalizeSearch(currencyQuery)) {
-      return `<div class="ledger-currency-empty"><p>输入货币名称开始查找</p><small>例如：港币、Hong Kong 或 HKD</small></div>`;
+      return `<div class="ledger-currency-empty"><p>輸入貨幣名稱開始查詢</p><small>例如：港幣、Hong Kong 或 HKD</small></div>`;
     }
     return currencies.length
       ? currencies.map(currencyResultMarkup).join("")
-      : `<div class="ledger-currency-empty"><p>没有找到相关货币</p><small>可以尝试中文名、英文名、代码、符号或国家与地区。</small></div>`;
+      : `<div class="ledger-currency-empty"><p>沒有找到相關貨幣</p><small>可以嘗試中文名、英文名、程式碼、符號或國家與地區。</small></div>`;
   }
 
   function renderCurrencyDialog() {
@@ -1143,18 +1143,18 @@
       <dialog class="ledger-dialog ledger-currency-dialog" data-ledger-dialog="currency" aria-labelledby="ledger-currency-dialog-title">
         <div class="ledger-dialog-header">
           <div>
-            <p class="ledger-section-kicker">世界货币</p>
-            <h2 id="ledger-currency-dialog-title">${currencyPickerMode === "base" ? "选择本位币" : "添加常用外币"}</h2>
+            <p class="ledger-section-kicker">世界貨幣</p>
+            <h2 id="ledger-currency-dialog-title">${currencyPickerMode === "base" ? "選擇本位幣" : "新增常用外幣"}</h2>
           </div>
-          <button class="ledger-dialog-close" type="button" data-ledger-action="back-to-settings" aria-label="返回设置">×</button>
+          <button class="ledger-dialog-close" type="button" data-ledger-action="back-to-settings" aria-label="返回設定">×</button>
         </div>
         <div class="ledger-dialog-body">
           <label class="ledger-currency-search">
-            <span class="ledger-visually-hidden">搜索货币</span>
+            <span class="ledger-visually-hidden">搜尋貨幣</span>
             <span aria-hidden="true">⌕</span>
-            <input class="ledger-input" type="search" data-ledger-currency-search placeholder="搜索港币、Hong Kong、HKD…" value="${escapeAttribute(currencyQuery)}" autocomplete="off">
+            <input class="ledger-input" type="search" data-ledger-currency-search placeholder="搜尋港幣、Hong Kong、HKD…" value="${escapeAttribute(currencyQuery)}" autocomplete="off">
           </label>
-          <p class="ledger-search-help">支持中文名、英文名、代码、符号和国家或地区</p>
+          <p class="ledger-search-help">支援中文名、英文名、程式碼、符號和國家或地區</p>
           <div class="ledger-currency-results" data-ledger-currency-results>${renderCurrencyResultsMarkup()}</div>
         </div>
       </dialog>`;
@@ -1165,14 +1165,14 @@
     ledgerRoot.innerHTML = `
       <div class="ledger-app" data-ledger-trip-id="${escapeAttribute(ledgerTripId)}">
         <header class="ledger-page-header">
-          <h1>旅行记账</h1>
+          <h1>旅行記賬</h1>
           <div class="ledger-header-actions">
-            <button class="ledger-icon-button" type="button" data-ledger-action="open-settings" aria-label="记账设置">设置</button>
+            <button class="ledger-icon-button" type="button" data-ledger-action="open-settings" aria-label="記賬設定">設定</button>
           </div>
         </header>
-        <nav class="ledger-tabs" role="tablist" aria-label="记账页面">
-          <button id="ledger-entry-tab" class="ledger-tab ${activeTab === "entry" ? "ledger-is-active" : ""}" type="button" role="tab" aria-selected="${activeTab === "entry"}" data-ledger-action="set-tab" data-ledger-tab="entry">记账</button>
-          <button id="ledger-stats-tab" class="ledger-tab ${activeTab === "stats" ? "ledger-is-active" : ""}" type="button" role="tab" aria-selected="${activeTab === "stats"}" data-ledger-action="set-tab" data-ledger-tab="stats">账单结算</button>
+        <nav class="ledger-tabs" role="tablist" aria-label="記賬頁面">
+          <button id="ledger-entry-tab" class="ledger-tab ${activeTab === "entry" ? "ledger-is-active" : ""}" type="button" role="tab" aria-selected="${activeTab === "entry"}" data-ledger-action="set-tab" data-ledger-tab="entry">記賬</button>
+          <button id="ledger-stats-tab" class="ledger-tab ${activeTab === "stats" ? "ledger-is-active" : ""}" type="button" role="tab" aria-selected="${activeTab === "stats"}" data-ledger-action="set-tab" data-ledger-tab="stats">賬單結算</button>
         </nav>
         <div class="ledger-live" role="status" aria-live="polite">${escapeHtml(notice)}</div>
         ${renderEntryPage()}
@@ -1238,8 +1238,8 @@
       } catch (error) {
         console.error("TravelLedger could not save data", error);
         setNotice(ledgerPersistenceMode === "d1"
-          ? "保存失败，请检查网络或你的云端数据库配置后重试。"
-          : "本地保存失败，请检查浏览器存储空间或隐私设置后重试。");
+          ? "儲存失敗，請檢查網路或你的雲端資料庫配置後重試。"
+          : "本地儲存失敗，請檢查瀏覽器儲存空間或隱私設定後重試。");
         return false;
       }
     });
@@ -1254,7 +1254,7 @@
       currency: String(formData.get("currency") || ledgerData.settings.lastCurrency),
       originalAmount: String(formData.get("originalAmount") || ""),
       baseAmount: String(formData.get("baseAmount") || ""),
-      category: String(formData.get("category") || "餐饮"),
+      category: String(formData.get("category") || "餐飲"),
       note: String(formData.get("note") || "").trim().slice(0, 160),
       orderedAt: String(formData.get("orderedAt") || ""),
       payerId: String(formData.get("payerId") || ""),
@@ -1269,7 +1269,7 @@
     if (!form || !summary) return;
     const participants = [...form.querySelectorAll('input[name="participantIds"]:checked')];
     if (!participants.length) {
-      summary.textContent = "请选择至少一位分账人";
+      summary.textContent = "請選擇至少一位分賬人";
       return;
     }
     const currency = form.elements.currency?.value || ledgerData.settings.baseCurrency;
@@ -1278,11 +1278,11 @@
       : form.elements.baseAmount;
     const amountCents = toCents(amountField?.value);
     if (!amountCents || amountCents <= 0) {
-      summary.textContent = `已选 ${participants.length} 人 · 按人数平分`;
+      summary.textContent = `已選 ${participants.length} 人 · 按人數平分`;
       return;
     }
     const averageCents = Math.floor(amountCents / participants.length);
-    summary.textContent = `已选 ${participants.length} 人 · 每人约 ${formatMoney(averageCents, ledgerData.settings.baseCurrency)}`;
+    summary.textContent = `已選 ${participants.length} 人 · 每人約 ${formatMoney(averageCents, ledgerData.settings.baseCurrency)}`;
   }
 
   function syncCurrencyField(select) {
@@ -1364,7 +1364,7 @@
     const title = dialog.querySelector("#ledger-currency-dialog-title");
     const search = dialog.querySelector("[data-ledger-currency-search]");
     const results = dialog.querySelector("[data-ledger-currency-results]");
-    if (title) title.textContent = mode === "base" ? "选择本位币" : "添加常用外币";
+    if (title) title.textContent = mode === "base" ? "選擇本位幣" : "新增常用外幣";
     if (search) search.value = "";
     if (results) results.innerHTML = renderCurrencyResultsMarkup();
     showDialog("currency", { focusSearch: true });
@@ -1402,29 +1402,29 @@
       .filter((id) => travelerById(id));
 
     if (!availableCurrencyCodes(currency).includes(currency)) {
-      setFormError(form, "请选择本次旅程使用的币种。");
+      setFormError(form, "請選擇本次旅程使用的幣種。");
       return;
     }
     if (!originalAmountCents || originalAmountCents <= 0) {
-      setFormError(form, "请输入正确的账单金额，最多保留两位小数。");
+      setFormError(form, "請輸入正確的賬單金額，最多保留兩位小數。");
       form.elements.originalAmount?.focus();
       return;
     }
     if (!baseAmountCents || baseAmountCents <= 0) {
-      setFormError(form, `请填写折合${currencyByCode(ledgerData.settings.baseCurrency).nameZh}的金额。`);
+      setFormError(form, `請填寫摺合${currencyByCode(ledgerData.settings.baseCurrency).nameZh}的金額。`);
       form.elements.baseAmount?.focus();
       return;
     }
     if (!CATEGORIES.includes(category)) {
-      setFormError(form, "请选择账单分类。");
+      setFormError(form, "請選擇賬單分類。");
       return;
     }
     if (!travelerById(payerId)) {
-      setFormError(form, "请选择一位买单人。");
+      setFormError(form, "請選擇一位買單人。");
       return;
     }
     if (!participantIds.length) {
-      setFormError(form, "请选择至少一位参与分账的人。");
+      setFormError(form, "請選擇至少一位參與分賬的人。");
       return;
     }
 
@@ -1451,7 +1451,7 @@
       }
     }, {
       reason: billBeingEdited ? "bill-updated" : "bill-added",
-      message: billBeingEdited ? "账单已更新" : "账单已保存",
+      message: billBeingEdited ? "賬單已更新" : "賬單已儲存",
       afterSuccess() {
         editingBillId = null;
         billDraft = null;
@@ -1464,12 +1464,12 @@
     const color = String(new FormData(form).get("color") || "").toUpperCase();
     if (!name) {
       form.elements.name?.focus();
-      setNotice("请输入同行人的姓名。");
+      setNotice("請輸入同行人的姓名。");
       return;
     }
     if (isDuplicateTravelerName(name)) {
       form.elements.name?.focus();
-      setNotice("这位同行人已经添加过了。");
+      setNotice("這位同行人已經新增過了。");
       return;
     }
     const id = makeId("person");
@@ -1526,7 +1526,7 @@
           : null;
         if (fullBillNote) fullBillNote.value = note;
         replaceBillNoteControl(id, false);
-        setNotice(note ? "备注已更新" : "备注已清空");
+        setNotice(note ? "備註已更新" : "備註已清空");
         ledgerRoot.dispatchEvent(new CustomEvent("travel-ledger:changed", {
           bubbles: true,
           detail: { tripId: ledgerTripId, reason: "bill-note-updated", data: deepClone(ledgerData) }
@@ -1537,8 +1537,8 @@
         form.classList.remove("ledger-is-saving");
         for (const control of form.elements) control.disabled = false;
         setNotice(ledgerPersistenceMode === "d1"
-          ? "备注保存失败，请检查网络或你的云端数据库配置后重试。"
-          : "备注本地保存失败，请检查浏览器存储空间或隐私设置后重试。");
+          ? "備註儲存失敗，請檢查網路或你的雲端資料庫配置後重試。"
+          : "備註本地儲存失敗，請檢查瀏覽器儲存空間或隱私設定後重試。");
         return false;
       }
     });
@@ -1557,12 +1557,12 @@
     const color = String(formData.get("color") || "").toUpperCase();
     if (!name) {
       form.elements.name?.focus();
-      setNotice("姓名不能为空。");
+      setNotice("姓名不能為空。");
       return;
     }
     if (isDuplicateTravelerName(name, id)) {
       form.elements.name?.focus();
-      setNotice("已有同名的同行人，请换一个称呼。");
+      setNotice("已有同名的同行人，請換一個稱呼。");
       return;
     }
     captureBillDraft();
@@ -1573,7 +1573,7 @@
       traveler.name = name.slice(0, 30);
       traveler.initial = avatarInitial(name);
       if (isValidColor(color)) traveler.color = color;
-    }, { reason: "member-updated", message: "同行人信息已更新", afterSuccess() { editingMemberId = null; } });
+    }, { reason: "member-updated", message: "同行人資訊已更新", afterSuccess() { editingMemberId = null; } });
   }
 
   function confirmLedgerAction(message) {
@@ -1581,12 +1581,12 @@
       const dialog = document.createElement("dialog");
       dialog.className = "ledger-confirm-dialog";
       dialog.setAttribute("aria-modal", "true");
-      dialog.setAttribute("aria-label", "确认删除");
+      dialog.setAttribute("aria-label", "確認刪除");
       dialog.innerHTML = `<div class="ledger-confirm-card">
         <p>${escapeHtml(message)}</p>
         <div class="ledger-confirm-actions">
           <button type="button" data-ledger-confirm="cancel">取消</button>
-          <button type="button" class="ledger-confirm-danger" data-ledger-confirm="confirm">确认删除</button>
+          <button type="button" class="ledger-confirm-danger" data-ledger-confirm="confirm">確認刪除</button>
         </div>
       </div>`;
       let settled = false;
@@ -1620,10 +1620,10 @@
       bill.payerId === id || bill.participantIds.includes(id)
     ));
     if (referenced) {
-      setNotice(`${traveler.name}已有相关账单，需先处理这些账单后才能删除。`);
+      setNotice(`${traveler.name}已有相關賬單，需先處理這些賬單後才能刪除。`);
       return;
     }
-    if (!await confirmLedgerAction(`删除同行人“${traveler.name}”？`)) return;
+    if (!await confirmLedgerAction(`刪除同行人“${traveler.name}”？`)) return;
     captureBillDraft();
     if (billDraft) {
       billDraft.participantIds = billDraft.participantIds.filter((memberId) => memberId !== id);
@@ -1638,11 +1638,11 @@
 
   async function deleteBill(id) {
     const bill = ledgerData.bills.find((entry) => entry.id === id);
-    if (!bill || !await confirmLedgerAction("删除这笔账单？")) return;
+    if (!bill || !await confirmLedgerAction("刪除這筆賬單？")) return;
     if (editingNoteBillId === id) editingNoteBillId = null;
     await mutateData((next) => {
       next.bills = next.bills.filter((entry) => entry.id !== id);
-    }, { reason: "bill-deleted", message: "账单已删除" });
+    }, { reason: "bill-deleted", message: "賬單已刪除" });
   }
 
   async function removeCommonCurrency(code) {
@@ -1660,7 +1660,7 @@
     captureBillDraft();
     if (currencyPickerMode === "base") {
       if (ledgerData.bills.length) {
-        setNotice("已有账单，本位币不能再修改。");
+        setNotice("已有賬單，本位幣不能再修改。");
         return;
       }
       openDialogName = "settings";
@@ -1668,7 +1668,7 @@
         next.settings.baseCurrency = code;
         next.settings.commonCurrencies = next.settings.commonCurrencies.filter((item) => item !== code);
         next.settings.lastCurrency = code;
-      }, { reason: "base-currency-changed", message: `本位币已设为${currencyByCode(code).nameZh}` });
+      }, { reason: "base-currency-changed", message: `本位幣已設為${currencyByCode(code).nameZh}` });
       return;
     }
 
@@ -1681,14 +1681,14 @@
       if (selected && next.settings.lastCurrency === code) next.settings.lastCurrency = next.settings.baseCurrency;
     }, {
       reason: selected ? "currency-removed" : "currency-added",
-      message: selected ? `${currencyByCode(code).nameZh}已移除` : `${currencyByCode(code).nameZh}已加入常用外币`
+      message: selected ? `${currencyByCode(code).nameZh}已移除` : `${currencyByCode(code).nameZh}已加入常用外幣`
     });
   }
 
   function editBill(id) {
     if (!ledgerData.bills.some((bill) => bill.id === id)) return;
     if (editingBillId && editingBillId !== id) {
-      setNotice("请先保存或取消正在编辑的账单。");
+      setNotice("請先儲存或取消正在編輯的賬單。");
       ledgerRoot.querySelector('[data-ledger-form="bill"] [data-ledger-field="original-amount"]')?.focus({ preventScroll: true });
       return;
     }
@@ -1867,8 +1867,8 @@
     } catch (error) {
       console.error("TravelLedger could not load data", error);
       notice = ledgerPersistenceMode === "d1"
-        ? "共享账本暂时无法读取，请检查你的 Cloudflare D1 配置。"
-        : "本地账本暂时无法读取，已打开一份空账本。";
+        ? "共享賬本暫時無法讀取，請檢查你的 Cloudflare D1 配置。"
+        : "本地賬本暫時無法讀取，已開啟一份空賬本。";
     }
     ledgerData = normalizeData(stored);
     activeTab = location.hash === "#ledger-stats" ? "stats" : "entry";
